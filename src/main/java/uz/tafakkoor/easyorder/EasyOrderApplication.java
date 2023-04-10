@@ -17,6 +17,7 @@ public class EasyOrderApplication {
         return args -> {
             System.out.println("Pro o'zgarish");
             System.out.println("test");
+            System.out.println("test");
         };
     }
 
