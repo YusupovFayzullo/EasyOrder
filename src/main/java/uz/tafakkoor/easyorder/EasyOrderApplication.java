@@ -15,7 +15,7 @@ public class EasyOrderApplication {
     @Bean
     CommandLineRunner runner() {
         return args -> {
-
+            System.out.println("Pro o'zgarish");
         };
     }
 
