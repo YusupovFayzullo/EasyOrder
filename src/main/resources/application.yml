@@ -1,0 +1,34 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    driverClassName: org.postgresql.Driver
+    password: 123
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/easy_order
+
+  profiles:
+    active: prod, test
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+server:
+  port: 9090
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+server:
+  port: 8080
+
