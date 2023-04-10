@@ -18,6 +18,7 @@ public class EasyOrderApplication {
             System.out.println("Pro o'zgarish");
             System.out.println("test");
             System.out.println("test");
+            System.out.println("test");
         };
     }
 
