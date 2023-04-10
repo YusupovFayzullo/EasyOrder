@@ -19,6 +19,7 @@ public class EasyOrderApplication {
             System.out.println("test");
             System.out.println("test");
             System.out.println("test");
+            System.out.println("test");
         };
     }
 
