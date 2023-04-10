@@ -16,6 +16,7 @@ public class EasyOrderApplication {
     CommandLineRunner runner() {
         return args -> {
             System.out.println("Pro o'zgarish");
+            System.out.println("Vapshe Pro o'zgarish");
         };
     }
 
