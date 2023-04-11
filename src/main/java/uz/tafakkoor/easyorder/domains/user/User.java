@@ -2,10 +2,13 @@ package uz.tafakkoor.easyorder.domains.user;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import uz.tafakkoor.easyorder.domains.Auditable;
+import uz.tafakkoor.easyorder.enums.UserStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,8 +21,10 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "users")
-public class User extends Auditable implements UserDetails {
+@EntityListeners(AuditingEntityListener.class)
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +32,7 @@ public class User extends Auditable implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String firstName;
     private String lastName;
     @Column(unique = true, nullable = false)
@@ -42,22 +48,12 @@ public class User extends Auditable implements UserDetails {
     private Collection<UserRole> roles;
     private LocalDateTime lastLogin;
     private boolean isOAuthUser;
-    private boolean isBlocked;
-
-    @Builder(builderMethodName = "childBuilder")
-    public User(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String email, String password, String firstName, String lastName, String phoneNumber, Collection<UserRole> roles, LocalDateTime lastLogin, boolean isOAuthUser, boolean isBlocked) {
-        super(createdBy, updateBy, createdAt, updatedAt);
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.roles = roles;
-        this.lastLogin = lastLogin;
-        this.isOAuthUser = isOAuthUser;
-        this.isBlocked = isBlocked;
-    }
+    @Enumerated(EnumType.STRING)
+    private UserStatus status = UserStatus.INACTIVE;
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -66,9 +62,7 @@ public class User extends Auditable implements UserDetails {
         userRoles.forEach(userRole -> {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.getCode()));
             Collection<UserPermission> permissions = Objects.requireNonNullElse(userRole.getAuthPermissions(), Collections.<UserPermission>emptySet());
-            permissions.forEach(authPermission -> {
-                authorities.add(new SimpleGrantedAuthority(authPermission.getCode()));
-            });
+            permissions.forEach(authPermission -> authorities.add(new SimpleGrantedAuthority(authPermission.getCode())));
         });
         return authorities;
     }
@@ -90,7 +84,7 @@ public class User extends Auditable implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !isBlocked();
+        return !UserStatus.BLOCKED.equals(this.status);
     }
 
     @Override
@@ -100,6 +94,6 @@ public class User extends Auditable implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return !isBlocked();
+        return UserStatus.ACTIVE.equals(this.status);
     }
 }
