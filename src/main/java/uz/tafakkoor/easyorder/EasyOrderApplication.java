@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import uz.tafakkoor.easyorder.domains.user.User;
 
 @SpringBootApplication
 @OpenAPIDefinition(
@@ -31,6 +32,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EasyOrderApplication {
 
     public static void main(String[] args) {
+        User user = new User();
+
         SpringApplication.run(EasyOrderApplication.class, args);
     }
 
