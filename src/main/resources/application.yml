@@ -17,6 +17,14 @@ spring:
 
   profiles:
     active: prod, test
+
+jwt:
+  secret:
+    key: 3F4428472B4B6150645367566B5970337336763979244226452948404D6351655468576D5A7134743777217A25432A462D4A614E645267556A586E3272357538
+  expiry:
+    in:
+     minutes: 10
+
 ---
 spring:
   config:
