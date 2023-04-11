@@ -25,6 +25,26 @@ jwt:
     in:
      minutes: 10
 
+management:
+  endpoint:
+    health:
+      show-details: always
+    startup:
+      enabled: true
+
+
+  health:
+    diskspace:
+      enabled: true
+      threshold: 1GB
+
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
+
 ---
 spring:
   config:
