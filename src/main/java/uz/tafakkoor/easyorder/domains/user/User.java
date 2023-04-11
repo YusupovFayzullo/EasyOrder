@@ -35,17 +35,17 @@ public class User extends Auditable implements UserDetails {
     @ManyToMany(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_roles",
+            name = "user_id_roles_id",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+            inverseJoinColumns = @JoinColumn(name = "user_role_id", referencedColumnName = "id")
     )
-    private Collection<UserRoles> roles;
+    private Collection<UserRole> roles;
     private LocalDateTime lastLogin;
     private boolean isOAuthUser;
     private boolean isBlocked;
 
     @Builder(builderMethodName = "childBuilder")
-    public User(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String email, String password, String firstName, String lastName, String phoneNumber, Collection<UserRoles> roles, LocalDateTime lastLogin, boolean isOAuthUser, boolean isBlocked) {
+    public User(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String email, String password, String firstName, String lastName, String phoneNumber, Collection<UserRole> roles, LocalDateTime lastLogin, boolean isOAuthUser, boolean isBlocked) {
         super(createdBy, updateBy, createdAt, updatedAt);
         this.id = id;
         this.email = email;
@@ -61,11 +61,11 @@ public class User extends Auditable implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<UserRoles> userRoles = Objects.requireNonNullElse(getRoles(), Collections.<UserRoles>emptySet());
+        Collection<UserRole> userRoles = Objects.requireNonNullElse(getRoles(), Collections.<UserRole>emptySet());
         ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        userRoles.forEach(authRole -> {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + authRole.getCode()));
-            Collection<UserPermission> permissions = Objects.requireNonNullElse(authRole.getAuthPermissions(), Collections.<UserPermission>emptySet());
+        userRoles.forEach(userRole -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.getCode()));
+            Collection<UserPermission> permissions = Objects.requireNonNullElse(userRole.getAuthPermissions(), Collections.<UserPermission>emptySet());
             permissions.forEach(authPermission -> {
                 authorities.add(new SimpleGrantedAuthority(authPermission.getCode()));
             });
