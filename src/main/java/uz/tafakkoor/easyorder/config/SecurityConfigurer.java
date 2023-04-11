@@ -28,10 +28,15 @@ public class SecurityConfigurer {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/token",
                         "/swagger-ui.html",
-                        "/swagger-ui/**",
-                        "/swagger-ui/index.html",
-                        "/**",
-                        "/api-docs")
+                        "/swagger-ui*/**",
+                        "/swagger-ui*/*swagger-initializer.js",
+                        "/v3/api-docs*/**",
+                        "/actuator/health*/**",
+                        "/actuator",
+                        "/error",
+                        "/webjars/**",
+                        "/**" // only for test
+                        )
                 .permitAll()
                 .anyRequest()
                 .authenticated()
