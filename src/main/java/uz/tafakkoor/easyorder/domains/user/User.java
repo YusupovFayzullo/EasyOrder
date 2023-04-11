@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.tafakkoor.easyorder.domains.Auditable;
-import uz.tafakkoor.easyorder.enums.Status;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ public class User extends Auditable implements UserDetails {
     private LocalDateTime lastLogin;
     private boolean isOAuthUser;
     private boolean isBlocked;
+
     @Builder(builderMethodName = "childBuilder")
     public User(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, Long id, String email, String password, String firstName, String lastName, String phoneNumber, Collection<UserRoles> roles, LocalDateTime lastLogin, boolean isOAuthUser, boolean isBlocked) {
         super(createdBy, updateBy, createdAt, updatedAt);
@@ -58,6 +58,7 @@ public class User extends Auditable implements UserDetails {
         this.isOAuthUser = isOAuthUser;
         this.isBlocked = isBlocked;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<UserRoles> userRoles = Objects.requireNonNullElse(getRoles(), Collections.<UserRoles>emptySet());
