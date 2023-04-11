@@ -17,6 +17,7 @@ public class UserController {
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
     @GetMapping(value = "{userId}", produces = "application/json")
     public User getUserById(@PathVariable Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found with id " + userId));
