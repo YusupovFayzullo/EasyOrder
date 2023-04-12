@@ -31,5 +31,6 @@ public class Auditable {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+    private boolean isDeleted;
 
 }

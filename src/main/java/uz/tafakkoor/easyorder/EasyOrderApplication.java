@@ -16,7 +16,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                 @Server(url = "https://test.tafakkoor.uz", description = "Test server")
         },
         tags = {
-                @Tag(name = "User", description = "User API"),
                 @Tag(name = "Restaurant", description = "Restaurant API"),
                 @Tag(name = "Order", description = "Order API"),
                 @Tag(name = "Menu", description = "Menu API"),
@@ -31,6 +30,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EasyOrderApplication {
 
     public static void main(String[] args) {
+        System.out.println();
         SpringApplication.run(EasyOrderApplication.class, args);
     }
 

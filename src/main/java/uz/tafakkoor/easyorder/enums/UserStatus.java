@@ -1,6 +1,6 @@
 package uz.tafakkoor.easyorder.enums;
 
-public enum Status {
+public enum UserStatus {
     BLOCKED,
     INACTIVE,
     ACTIVE
