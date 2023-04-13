@@ -1,7 +1,10 @@
 package uz.tafakkoor.easyorder.domains.menu;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import uz.tafakkoor.easyorder.domains.Auditable;
 import uz.tafakkoor.easyorder.domains.Image;
 

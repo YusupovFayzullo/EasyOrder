@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,6 +21,7 @@ import uz.tafakkoor.easyorder.repositories.UserRepository;
 public class SecurityConfigurer {
     private final JWTAuthenticationFilter jwtFilter;
     private final UserRepository userRepository;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
@@ -36,7 +36,7 @@ public class SecurityConfigurer {
                         "/error",
                         "/webjars/**",
                         "/**" // only for test
-                        )
+                )
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -53,9 +53,6 @@ public class SecurityConfigurer {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
-
 
 
     @Bean
