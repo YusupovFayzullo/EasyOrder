@@ -12,7 +12,7 @@ import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<AppErrorDTO> handleException(Exception e, HttpServletRequest request) {
+    public ResponseEntity<AppErrorDTO> handleUnknownExceptions(Exception e, HttpServletRequest request) {
         return ResponseEntity.badRequest().body(
                 AppErrorDTO.builder()
                         .error_code(500)
