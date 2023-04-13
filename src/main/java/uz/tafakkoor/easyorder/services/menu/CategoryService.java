@@ -4,8 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.domains.menu.Category;
 import uz.tafakkoor.easyorder.dtos.menu.CategoryCreateDTO;
-import uz.tafakkoor.easyorder.mappers.menu.CategoryMapper;
 import uz.tafakkoor.easyorder.repositories.menu.CategoryRepository;
+
+import java.util.Optional;
 
 import static uz.tafakkoor.easyorder.mappers.menu.CategoryMapper.CATEGORY_MAPPER;
 
@@ -18,5 +19,9 @@ public class CategoryService {
     public Category createCategory(CategoryCreateDTO dto) {
         Category categoryCreate = CATEGORY_MAPPER.toCategoryCreate(dto);
         return categoryRepository.save(categoryCreate);
+    }
+
+    public Optional<Category> getCategoryById(Long id) {
+        return categoryRepository.findById(id);
     }
 }
