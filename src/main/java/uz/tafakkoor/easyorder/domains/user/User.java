@@ -48,6 +48,7 @@ public class User implements UserDetails {
     private Collection<UserRole> roles;
     private LocalDateTime lastLogin;
     private boolean isOAuthUser;
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     private UserStatus status = UserStatus.INACTIVE;
     @CreatedDate
