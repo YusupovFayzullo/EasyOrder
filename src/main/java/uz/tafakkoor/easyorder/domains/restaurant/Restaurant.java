@@ -23,7 +23,7 @@ public class Restaurant extends Auditable {
     @OneToOne
     private Address address;
     private String description;
-//    @OneToMany(cascade = CascadeType.ALL/*, fetch = FetchType.EAGER*/)
+    //    @OneToMany(cascade = CascadeType.ALL/*, fetch = FetchType.EAGER*/)
 //    private Collection<Image> image;
     private String phoneNumber;
     private String email;
@@ -46,8 +46,6 @@ public class Restaurant extends Auditable {
         this.closeTime = closeTime;
         this.status = status;
     }
-
-
 
 
 }

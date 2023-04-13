@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.domains.user.User;
 import uz.tafakkoor.easyorder.repositories.UserRepository;
+
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
