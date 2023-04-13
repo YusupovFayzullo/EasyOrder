@@ -1,4 +1,4 @@
-package uz.tafakkoor.easyorder.controllers;
+package uz.tafakkoor.easyorder.controllers.user;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
