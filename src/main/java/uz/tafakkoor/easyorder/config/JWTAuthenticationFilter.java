@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import uz.tafakkoor.easyorder.services.UserService;
+import uz.tafakkoor.easyorder.services.user.UserService;
 
 import java.io.IOException;
 import java.util.Objects;

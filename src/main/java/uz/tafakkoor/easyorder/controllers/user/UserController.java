@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uz.tafakkoor.easyorder.domains.user.User;
 import uz.tafakkoor.easyorder.exceptions.UserNotFoundException;
-import uz.tafakkoor.easyorder.repositories.UserRepository;
+import uz.tafakkoor.easyorder.repositories.user.UserRepository;
 
 @RestController
 @RequestMapping("/api/v1/user")
