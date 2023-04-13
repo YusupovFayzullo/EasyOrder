@@ -15,11 +15,12 @@ import uz.tafakkoor.easyorder.services.menu.CategoryService;
 @RequestMapping("/api/v1/categories")
 public class CategoryController {
 
-private final CategoryService categoryService;
+    private final CategoryService categoryService;
+
     @PostMapping(value = "/create", produces = "application/json")
     public ResponseEntity<Category> createCategory(@RequestBody CategoryCreateDTO dto) {
         Category category = categoryService.createCategory(dto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(201).body(category);
     }
 
 }
