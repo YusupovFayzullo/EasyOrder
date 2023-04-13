@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ItemNotFoundException.class)
-    public ResponseEntity<AppErrorDTO> itemNotFoundHandler(ItemNotFoundException e, HttpServletRequest request) {
+    public ResponseEntity<AppErrorDTO> handleItemNotFoundException(ItemNotFoundException e, HttpServletRequest request) {
         return ResponseEntity.status(404)
                 .body(AppErrorDTO.builder()
                         .error_code(404)
