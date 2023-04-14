@@ -36,7 +36,6 @@ public class EasyOrderApplication {
     }
 
     public static void main(String[] args) {
-        System.out.println("Hello");
         SpringApplication.run(EasyOrderApplication.class, args);
     }
 
