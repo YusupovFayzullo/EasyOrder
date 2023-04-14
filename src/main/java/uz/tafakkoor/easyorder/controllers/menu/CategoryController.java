@@ -19,7 +19,11 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @Operation(summary = "This API used for creating a category")
+    @Operation(summary = "This API used for creating a category",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Category created"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Category not created")
+            })
     @PostMapping(value = "/create", produces = "application/json")
     public ResponseEntity<Category> createCategory(@RequestBody CategoryCreateDTO dto) {
         Category category = categoryService.createCategory(dto);
@@ -27,7 +31,10 @@ public class CategoryController {
     }
 
 
-    @Operation(summary = "This API used for getting a category by id")
+    @Operation(summary = "This API used for getting a category by id", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Category found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Category not found")
+    })
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
         Category category = categoryService.getCategoryById(id)
