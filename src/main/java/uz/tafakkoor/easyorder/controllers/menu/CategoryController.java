@@ -5,11 +5,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.tafakkoor.easyorder.domains.menu.Category;
 import uz.tafakkoor.easyorder.dtos.menu.CategoryCreateDTO;
-import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.services.menu.CategoryService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,10 +38,30 @@ public class CategoryController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Category not found")
     })
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        Category category = categoryService.getCategoryById(id)
-                .orElseThrow(() -> new ItemNotFoundException("Category not found with id " + id));
+    public ResponseEntity<Category> getCategoryById(@PathVariable Long id, Long restaurantID) {
+        Category category = categoryService.getCategoryById(id, restaurantID);
+
         return ResponseEntity.ok().body(category);
     }
+
+    @Operation(summary = "This API used for getting all categories by restaurant id", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Categories found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Categories not found with restaurant id")
+    })
+    @GetMapping(value = "/restaurant/{restaurantID}", produces = "application/json")
+    public ResponseEntity<List<Category>> getAllCategories(@PathVariable Long restaurantID) {
+        List<Category> categories = categoryService.getAllCategories(restaurantID);
+        return ResponseEntity.ok().body(categories);
+    }
+
+
+
+    @DeleteMapping(value = "/{id}/delete", produces = "application/json")
+    public Category deleteCategory(@PathVariable Long id, Long restaurantID) {
+        return categoryService.deleteCategory(id, restaurantID);
+    }
+
+
+
 
 }

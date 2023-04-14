@@ -6,7 +6,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 import uz.tafakkoor.easyorder.domains.menu.Category;
-import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.dtos.menu.CategoryCreateDTO;
 
 @Mapper
@@ -16,11 +15,10 @@ public interface CategoryMapper {
 
     @Mappings({
             @Mapping(target = "image", source = "imageDTO"),
-            @Mapping(target = "restaurant", source = "restaurantID", qualifiedByName = "toRestaurantCreate")
+/*
+            @Mapping(target = "restaurant", source = "restaurantID")
+*/
     })
     Category toCategoryCreate(CategoryCreateDTO dto);
 
-    default Restaurant toRestaurantCreate(Long id) {
-        return null;
-    }
 }

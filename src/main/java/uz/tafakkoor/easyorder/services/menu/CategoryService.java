@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.domains.menu.Category;
 import uz.tafakkoor.easyorder.dtos.menu.CategoryCreateDTO;
+import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.repositories.menu.CategoryRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static uz.tafakkoor.easyorder.mappers.menu.CategoryMapper.CATEGORY_MAPPER;
@@ -21,7 +23,18 @@ public class CategoryService {
         return categoryRepository.save(categoryCreate);
     }
 
-    public Optional<Category> getCategoryById(Long id) {
-        return categoryRepository.findById(id);
+    public Category getCategoryById(Long id, Long restaurantId) {
+        return categoryRepository.findCategory(id, restaurantId)
+                .orElseThrow(() -> new ItemNotFoundException("Category not found with id " + id));
+    }
+
+
+    public List<Category> getAllCategories(Long restaurantID) {
+        return categoryRepository.findCategoryByRestaurantId(restaurantID)
+                .orElseThrow(() -> new ItemNotFoundException("Categories not found with restaurant id " + restaurantID));
+    }
+
+    public Category deleteCategory(Long id, Long restaurantID) {
+        return categoryRepository.deleteCategory(id, restaurantID).orElseThrow(() -> new ItemNotFoundException("Category not found with id " + id));
     }
 }
