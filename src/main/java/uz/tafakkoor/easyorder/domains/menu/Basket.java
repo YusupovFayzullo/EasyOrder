@@ -17,10 +17,10 @@ public class Basket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
-    @OneToMany
+    @OneToMany(mappedBy = "basket")
     private Collection<ProductOrder> orders;
-    @ManyToOne
-    private User orderOwner;
+    @OneToOne
+    private User owner;
 
 
 }

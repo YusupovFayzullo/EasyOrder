@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import uz.tafakkoor.easyorder.domains.user.User;
 import uz.tafakkoor.easyorder.domains.user.UserRole;
@@ -24,6 +25,7 @@ import java.util.List;
                 @Server(url = "https://test.tafakkoor.uz", description = "Test server")
         }
 )
+@EnableJpaAuditing
 public class EasyOrderApplication {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -38,7 +40,7 @@ public class EasyOrderApplication {
         SpringApplication.run(EasyOrderApplication.class, args);
     }
 
-    @Bean
+//    @Bean
     CommandLineRunner runner() {
         return args -> {
             userRepository.save(
