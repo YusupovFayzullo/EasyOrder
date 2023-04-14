@@ -3,7 +3,7 @@ package uz.tafakkoor.easyorder.domains.restaurant;
 import jakarta.persistence.*;
 import lombok.*;
 import uz.tafakkoor.easyorder.domains.Auditable;
-import uz.tafakkoor.easyorder.domains.Image;
+import uz.tafakkoor.easyorder.domains.image.Image;
 import uz.tafakkoor.easyorder.enums.RestaurantStatus;
 
 import java.time.LocalDateTime;

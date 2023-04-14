@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uz.tafakkoor.easyorder.domains.Auditable;
-import uz.tafakkoor.easyorder.domains.Image;
+import uz.tafakkoor.easyorder.domains.image.Image;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

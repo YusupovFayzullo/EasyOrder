@@ -2,7 +2,6 @@ package uz.tafakkoor.easyorder.mappers.menu;
 
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 import uz.tafakkoor.easyorder.domains.menu.Category;
@@ -14,11 +13,10 @@ public interface CategoryMapper {
 
 
     @Mappings({
-            @Mapping(target = "image", source = "imageDTO"),
-/*
-            @Mapping(target = "restaurant", source = "restaurantID")
-*/
+//            @Mapping(target = "image", source = "image", qualifiedByName = "multipartToImage")
     })
     Category toCategoryCreate(CategoryCreateDTO dto);
+
+
 
 }

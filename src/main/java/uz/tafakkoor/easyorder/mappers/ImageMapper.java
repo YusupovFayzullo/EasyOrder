@@ -2,7 +2,7 @@ package uz.tafakkoor.easyorder.mappers;
 
 
 import org.mapstruct.Mapper;
-import uz.tafakkoor.easyorder.domains.Image;
+import uz.tafakkoor.easyorder.domains.image.Image;
 import uz.tafakkoor.easyorder.dtos.image.ImageCreateDTO;
 
 @Mapper

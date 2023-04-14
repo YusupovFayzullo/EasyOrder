@@ -1,4 +1,4 @@
-package uz.tafakkoor.easyorder.domains;
+package uz.tafakkoor.easyorder.domains.image;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,5 +22,5 @@ public class Image {
     private String generatedName;
     private String url;
     private String type;
-    private Integer size;
+    private Long size;
 }

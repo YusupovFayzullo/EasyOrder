@@ -4,8 +4,6 @@ package uz.tafakkoor.easyorder.dtos.restaurant;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import uz.tafakkoor.easyorder.domains.Image;
-import uz.tafakkoor.easyorder.domains.restaurant.Address;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
 
 import java.util.Collection;

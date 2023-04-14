@@ -2,8 +2,7 @@ package uz.tafakkoor.easyorder.dtos.menu;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
-import uz.tafakkoor.easyorder.domains.Image;
-import uz.tafakkoor.easyorder.dtos.image.ImageCreateDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -14,6 +13,6 @@ import uz.tafakkoor.easyorder.dtos.image.ImageCreateDTO;
 public class CategoryCreateDTO {
     private String name;
     private String description;
-    private ImageCreateDTO imageDTO;
+    private MultipartFile image;
     private Long restaurantID;
 }

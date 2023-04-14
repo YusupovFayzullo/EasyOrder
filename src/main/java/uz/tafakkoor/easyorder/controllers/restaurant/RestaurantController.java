@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import uz.tafakkoor.easyorder.services.restaurant.RestaurantService;
 import java.util.List;
 
 @RestController
+@ParameterObject
 @RequestMapping("/api/v1/restaurant")
 @RequiredArgsConstructor
 @Tag(name = "Restaurant", description = "Restaurant API")
@@ -60,14 +62,14 @@ public class RestaurantController {
     @PostMapping
     public ResponseEntity<Restaurant> create(@RequestBody RestaurantCreateDto dto) {
         Restaurant restaurant = restaurantService.saveRestaurant(dto);
-        if(restaurant==null){
+        if (restaurant == null) {
             return ResponseEntity.status(404).build();
         }
         return ResponseEntity.status(201).body(restaurant);
     }
 
     @Operation(summary = "This API used to update restaurant")
-    @PutMapping(value = "{id}" )
+    @PutMapping(value = "{id}")
     public ResponseEntity<Restaurant> update(@RequestBody RestaurantUpdateDto dto, @PathVariable Long id) {
         return ResponseEntity.ok(restaurantService.updateRestaurant(dto, id));
     }

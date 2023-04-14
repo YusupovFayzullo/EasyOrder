@@ -1,7 +1,6 @@
 package uz.tafakkoor.easyorder.dtos.restaurant;
 
 import lombok.*;
-import uz.tafakkoor.easyorder.domains.Image;
 import uz.tafakkoor.easyorder.domains.restaurant.Address;
 import uz.tafakkoor.easyorder.enums.RestaurantStatus;
 

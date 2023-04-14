@@ -4,7 +4,7 @@ package uz.tafakkoor.easyorder.services.restaurant;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
-import uz.tafakkoor.easyorder.domains.Image;
+import uz.tafakkoor.easyorder.domains.image.Image;
 import uz.tafakkoor.easyorder.domains.restaurant.Address;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
@@ -12,8 +12,8 @@ import uz.tafakkoor.easyorder.dtos.restaurant.ImageDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
 import uz.tafakkoor.easyorder.mappers.menu.restaurant.ImageMapper;
+import uz.tafakkoor.easyorder.repositories.ImageRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.AddressRepository;
-import uz.tafakkoor.easyorder.repositories.restaurant.ImageRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 
 import java.time.LocalTime;
