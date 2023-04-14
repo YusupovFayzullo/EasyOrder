@@ -13,7 +13,7 @@ import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
 import uz.tafakkoor.easyorder.mappers.menu.restaurant.ImageMapper;
 import uz.tafakkoor.easyorder.repositories.restaurant.AddressRepository;
-import uz.tafakkoor.easyorder.repositories.restaurant.ImageRepository;
+import uz.tafakkoor.easyorder.repositories.ImageRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 
 import java.time.LocalTime;
