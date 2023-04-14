@@ -10,7 +10,9 @@ import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.ImageDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
+import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
+import uz.tafakkoor.easyorder.exceptions.TimeParseException;
 import uz.tafakkoor.easyorder.mappers.menu.restaurant.ImageMapper;
 import uz.tafakkoor.easyorder.repositories.restaurant.AddressRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.ImageRepository;
@@ -32,14 +34,18 @@ public class RestaurantService {
 
     public Restaurant saveRestaurant(RestaurantCreateDto dto) {
 
-        RestaurantCreateDto.RestaurantTime openTime = dto.getOpenTime();
-        RestaurantCreateDto.RestaurantTime closeTime = dto.getCloseTime();
+       RestaurantTime openTime = dto.getOpenTime();
+        RestaurantTime closeTime = dto.getCloseTime();
+        LocalTime open=null;
+        LocalTime close=null;
 
-        if(stringToIntParser(openTime.getHour())==-1 || stringToIntParser(openTime.getMinute())==-1){
-            return null;
-        }
-        if(stringToIntParser(closeTime.getHour())==-1 || stringToIntParser(closeTime.getMinute())==-1){
-            return null;
+        try {
+
+            open=LocalTime.of(openTime.getHour(), openTime.getMinute());
+            close=LocalTime.of(closeTime.getHour(), closeTime.getMinute());
+
+        } catch (TimeParseException e){
+             throw new TimeParseException("Time is invalid");
         }
         Collection<ImageDto> images = dto.getImageDtos();
         Collection<Image> imageCollection =new ArrayList<>();
@@ -70,21 +76,38 @@ public class RestaurantService {
                 .name(dto.getName())
                 .phoneNumber(dto.getPhoneNumber())
                 .description(dto.getDescription())
-                .openTime(LocalTime.of(stringToIntParser(openTime.getHour()), stringToIntParser(openTime.getMinute())))
-                .closeTime(LocalTime.of(stringToIntParser(closeTime.getHour()), stringToIntParser(closeTime.getMinute())))
+                .openTime(open)
+                .closeTime(close)
                 .image(imageCollection)
                 .build();
         return repository.save(restaurant);
     }
 
     public Restaurant updateRestaurant(RestaurantUpdateDto dto, Long id) {
-        RestaurantCreateDto.RestaurantTime openTime = dto.getOpenTime();
-        RestaurantCreateDto.RestaurantTime closeTime = dto.getCloseTime();
+        RestaurantTime openTime = dto.getOpenTime();
+        RestaurantTime closeTime = dto.getCloseTime();
+        LocalTime open=null;
+        LocalTime close=null;
+
+
+
+            open=LocalTime.of(openTime.getHour(), openTime.getMinute());
+            close=LocalTime.of(closeTime.getHour(), closeTime.getMinute());
+
+
 
 
         Optional<Restaurant> byId = repository.findById(id);
         if (byId.isPresent()) {
             Restaurant restaurant = byId.get();
+            Address address = restaurant.getAddress();
+            address.setCity(dto.getDto().getCity());
+            address.setDistrict(dto.getDto().getDistrict());
+            address.setHouse(dto.getDto().getHouse());
+            address.setStreet(dto.getDto().getStreet());
+            address.setLatitude(dto.getDto().getLatitude());
+            address.setLongitude(dto.getDto().getLongitude());
+            Address savedAddress = addressRepository.save(address);
             Collection<Image> images = restaurant.getImage();
             for (Image image : images) {
                 Optional<Image> byId1 = imageRepository.findById(image.getId());
@@ -97,12 +120,11 @@ public class RestaurantService {
                     image1.setOriginalName(image.getOriginalName());
                     imageRepository.save(image1);
                 }
-                return null;
             }
-            restaurant.setAddress(dto.getAddress());
+            restaurant.setAddress(savedAddress);
             restaurant.setName(dto.getName());
-            restaurant.setCloseTime(LocalTime.of(stringToIntParser(closeTime.getHour()), stringToIntParser(closeTime.getMinute())));
-            restaurant.setOpenTime(LocalTime.of(stringToIntParser(openTime.getHour()), stringToIntParser(openTime.getMinute())));
+            restaurant.setCloseTime(close);
+            restaurant.setOpenTime(open);
             restaurant.setPhoneNumber(dto.getPhoneNumber());
             restaurant.setEmail(dto.getEmail());
             restaurant.setDescription(dto.getDescription());
@@ -111,14 +133,6 @@ public class RestaurantService {
         }
         return null;
 
-    }
-
-    public int stringToIntParser(String str) {
-        try {
-            return Integer.parseInt(str);
-        }catch (NumberFormatException e){
-            return -1;
-        }
     }
 
 }

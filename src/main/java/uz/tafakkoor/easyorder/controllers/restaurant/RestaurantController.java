@@ -7,18 +7,26 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
+import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
+import uz.tafakkoor.easyorder.exceptions.TimeParseException;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.services.restaurant.RestaurantService;
 
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/restaurant")
@@ -31,15 +39,24 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @Operation(summary = "This API used for getting a restaurant by id")
-    @GetMapping(value = "{id} ", produces = "application/json")
+    @GetMapping( value = "/{id}")
     public ResponseEntity<Restaurant> getById(@PathVariable Long id) {
+        Optional<Restaurant> byId = restaurantRepository.findById(id);
+        if(byId.isPresent()){
+            Restaurant restaurant = byId.get();
+            if(restaurant.isDeleted()){
+                return ResponseEntity.ok(null);
+            }
+        }
         return ResponseEntity.ok(restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with id " + id)));
     }
 
     @Operation(summary = "This API used for getting all restaurants")
     @GetMapping("/")
-    public ResponseEntity<List<Restaurant>> getAll() {
-        return ResponseEntity.ok(restaurantRepository.findAll());
+    public Page<Restaurant> getAll(@RequestParam(required = false, defaultValue = "5") Integer size,
+                                   @RequestParam(required = false, defaultValue = "0") Integer page) {
+        Pageable pageable = PageRequest.of(page, size);
+        return restaurantRepository.getAll(pageable);
     }
 
     @Operation(summary = "This API used to create restaurant")
@@ -58,7 +75,8 @@ public class RestaurantController {
                     })
     })
     @PostMapping
-    public ResponseEntity<Restaurant> create(@RequestBody RestaurantCreateDto dto) {
+    public ResponseEntity<Restaurant> create(@Valid  @RequestBody RestaurantCreateDto dto) {
+
         Restaurant restaurant = restaurantService.saveRestaurant(dto);
         if(restaurant==null){
             return ResponseEntity.status(404).build();
@@ -67,13 +85,26 @@ public class RestaurantController {
     }
 
     @Operation(summary = "This API used to update restaurant")
-    @PutMapping(value = "{id}" )
-    public ResponseEntity<Restaurant> update(@RequestBody RestaurantUpdateDto dto, @PathVariable Long id) {
-        return ResponseEntity.ok(restaurantService.updateRestaurant(dto, id));
+    @PutMapping(value = "/{id}" )
+    public ResponseEntity<String> update(@RequestBody RestaurantUpdateDto dto, @PathVariable Long id) {
+        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
+
+        try {
+            RestaurantTime closeTime = dto.getCloseTime();
+            RestaurantTime openTime = dto.getOpenTime();
+
+        }catch (Exception e){
+            return ResponseEntity.ok("Time is invalid");
+        }
+
+        if(restaurant.isDeleted()) return ResponseEntity.ok("Not found");
+        Restaurant restaurant1 = restaurantService.updateRestaurant(dto, id);
+
+        return ResponseEntity.ok("Successfully updated by " + restaurant1.getId());
     }
 
     @Operation(summary = "This API used to delete restaurant")
-    @DeleteMapping(value = "{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
         restaurant.setDeleted(true);

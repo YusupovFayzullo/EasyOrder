@@ -20,6 +20,7 @@ public class Table {
     private Integer capacity;
     private boolean isBooked;
 
+    private boolean isDeleted;
     @OneToOne
     private Image qrCode;
     @ManyToOne

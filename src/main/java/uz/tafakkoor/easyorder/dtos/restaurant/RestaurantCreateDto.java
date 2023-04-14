@@ -4,8 +4,6 @@ package uz.tafakkoor.easyorder.dtos.restaurant;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import uz.tafakkoor.easyorder.domains.Image;
-import uz.tafakkoor.easyorder.domains.restaurant.Address;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
 
 import java.util.Collection;
@@ -35,22 +33,9 @@ public class RestaurantCreateDto {
     @NotBlank(message = "email can not be null")
     private String email;
 
-    private  RestaurantTime openTime;
+    private RestaurantTime openTime;
 
     private  RestaurantTime closeTime;
-
-    public class RestaurantTime {
-        private String hour;
-        private String minute;
-
-        public String getHour() {
-            return hour;
-        }
-
-        public String getMinute() {
-            return minute;
-        }
-    }
 
 
 }
