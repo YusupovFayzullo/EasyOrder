@@ -8,10 +8,8 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.domains.menu.Category;
 import uz.tafakkoor.easyorder.dtos.menu.CategoryCreateDTO;
-import uz.tafakkoor.easyorder.repositories.ImageRepository;
 import uz.tafakkoor.easyorder.services.menu.CategoryService;
 
 import java.util.List;
@@ -24,7 +22,6 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final ImageRepository imageRepository;
 
     @Operation(summary = "This API used for creating a category",
             responses = {
@@ -34,7 +31,6 @@ public class CategoryController {
 
     @PostMapping(value = "/create", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Category> createCategory(@ModelAttribute CategoryCreateDTO dto) {
-//        System.out.println("file.getName() = " + file.getName());
         Category category = categoryService.createCategory(dto);
         return ResponseEntity.status(201).body(category);
     }

@@ -1,9 +1,9 @@
 package uz.tafakkoor.easyorder.dtos.restaurant;
 
 
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
 
 import java.util.Collection;
@@ -21,11 +21,9 @@ public class RestaurantCreateDto {
     private String name;
 
     private AddressDto dto;
-
-
-
     private String description;
-    private Collection<ImageDto> imageDtos;
+
+    private Collection<MultipartFile> images;
 
     @NotBlank(message = "phoneNumber can not be null")
     private String phoneNumber;
@@ -33,9 +31,9 @@ public class RestaurantCreateDto {
     @NotBlank(message = "email can not be null")
     private String email;
 
-    private  RestaurantTime openTime;
+    private RestaurantTime openTime;
 
-    private  RestaurantTime closeTime;
+    private RestaurantTime closeTime;
 
     public class RestaurantTime {
         private String hour;

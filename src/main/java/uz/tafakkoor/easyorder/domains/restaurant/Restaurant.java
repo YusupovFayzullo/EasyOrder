@@ -3,7 +3,6 @@ package uz.tafakkoor.easyorder.domains.restaurant;
 import jakarta.persistence.*;
 import lombok.*;
 import uz.tafakkoor.easyorder.domains.Auditable;
-import uz.tafakkoor.easyorder.domains.image.Image;
 import uz.tafakkoor.easyorder.enums.RestaurantStatus;
 
 import java.time.LocalDateTime;
@@ -24,8 +23,8 @@ public class Restaurant extends Auditable {
     @OneToOne
     private Address address;
     private String description;
-    @OneToMany(cascade = CascadeType.ALL/*, fetch = FetchType.EAGER*/)
-    private Collection<Image> image;
+    @ElementCollection
+    private Collection<String> imageURLs;
     private String phoneNumber;
     private String email;
 
@@ -36,13 +35,14 @@ public class Restaurant extends Auditable {
     private RestaurantStatus status = RestaurantStatus.INACTIVE;
 
     @Builder(builderMethodName = "restaurantBuilder")
-    public Restaurant(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, Long id, String name, Address address, String description, Collection<Image> image, String phoneNumber, String email, LocalTime openTime, LocalTime closeTime, RestaurantStatus status) {
+    public Restaurant(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt,
+                      boolean isDeleted, Long id, String name, Address address, String description, Collection<String> imageURLs, String phoneNumber, String email, LocalTime openTime, LocalTime closeTime, RestaurantStatus status) {
         super(createdBy, updateBy, createdAt, updatedAt, isDeleted);
         this.id = id;
         this.name = name;
         this.address = address;
         this.description = description;
-        this.image = image;
+        this.imageURLs = imageURLs;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.openTime = openTime;

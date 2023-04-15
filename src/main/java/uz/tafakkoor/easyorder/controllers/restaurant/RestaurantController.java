@@ -47,19 +47,14 @@ public class RestaurantController {
     @Operation(summary = "This API used to create restaurant")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Restaurant Successfully Created",
-                    content = {
-                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Restaurant.class)
-                            )
-                    }),
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = Restaurant.class))}),
             @ApiResponse(responseCode = "500", description = "Not Found",
-                    content = {
-                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = RuntimeException.class)
-                            )
-                    })
+                    content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = RuntimeException.class))})
     })
-    @PostMapping
+
+    @PostMapping(produces = "application/json",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Restaurant> create(@RequestBody RestaurantCreateDto dto) {
         Restaurant restaurant = restaurantService.saveRestaurant(dto);
         if (restaurant == null) {
@@ -69,7 +64,7 @@ public class RestaurantController {
     }
 
     @Operation(summary = "This API used to update restaurant")
-    @PutMapping(value = "{id}")
+    @PutMapping(value = "{id}", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Restaurant> update(@RequestBody RestaurantUpdateDto dto, @PathVariable Long id) {
         return ResponseEntity.ok(restaurantService.updateRestaurant(dto, id));
     }

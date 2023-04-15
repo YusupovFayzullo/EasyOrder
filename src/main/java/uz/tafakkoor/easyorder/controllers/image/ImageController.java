@@ -1,31 +1,38 @@
 package uz.tafakkoor.easyorder.controllers.image;
 
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.util.IOUtils;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import uz.tafakkoor.easyorder.services.ImageService;
 
 import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@ParameterObject
+@RequestMapping("/api/v1/images")
+@Tag(name = "Image", description = "Image API")
 public class ImageController {
-    private final AmazonS3 s3Client;
+    private final ImageService imageService;
+    private final S3Object s3Object;
 
-    @GetMapping("/download/{fileName}")
-    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) throws IOException {
-        S3Object s3Object = s3Client.getObject("easyorder", fileName);
-        S3ObjectInputStream inputStream = s3Object.getObjectContent();
-        ByteArrayResource resource = new ByteArrayResource(IOUtils.toByteArray(inputStream));
+    @PostMapping(value = "/upload/{file}", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadFile(@RequestParam("file")  MultipartFile file) {
+        String fileName = imageService.saveImageToAWS(file);
+        return ResponseEntity.ok(fileName);
+    }
+
+
+    @GetMapping(value = "/download/{fileName}", produces = "application/octet-stream")
+    public ResponseEntity<MultipartFile> downloadFile(@PathVariable String fileName) throws IOException {
+        MultipartFile imageFromAWS = imageService.getImageFromAWS(fileName);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
@@ -34,7 +41,8 @@ public class ImageController {
                 .headers(headers)
                 .contentLength(s3Object.getObjectMetadata().getContentLength())
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(resource);
+                .body(imageFromAWS);
     }
+
 
 }

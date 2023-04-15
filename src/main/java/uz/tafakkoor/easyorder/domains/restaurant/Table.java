@@ -2,7 +2,6 @@ package uz.tafakkoor.easyorder.domains.restaurant;
 
 import jakarta.persistence.*;
 import lombok.*;
-import uz.tafakkoor.easyorder.domains.image.Image;
 
 @Getter
 @Setter
@@ -20,8 +19,7 @@ public class Table {
     private Integer capacity;
     private boolean isBooked;
 
-    @OneToOne
-    private Image qrCode;
+    private String qrCodeURL;
     @ManyToOne
     private Restaurant restaurant;
 }
