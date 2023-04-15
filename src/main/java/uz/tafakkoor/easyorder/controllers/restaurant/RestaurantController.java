@@ -20,12 +20,9 @@ import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
-import uz.tafakkoor.easyorder.exceptions.TimeParseException;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.services.restaurant.RestaurantService;
 
-import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -48,7 +45,7 @@ public class RestaurantController {
                 return ResponseEntity.ok(null);
             }
         }
-        return ResponseEntity.ok(restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with id " + id)));
+        return ResponseEntity.ok(byId.orElseThrow(() -> new ItemNotFoundException("Restaurant not found with id " + id)));
     }
 
     @Operation(summary = "This API used for getting all restaurants")

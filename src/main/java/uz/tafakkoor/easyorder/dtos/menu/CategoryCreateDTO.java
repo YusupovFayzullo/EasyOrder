@@ -1,6 +1,5 @@
 package uz.tafakkoor.easyorder.dtos.menu;
 
-import jakarta.persistence.Entity;
 import lombok.*;
 import org.springframework.stereotype.Component;
 import uz.tafakkoor.easyorder.domains.Image;

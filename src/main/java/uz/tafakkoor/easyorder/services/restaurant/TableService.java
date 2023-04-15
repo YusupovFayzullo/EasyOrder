@@ -2,7 +2,6 @@ package uz.tafakkoor.easyorder.services.restaurant;
 
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.sqm.mutation.internal.temptable.TableBasedUpdateHandler;
 import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.domains.Image;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
@@ -10,7 +9,7 @@ import uz.tafakkoor.easyorder.domains.restaurant.Table;
 import uz.tafakkoor.easyorder.dtos.restaurant.ImageDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.TableCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.TableUpdate;
-import uz.tafakkoor.easyorder.repositories.restaurant.ImageRepository;
+import uz.tafakkoor.easyorder.repositories.ImageRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.TableRepository;
 

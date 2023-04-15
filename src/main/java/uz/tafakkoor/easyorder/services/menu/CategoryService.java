@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.domains.menu.Category;
 import uz.tafakkoor.easyorder.dtos.menu.CategoryCreateDTO;
-import uz.tafakkoor.easyorder.mappers.menu.CategoryMapper;
 import uz.tafakkoor.easyorder.repositories.menu.CategoryRepository;
 
 import static uz.tafakkoor.easyorder.mappers.menu.CategoryMapper.CATEGORY_MAPPER;

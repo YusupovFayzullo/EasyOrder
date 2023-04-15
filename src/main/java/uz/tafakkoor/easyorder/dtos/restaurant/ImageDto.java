@@ -1,7 +1,6 @@
 package uz.tafakkoor.easyorder.dtos.restaurant;
 
 
-import jakarta.persistence.Entity;
 import lombok.*;
 
 @Getter

@@ -16,6 +16,8 @@ public class Table {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
     private String number;
     private Integer capacity;
     private boolean isBooked;

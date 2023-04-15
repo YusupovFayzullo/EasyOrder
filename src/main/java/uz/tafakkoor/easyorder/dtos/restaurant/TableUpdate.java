@@ -4,7 +4,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import uz.tafakkoor.easyorder.domains.restaurant.Table;
 
 
 @Getter
