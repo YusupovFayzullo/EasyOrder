@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
+import uz.tafakkoor.easyorder.dtos.user.ValidAppErrorDTO;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.services.restaurant.RestaurantService;
@@ -42,7 +44,7 @@ public class RestaurantController {
         if(byId.isPresent()){
             Restaurant restaurant = byId.get();
             if(restaurant.isDeleted()){
-                return ResponseEntity.ok(null);
+                throw new RuntimeException("This restaurant not found");
             }
         }
         return ResponseEntity.ok(byId.orElseThrow(() -> new ItemNotFoundException("Restaurant not found with id " + id)));
@@ -72,18 +74,18 @@ public class RestaurantController {
                     })
     })
     @PostMapping
-    public ResponseEntity<Restaurant> create(@Valid  @RequestBody RestaurantCreateDto dto) {
+    public ResponseEntity<Restaurant> create(@NonNull @Valid  @RequestBody RestaurantCreateDto dto) {
 
         Restaurant restaurant = restaurantService.saveRestaurant(dto);
         if(restaurant==null){
-            return ResponseEntity.status(404).build();
+             throw new RuntimeException();
         }
         return ResponseEntity.status(201).body(restaurant);
     }
 
     @Operation(summary = "This API used to update restaurant")
     @PutMapping(value = "/{id}" )
-    public ResponseEntity<String> update(@RequestBody RestaurantUpdateDto dto, @PathVariable Long id) {
+    public ResponseEntity<String> update(@NonNull  @Valid @RequestBody RestaurantUpdateDto dto, @PathVariable Long id) {
         Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
 
         try {
@@ -91,8 +93,8 @@ public class RestaurantController {
             RestaurantTime openTime = dto.getOpenTime();
 
         }catch (Exception e){
-            return ResponseEntity.ok("Time is invalid");
-        }
+             throw new RuntimeException();
+         }
 
         if(restaurant.isDeleted()) return ResponseEntity.ok("Not found");
         Restaurant restaurant1 = restaurantService.updateRestaurant(dto, id);

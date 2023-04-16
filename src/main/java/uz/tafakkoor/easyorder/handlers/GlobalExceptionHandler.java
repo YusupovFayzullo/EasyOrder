@@ -3,12 +3,17 @@ package uz.tafakkoor.easyorder.handlers;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uz.tafakkoor.easyorder.dtos.AppErrorDTO;
+import uz.tafakkoor.easyorder.dtos.user.ValidAppErrorDTO;
 import uz.tafakkoor.easyorder.exceptions.DuplicatePermissionCodeException;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.exceptions.UserNotFoundException;
+
+import java.util.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -50,6 +55,26 @@ public class GlobalExceptionHandler {
                         .error(e.getMessage())
                         .build());
     }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidAppErrorDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
+        String errorMessage = "Input is not valid";
+        Map<String, List<String>> errorBody = new HashMap<>();
+        for (FieldError fieldError : e.getFieldErrors()) {
+            String field = fieldError.getField();
+            String message = fieldError.getDefaultMessage();
+            errorBody.compute(field, (s, values) -> {
+                if (!Objects.isNull(values))
+                    values.add(message);
+                else
+                    values = new ArrayList<>(Collections.singleton(message));
+                return values;
+            });
+        }
+        String errorPath = request.getRequestURI();
+        ValidAppErrorDTO errorDTO = new ValidAppErrorDTO(errorPath, errorMessage, 400,errorBody);
+        return ResponseEntity.status(400).body(errorDTO);
+    }
+
 
 
 

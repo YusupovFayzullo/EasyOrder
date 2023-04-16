@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +45,7 @@ public class TableController {
         if(byId.isPresent()){
             Table table = byId.get();
             if(table.isDeleted()){
-                return ResponseEntity.ok(null);
+                throw new RuntimeException("This table not found");
             }
         }
         return ResponseEntity.ok(byId.orElseThrow(() -> new ItemNotFoundException("Table not found with id " + id)));
@@ -81,32 +83,32 @@ public class TableController {
                     })
     })
     @PostMapping
-    public ResponseEntity<Table> create(@RequestBody TableCreateDto dto) {
+    public ResponseEntity<Table> create(@NonNull @Valid @RequestBody TableCreateDto dto) {
         Long restaurantId = dto.getRestaurantId();
         Optional<Table> byId = tableRepository.getById(restaurantId, dto.getNumber());
         if(byId.isPresent())  return ResponseEntity.status(404).body(null);
         Table table = tableService.saveRestaurant(dto);
 
         if(table==null){
-            return ResponseEntity.status(404).body(null);
-        }
+             throw new  RuntimeException();
+         }
         return ResponseEntity.status(201).body(table);
     }
 
     @Operation(summary = "This API used to update table")
     @PutMapping(value = "/{id}" )
-    public ResponseEntity<String> update(@RequestBody TableUpdate dto, @PathVariable Long id) {
+    public ResponseEntity<String> update(@NonNull @Valid @RequestBody TableUpdate dto, @PathVariable Long id) {
         Table table=tableRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Table not found with by " + id));
         Long restaurantId = dto.getRestaurantId();
         Optional<Table> byId = tableRepository.getById(restaurantId, table.getNumber());
 
         if(byId.isPresent())  return ResponseEntity.status(404).body(null);
             if(table.isDeleted()){
-                return ResponseEntity.ok("Not found ");
+                throw new RuntimeException("This table not found");
             }
         Table table1 = tableService.updateRestaurant(dto, id);
         if(table1==null){
-            return ResponseEntity.status(404).build();
+               throw new RuntimeException();
         }
         return ResponseEntity.ok("Succesfully updated "+table.getId());
     }

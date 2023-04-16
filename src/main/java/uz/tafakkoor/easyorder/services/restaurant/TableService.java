@@ -33,7 +33,7 @@ public class TableService {
                 .build();
         Image saveImage = imageRepository.save(image);
 
-        if (!restaurantRepository.findById(dto.getRestaurantId()).isPresent()) {
+        if (restaurantRepository.findById(dto.getRestaurantId()).isEmpty()) {
             return null;
         }
 
