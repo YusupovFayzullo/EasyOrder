@@ -12,11 +12,7 @@ public interface CategoryMapper {
     CategoryMapper CATEGORY_MAPPER = Mappers.getMapper(CategoryMapper.class);
 
 
-    @Mappings({
-//            @Mapping(target = "image", source = "image", qualifiedByName = "multipartToImage")
-    })
     Category toCategoryCreate(CategoryCreateDTO dto);
-
 
 
 }

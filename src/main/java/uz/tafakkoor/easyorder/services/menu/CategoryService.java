@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.domains.menu.Category;
+import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.dtos.menu.CategoryCreateDTO;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.repositories.menu.CategoryRepository;
+import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.services.ImageService;
+import uz.tafakkoor.easyorder.services.restaurant.RestaurantService;
 
 import java.util.List;
 
@@ -18,13 +21,16 @@ import static uz.tafakkoor.easyorder.mappers.menu.CategoryMapper.CATEGORY_MAPPER
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final ImageService imageService;
-
+    private final RestaurantRepository restaurantRepository;
 
     public Category createCategory(CategoryCreateDTO dto) {
         MultipartFile imageFile = dto.getImage();
         String imageURL = imageService.saveImageToAWS(imageFile);
         Category category = CATEGORY_MAPPER.toCategoryCreate(dto);
         category.setImageURL(imageURL);
+        Restaurant restaurant = restaurantRepository.findById(dto.getRestaurantID())
+                .orElseThrow(() -> new ItemNotFoundException("Restaurant not found with id " + dto.getRestaurantID()));
+        category.setRestaurant(restaurant);
         return categoryRepository.save(category);
     }
 
