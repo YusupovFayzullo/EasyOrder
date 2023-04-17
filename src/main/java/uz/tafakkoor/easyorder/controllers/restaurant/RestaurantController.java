@@ -20,7 +20,6 @@ import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
-import uz.tafakkoor.easyorder.dtos.user.ValidAppErrorDTO;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.services.restaurant.RestaurantService;
@@ -55,7 +54,7 @@ public class RestaurantController {
     public Page<Restaurant> getAll(@RequestParam(required = false, defaultValue = "5") Integer size,
                                    @RequestParam(required = false, defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, size);
-        return restaurantRepository.getAll(pageable);
+        return  restaurantRepository.findAll(pageable);
     }
 
     @Operation(summary = "This API used to create restaurant")

@@ -57,24 +57,7 @@ public class TableService {
         Restaurant restaurant = table.getRestaurant();
         Optional<Restaurant> byRestaurant = restaurantRepository.findById(restaurant.getId());
 
-        if(!byImage.isPresent() || !byRestaurant.isPresent() || byId.isPresent()) return null;
-
-        Image image = byImage.get();
-        Restaurant restaurant1 = byRestaurant.get();
-        image.setUrl(dto.getImage().getUrl());
-        image.setSize(dto.getImage().getSize());
-        image.setType(dto.getImage().getType());
-        image.setGeneratedName(dto.getImage().getGeneratedName());
-        image.setOriginalName(dto.getImage().getOriginalName());
-        Image save = imageRepository.save(image);
-
-        table.setRestaurant(restaurant1);
-        table.setDeleted(dto.isDeleted());
-        table.setNumber(dto.getNumber());
-        table.setBooked(dto.isBooked());
-        table.setCapacity(dto.getCapacity());
-        table.setQrCode(save);
-        return tableRepository.save(table);
+        return null;
 
     }
 }
