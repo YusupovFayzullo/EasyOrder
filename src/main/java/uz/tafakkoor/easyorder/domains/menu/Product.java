@@ -1,7 +1,10 @@
 package uz.tafakkoor.easyorder.domains.menu;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import uz.tafakkoor.easyorder.domains.Auditable;
 import uz.tafakkoor.easyorder.domains.Image;
 
@@ -24,12 +27,11 @@ public class Product extends Auditable {
     private Double discount;
     private Double rating;
     private boolean isAvailable;
-    private boolean isDeleted;
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
     @Builder(builderMethodName = "productBuilder")
-    public Product(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, Long id, Collection<Image> image, String name, String description, Double price, Double discount, Double rating, boolean isAvailable, boolean isDeleted1, Category category) {
+    public Product(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, Long id, Collection<Image> image, String name, String description, Double price, Double discount, Double rating, boolean isAvailable,Category category) {
         super(createdBy, updateBy, createdAt, updatedAt, isDeleted);
         this.id = id;
         this.image = image;
@@ -39,7 +41,6 @@ public class Product extends Auditable {
         this.discount = discount;
         this.rating = rating;
         this.isAvailable = isAvailable;
-        this.isDeleted = isDeleted1;
         this.category = category;
     }
 }

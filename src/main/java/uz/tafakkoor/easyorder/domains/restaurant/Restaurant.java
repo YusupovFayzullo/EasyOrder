@@ -15,6 +15,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+
 public class Restaurant extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +24,13 @@ public class Restaurant extends Auditable {
     @OneToOne
     private Address address;
     private String description;
-//    @OneToMany(cascade = CascadeType.ALL/*, fetch = FetchType.EAGER*/)
-//    private Collection<Image> image;
+    @OneToMany(cascade = CascadeType.ALL/*, fetch = FetchType.EAGER*/)
+    private Collection<Image> image;
     private String phoneNumber;
     private String email;
-    private LocalTime openTime;
+
+
+    private LocalTime  openTime;
     private LocalTime closeTime;
     @Enumerated(EnumType.STRING)
     private RestaurantStatus status = RestaurantStatus.INACTIVE;
@@ -39,7 +42,7 @@ public class Restaurant extends Auditable {
         this.name = name;
         this.address = address;
         this.description = description;
-//        this.image = image;
+        this.image = image;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.openTime = openTime;

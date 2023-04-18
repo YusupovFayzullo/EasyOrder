@@ -11,8 +11,8 @@ spring:
 
   datasource:
     driverClassName: org.postgresql.Driver
-    password: 123
     username: postgres
+    password: 123
     url: jdbc:postgresql://localhost:5432/easy_order
 
   profiles:
@@ -23,7 +23,7 @@ jwt:
     key: 3F4428472B4B6150645367566B5970337336763979244226452948404D6351655468576D5A7134743777217A25432A462D4A614E645267556A586E3272357538
   expiry:
     in:
-     minutes: 10
+      minutes: 10
 
 management:
   endpoint:
