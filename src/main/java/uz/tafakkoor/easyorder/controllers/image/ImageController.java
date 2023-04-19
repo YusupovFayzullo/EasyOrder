@@ -1,6 +1,7 @@
 package uz.tafakkoor.easyorder.controllers.image;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.services.ImageService;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,10 +26,19 @@ public class ImageController {
     private final ImageService imageService;
     private final ServletContext servletContext;
 
+
+    @Operation(summary = "Upload image to server")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = String.valueOf(imageService.saveImageToAWS(file));
+        String fileName = imageService.saveImageToServer(file);
         return ResponseEntity.ok(fileName);
+    }
+
+    @Operation(summary = "Upload multiple files to server")
+    @PostMapping(value = "/uploadFiles", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<List<String>> uploadFiles(@RequestParam("file") List<MultipartFile> file) {
+        List<String> filesName = imageService.saveImagesToServer(file);
+        return ResponseEntity.ok(filesName);
     }
 
 
@@ -40,7 +51,6 @@ public class ImageController {
         return new ResponseEntity<>(imageFromAWS, headers, HttpStatus.OK);
 
     }
-
 
 
 }

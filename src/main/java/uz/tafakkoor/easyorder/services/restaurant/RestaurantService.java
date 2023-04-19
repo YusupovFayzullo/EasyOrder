@@ -51,7 +51,7 @@ public class RestaurantService {
 
         Address savedAddress = addressRepository.save(address);
 
-        Collection<String> imageURLs = imageService.saveImagesToAWS(dto.getImages());
+        Collection<String> imageURLs = imageService.saveImagesToServer(dto.getImages());
 
         Restaurant restaurant = Restaurant.restaurantBuilder()
                 .address(savedAddress)
@@ -70,7 +70,7 @@ public class RestaurantService {
         RestaurantCreateDto.RestaurantTime openTime = dto.getOpenTime();
         RestaurantCreateDto.RestaurantTime closeTime = dto.getCloseTime();
 
-        Collection<String> imageURLs = imageService.saveImagesToAWS(dto.getImages());
+        Collection<String> imageURLs = imageService.saveImagesToServer(dto.getImages());
 
 
         Optional<Restaurant> byId = repository.findById(id);

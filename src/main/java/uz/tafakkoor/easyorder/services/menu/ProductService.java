@@ -27,7 +27,7 @@ public class ProductService {
 
     public Product createProduct(ProductCreateDTO dto) {
         Collection<MultipartFile> imageFiles = dto.getImages();
-        Collection<String> savedImagesURLsToAWS = imageService.saveImagesToAWS(imageFiles);
+        Collection<String> savedImagesURLsToAWS = imageService.saveImagesToServer(imageFiles);
         Product product = PRODUCT_MAPPER.toProductEntity(dto);
         product.setImageURLs(savedImagesURLsToAWS);
         Category category = categoryRepository.findById(dto.getCategoryID()).orElseThrow(() -> new ItemNotFoundException("Category not found by id " + dto.getCategoryID()));
@@ -69,7 +69,7 @@ public class ProductService {
 
         Collection<MultipartFile> imageFiles = dto.getImages();
         if (imageFiles != null) {
-            Collection<String> savedImagesToAWS = imageService.saveImagesToAWS(imageFiles);
+            Collection<String> savedImagesToAWS = imageService.saveImagesToServer(imageFiles);
             productDB.setImageURLs(Objects.requireNonNullElse(savedImagesToAWS, productDB.getImageURLs()));
         }
         PRODUCT_MAPPER.toUpdateProductEntity(dto, productDB);

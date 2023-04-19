@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.utils.BaseUtils;
@@ -16,7 +17,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
 @Service
@@ -29,31 +32,51 @@ public class ImageService {
     private final AmazonS3Client s3Client;
 
 
-    //    @Async
-    public Collection<String> saveImagesToAWS(Collection<MultipartFile> files) {
-        ArrayList<String> imageURLs = new ArrayList<>();
+    public List<String> saveImagesToServer(Collection<MultipartFile> files) {
+
+        ArrayList<String> generateFileNames = new ArrayList<>();
         for (MultipartFile file : files) {
-            imageURLs.add(saveImageToAWS(file));
+            generateFileNames.add(BaseUtils.generateUniqueName(Objects.requireNonNull(file.getOriginalFilename())));
         }
-        return imageURLs;
+        CompletableFuture.runAsync(() -> {
+            try {
+                saveFilesToAWS(files, generateFileNames);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        return generateFileNames;
     }
 
-//        @Async
-    public String saveImageToAWS(MultipartFile file) {
-        String generateUniqueName = BaseUtils.generateUniqueName(Objects.requireNonNull(file.getOriginalFilename()));
-        try {
-            byte[] bytes = file.getBytes();
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType(file.getContentType());
-            metadata.setContentLength(bytes.length);
-            amazonS3.putObject(BUCKET_NAME, generateUniqueName, new ByteArrayInputStream(bytes), metadata);
-        } catch (IOException e) {
-            throw new RuntimeException("Error while uploading file" + e.getMessage());
+    protected void saveFilesToAWS(Collection<MultipartFile> files, List<String> generateNames) throws IOException {
+        int i = 0;
+        for (MultipartFile file : files) {
+            saveFileToAWS(file, generateNames.get(i));
+            i++;
         }
+    }
+
+    public String saveImageToServer(MultipartFile file) {
+        String generateUniqueName = BaseUtils.generateUniqueName(Objects.requireNonNull(file.getOriginalFilename()));
+        CompletableFuture.runAsync(() -> {
+            try {
+                saveFileToAWS(file, generateUniqueName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         return generateUniqueName;
     }
 
-    //    @Async
+
+    protected void saveFileToAWS(MultipartFile file, String generateUniqueName) throws IOException {
+        byte[] bytes = file.getBytes();
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(file.getContentType());
+        metadata.setContentLength(bytes.length);
+        amazonS3.putObject(BUCKET_NAME, generateUniqueName, new ByteArrayInputStream(bytes), metadata);
+    }
+
     public byte[] getImageFromAWS(String fileName) {
         try {
             S3Object s3Object = s3Client.getObject(BUCKET_NAME, fileName);

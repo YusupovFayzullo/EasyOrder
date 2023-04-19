@@ -14,6 +14,8 @@ import uz.tafakkoor.easyorder.services.ImageService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import static uz.tafakkoor.easyorder.mappers.menu.CategoryMapper.CATEGORY_MAPPER;
 
@@ -25,26 +27,26 @@ public class CategoryService {
     private final RestaurantRepository restaurantRepository;
 
     public Category createCategory(CategoryCreateDTO dto) {
-        MultipartFile imageFile = dto.getImage();
-        String imageURL = imageService.saveImageToAWS(imageFile);
-        Category category = CATEGORY_MAPPER.toCategoryEntity(dto);
-        category.setImageURL(imageURL);
-        Restaurant restaurant = restaurantRepository.findById(dto.getRestaurantID())
-                .orElseThrow(() -> new ItemNotFoundException("Restaurant not found by id " + dto.getRestaurantID()));
-        category.setRestaurantID(restaurant.getId());
-        return categoryRepository.save(category);
+        try {
+            MultipartFile imageFile = dto.getImage();
+            String imageURL = imageService.saveImageToServer(imageFile);
+            Category category = CATEGORY_MAPPER.toCategoryEntity(dto);
+            category.setImageURL(imageURL);
+            Restaurant restaurant = restaurantRepository.findById(dto.getRestaurantID()).orElseThrow(() -> new ItemNotFoundException("Restaurant not found by id " + dto.getRestaurantID()));
+            category.setRestaurantID(restaurant.getId());
+            return categoryRepository.save(category);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Category getCategoryById(Long id, Long restaurantId) {
-        return categoryRepository
-                .findCategory(id, restaurantId)
-                .orElseThrow(() -> new ItemNotFoundException("Category not found with id " + id));
+        return categoryRepository.findCategory(id, restaurantId).orElseThrow(() -> new ItemNotFoundException("Category not found with id " + id));
     }
 
 
     public List<Category> getAllCategories(Long restaurantID) {
-        return categoryRepository.findCategoryByRestaurantId(restaurantID)
-                .orElseThrow(() -> new ItemNotFoundException("Categories not found with restaurant id " + restaurantID));
+        return categoryRepository.findCategoryByRestaurantId(restaurantID).orElseThrow(() -> new ItemNotFoundException("Categories not found with restaurant id " + restaurantID));
 
     }
 
@@ -59,16 +61,14 @@ public class CategoryService {
     }
 
     public Category updateCategory(CategoryUpdateDTO dto, Long categoryID, Long restaurantID) {
-        Category categoryDB = categoryRepository.findCategory(categoryID, restaurantID)
-                .orElseThrow(() -> new ItemNotFoundException("Category not found with categoryID " + categoryID + " and restaurantID " + restaurantID));
+        Category categoryDB = categoryRepository.findCategory(categoryID, restaurantID).orElseThrow(() -> new ItemNotFoundException("Category not found with categoryID " + categoryID + " and restaurantID " + restaurantID));
 
         MultipartFile imageFile = dto.getImage();
         if (imageFile != null) {
-            String imageURL = imageService.saveImageToAWS(imageFile);
+            String imageURL = imageService.saveImageToServer(imageFile);
             categoryDB.setImageURL(Objects.requireNonNullElse(imageURL, categoryDB.getImageURL()));
         }
         CATEGORY_MAPPER.toUpdateCategoryEntity(dto, categoryDB);
-
         return categoryRepository.save(categoryDB);
     }
 }

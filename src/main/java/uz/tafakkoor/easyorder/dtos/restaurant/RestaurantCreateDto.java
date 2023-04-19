@@ -3,7 +3,6 @@ package uz.tafakkoor.easyorder.dtos.restaurant;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
 
