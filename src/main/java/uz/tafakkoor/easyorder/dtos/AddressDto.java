@@ -3,12 +3,15 @@ package uz.tafakkoor.easyorder.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springdoc.core.annotations.ParameterObject;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ParameterObject
+
 public class AddressDto {
 
     private String district;

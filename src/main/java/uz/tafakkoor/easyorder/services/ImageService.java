@@ -8,15 +8,12 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.utils.BaseUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -41,7 +38,7 @@ public class ImageService {
         return imageURLs;
     }
 
-    //    @Async
+//        @Async
     public String saveImageToAWS(MultipartFile file) {
         String generateUniqueName = BaseUtils.generateUniqueName(Objects.requireNonNull(file.getOriginalFilename()));
         try {
@@ -65,7 +62,7 @@ public class ImageService {
             inputStream.close();
             return pngBytes;
         } catch (Exception e) {
-            throw new RuntimeException("Error while downloading file" + e.getMessage());
+            throw new RuntimeException("Error while downloading file " + e.getMessage());
         }
     }
 }

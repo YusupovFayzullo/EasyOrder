@@ -1,11 +1,10 @@
 package uz.tafakkoor.easyorder.controllers.image;
 
 
-import com.amazonaws.services.s3.model.S3Object;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.services.ImageService;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @RestController
@@ -24,7 +22,7 @@ import java.io.IOException;
 @Tag(name = "Image", description = "Image API")
 public class ImageController {
     private final ImageService imageService;
-    private final S3Object s3Object;
+    private final ServletContext servletContext;
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -42,6 +40,7 @@ public class ImageController {
         return new ResponseEntity<>(imageFromAWS, headers, HttpStatus.OK);
 
     }
+
 
 
 }
