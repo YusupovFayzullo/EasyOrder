@@ -11,7 +11,7 @@ import uz.tafakkoor.easyorder.dtos.restaurant.NotBookedTableDto;
 import java.util.List;
 import java.util.Optional;
 
-public interface TableRepository extends JpaRepository<Table,Long> {
+public interface TableRepository extends JpaRepository<Table, Long> {
 
     @Query(nativeQuery = true,
             value = "select * from tables  where is_deleted=false;",

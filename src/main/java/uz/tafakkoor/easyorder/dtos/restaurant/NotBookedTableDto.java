@@ -26,7 +26,6 @@ public class NotBookedTableDto implements Serializable {
     private String phoneNumber;
 
 
-
     private LocalTime openTime;
     private LocalTime closeTime;
 

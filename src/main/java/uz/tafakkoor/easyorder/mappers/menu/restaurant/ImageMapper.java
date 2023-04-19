@@ -8,6 +8,6 @@ import uz.tafakkoor.easyorder.dtos.restaurant.ImageDto;
 @Mapper
 public interface ImageMapper {
 
-    @Mapping(target = "originalName",source = "originalName")
+    @Mapping(target = "originalName", source = "originalName")
     Image toImage(ImageDto dto);
 }

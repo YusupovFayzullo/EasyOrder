@@ -34,21 +34,21 @@ public class RestaurantService {
 
     public Restaurant saveRestaurant(RestaurantCreateDto dto) {
 
-       RestaurantTime openTime = dto.getOpenTime();
+        RestaurantTime openTime = dto.getOpenTime();
         RestaurantTime closeTime = dto.getCloseTime();
-        LocalTime open=null;
-        LocalTime close=null;
+        LocalTime open = null;
+        LocalTime close = null;
 
         try {
 
-            open=LocalTime.of(openTime.getHour(), openTime.getMinute());
-            close=LocalTime.of(closeTime.getHour(), closeTime.getMinute());
+            open = LocalTime.of(openTime.getHour(), openTime.getMinute());
+            close = LocalTime.of(closeTime.getHour(), closeTime.getMinute());
 
-        } catch (TimeParseException e){
-             throw new TimeParseException("Time is invalid");
+        } catch (TimeParseException e) {
+            throw new TimeParseException("Time is invalid");
         }
         Collection<ImageDto> images = dto.getImageDtos();
-        Collection<Image> imageCollection =new ArrayList<>();
+        Collection<Image> imageCollection = new ArrayList<>();
 
 
         ImageMapper mapper = Mappers.getMapper(ImageMapper.class);
@@ -86,15 +86,12 @@ public class RestaurantService {
     public Restaurant updateRestaurant(RestaurantUpdateDto dto, Long id) {
         RestaurantTime openTime = dto.getOpenTime();
         RestaurantTime closeTime = dto.getCloseTime();
-        LocalTime open=null;
-        LocalTime close=null;
+        LocalTime open = null;
+        LocalTime close = null;
 
 
-
-            open=LocalTime.of(openTime.getHour(), openTime.getMinute());
-            close=LocalTime.of(closeTime.getHour(), closeTime.getMinute());
-
-
+        open = LocalTime.of(openTime.getHour(), openTime.getMinute());
+        close = LocalTime.of(closeTime.getHour(), closeTime.getMinute());
 
 
         Optional<Restaurant> byId = repository.findById(id);

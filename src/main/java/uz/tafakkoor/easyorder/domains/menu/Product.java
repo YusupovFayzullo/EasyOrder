@@ -31,7 +31,7 @@ public class Product extends Auditable {
     private Category category;
 
     @Builder(builderMethodName = "productBuilder")
-    public Product(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, Long id, Collection<Image> image, String name, String description, Double price, Double discount, Double rating, boolean isAvailable,Category category) {
+    public Product(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, Long id, Collection<Image> image, String name, String description, Double price, Double discount, Double rating, boolean isAvailable, Category category) {
         super(createdBy, updateBy, createdAt, updatedAt, isDeleted);
         this.id = id;
         this.image = image;

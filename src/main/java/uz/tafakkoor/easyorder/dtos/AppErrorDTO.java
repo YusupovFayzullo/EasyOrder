@@ -1,19 +1,27 @@
 package uz.tafakkoor.easyorder.dtos;
 
-import lombok.*;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
 
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class AppErrorDTO implements Serializable {
-    private Object error;
-    private String error_path;
-    private Integer error_code;
-    @Builder.Default
-    private LocalDateTime timestamp= LocalDateTime.now();
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class AppErrorDTO {
+    private final String errorPath;
+    private final String errorMessage;
+    private final Integer errorCode;
+    private final Object errorBody;
+    private final Long timestamp;
+
+    public AppErrorDTO(String errorPath, String errorMessage, Integer errorCode) {
+        this(errorPath, errorMessage, null, errorCode);
+    }
+
+    public AppErrorDTO(String errorPath, String errorMessage, Object errorBody, Integer errorCode) {
+        this.errorPath = errorPath;
+        this.errorMessage = errorMessage;
+        this.errorBody = errorBody;
+        this.errorCode = errorCode;
+        this.timestamp = System.currentTimeMillis();
+    }
 }
+

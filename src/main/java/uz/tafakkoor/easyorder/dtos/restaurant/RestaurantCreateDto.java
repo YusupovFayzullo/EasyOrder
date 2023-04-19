@@ -1,7 +1,6 @@
 package uz.tafakkoor.easyorder.dtos.restaurant;
 
 
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -24,7 +23,6 @@ public class RestaurantCreateDto {
     private AddressDto dto;
 
 
-
     private String description;
     private Collection<ImageDto> imageDtos;
 
@@ -36,7 +34,7 @@ public class RestaurantCreateDto {
 
     private RestaurantTime openTime;
 
-    private  RestaurantTime closeTime;
+    private RestaurantTime closeTime;
 
 
 }

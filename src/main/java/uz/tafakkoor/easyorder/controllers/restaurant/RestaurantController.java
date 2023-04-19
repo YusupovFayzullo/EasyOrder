@@ -20,7 +20,6 @@ import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
-import uz.tafakkoor.easyorder.dtos.user.ValidAppErrorDTO;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.services.restaurant.RestaurantService;
@@ -38,12 +37,12 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @Operation(summary = "This API used for getting a restaurant by id")
-    @GetMapping( value = "/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Restaurant> getById(@PathVariable Long id) {
         Optional<Restaurant> byId = restaurantRepository.findById(id);
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             Restaurant restaurant = byId.get();
-            if(restaurant.isDeleted()){
+            if (restaurant.isDeleted()) {
                 throw new RuntimeException("This restaurant not found");
             }
         }
@@ -74,29 +73,29 @@ public class RestaurantController {
                     })
     })
     @PostMapping
-    public ResponseEntity<Restaurant> create(@NonNull @Valid  @RequestBody RestaurantCreateDto dto) {
+    public ResponseEntity<Restaurant> create(@NonNull @Valid @RequestBody RestaurantCreateDto dto) {
 
         Restaurant restaurant = restaurantService.saveRestaurant(dto);
-        if(restaurant==null){
-             throw new RuntimeException();
+        if (restaurant == null) {
+            throw new RuntimeException();
         }
         return ResponseEntity.status(201).body(restaurant);
     }
 
     @Operation(summary = "This API used to update restaurant")
-    @PutMapping(value = "/{id}" )
-    public ResponseEntity<String> update(@NonNull  @Valid @RequestBody RestaurantUpdateDto dto, @PathVariable Long id) {
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<String> update(@NonNull @Valid @RequestBody RestaurantUpdateDto dto, @PathVariable Long id) {
         Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
 
         try {
             RestaurantTime closeTime = dto.getCloseTime();
             RestaurantTime openTime = dto.getOpenTime();
 
-        }catch (Exception e){
-             throw new RuntimeException();
-         }
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
 
-        if(restaurant.isDeleted()) return ResponseEntity.ok("Not found");
+        if (restaurant.isDeleted()) return ResponseEntity.ok("Not found");
         Restaurant restaurant1 = restaurantService.updateRestaurant(dto, id);
 
         return ResponseEntity.ok("Successfully updated by " + restaurant1.getId());

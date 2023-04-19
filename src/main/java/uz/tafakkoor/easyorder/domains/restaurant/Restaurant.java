@@ -30,7 +30,7 @@ public class Restaurant extends Auditable {
     private String email;
 
 
-    private LocalTime  openTime;
+    private LocalTime openTime;
     private LocalTime closeTime;
     @Enumerated(EnumType.STRING)
     private RestaurantStatus status = RestaurantStatus.INACTIVE;
@@ -49,8 +49,6 @@ public class Restaurant extends Auditable {
         this.closeTime = closeTime;
         this.status = status;
     }
-
-
 
 
 }

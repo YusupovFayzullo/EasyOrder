@@ -16,8 +16,8 @@ public class TableUpdate {
     @NotBlank(message = "number can not blank")
     private String number;
 
-    @Min(value = 2,message = "2 tadan kam bo'lmasin")
-    @Max(value = 6,message = "6 tadan ko'p bo'lmasin")
+    @Min(value = 2, message = "2 tadan kam bo'lmasin")
+    @Max(value = 6, message = "6 tadan ko'p bo'lmasin")
 
     private Integer capacity;
     private boolean booked;

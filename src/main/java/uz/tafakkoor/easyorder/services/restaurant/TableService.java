@@ -9,6 +9,7 @@ import uz.tafakkoor.easyorder.domains.restaurant.Table;
 import uz.tafakkoor.easyorder.dtos.restaurant.ImageDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.TableCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.TableUpdate;
+import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.repositories.ImageRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.TableRepository;
@@ -50,17 +51,11 @@ public class TableService {
     }
 
     public Table updateRestaurant(TableUpdate dto, Long id) {
-        Optional<Table> byId = tableRepository.findById(id);
-        Table table = byId.get();
+        Table table = tableRepository.findById(id).orElseThrow(()-> new ItemNotFoundException("Table not found"));
         Image qrCode = table.getQrCode();
-        Optional<Image> byImage = imageRepository.findById(qrCode.getId());
         Restaurant restaurant = table.getRestaurant();
-        Optional<Restaurant> byRestaurant = restaurantRepository.findById(restaurant.getId());
-
-        if(!byImage.isPresent() || !byRestaurant.isPresent() || byId.isPresent()) return null;
-
-        Image image = byImage.get();
-        Restaurant restaurant1 = byRestaurant.get();
+        Image image = imageRepository.findById(qrCode.getId()).orElseThrow(()-> new ItemNotFoundException("Image not found"));
+        Restaurant restaurant1 = restaurantRepository.findById(restaurant.getId()).orElseThrow(()-> new ItemNotFoundException("Restaurant not found"));
         image.setUrl(dto.getImage().getUrl());
         image.setSize(dto.getImage().getSize());
         image.setType(dto.getImage().getType());
