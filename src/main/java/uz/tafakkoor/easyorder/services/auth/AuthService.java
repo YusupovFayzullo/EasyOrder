@@ -2,6 +2,7 @@ package uz.tafakkoor.easyorder.services.auth;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ import uz.tafakkoor.easyorder.dtos.auth.UserCreateDTO;
 import uz.tafakkoor.easyorder.enums.TokenType;
 import uz.tafakkoor.easyorder.enums.UserStatus;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
+import uz.tafakkoor.easyorder.exceptions.OTPExpiredException;
 import uz.tafakkoor.easyorder.mappers.user.UserMapper;
 import uz.tafakkoor.easyorder.repositories.OTPRepository;
 import uz.tafakkoor.easyorder.repositories.user.UserRepository;
@@ -54,16 +56,17 @@ public class AuthService {
     }
 
     public User create(@NotNull UserCreateDTO dto) {
-
         User user = UserMapper.INSTANCE.toEntity(dto);
         user.setPassword(this.passwordEncoder.encode(dto.password()));
         user.setRoles(Collections.singletonList(this.userRolesRepository.findByCode("USER")));
-        user = (User)this.userRepository.save(user);
+        User  saved_user = this.userRepository.save(user);
         String code = this.utils.generateOTP();
-        OTP Otp = OTP.childBuilder().userID(user.getId()).code(code).expiresAt(LocalDateTime.now().plusMinutes((long)this.activationCodeExpiry)).otpType(OtpType.ACCOUNT_ACTIVATE).build();
-        this.otpRepository.save(Otp);
-        this.twilioService.sendOtp(user.getPhoneNumber(), code);
-        return user;
+        CompletableFuture.runAsync(() -> {
+            OTP Otp = OTP.childBuilder().userID(saved_user.getId()).code(code).expiresAt(LocalDateTime.now().plusMinutes(this.activationCodeExpiry)).otpType(OtpType.ACCOUNT_ACTIVATE).build();
+            this.otpRepository.save(Otp);
+            this.twilioService.sendOtp(saved_user.getPhoneNumber(), code);
+        });
+        return saved_user;
     }
 
     public TokenResponse refreshToken(@NotNull RefreshTokenRequest refreshTokenRequest) {
@@ -80,12 +83,9 @@ public class AuthService {
     }
 
     public String activate(String code, String phoneNumber) {
-        User user = (User)this.userRepository.findByPhoneNumberLike(phoneNumber).orElseThrow(() -> {
-            return new ItemNotFoundException("User not found");
-        });
-        this.otpRepository.findByUserIDAndCode(user.getId(), code).orElseThrow(() -> {
-            return new ItemNotFoundException("Invalid code");
-        });
+        User user = this.userRepository.findByPhoneNumberLike(phoneNumber).orElseThrow(() -> new ItemNotFoundException("User not found"));
+        OTP code1 = this.otpRepository.findByUserIDAndCode(user.getId(), code).orElseThrow(() -> new ItemNotFoundException("Invalid code"));
+        if (code1.getExpiresAt().isBefore(LocalDateTime.now())) throw new OTPExpiredException("Code expired");
         user.setStatus(UserStatus.ACTIVE);
         this.userRepository.save(user);
         return "Account activated";

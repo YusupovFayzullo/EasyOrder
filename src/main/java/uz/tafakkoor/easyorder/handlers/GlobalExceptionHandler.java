@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uz.tafakkoor.easyorder.dtos.AppErrorDTO;
 import uz.tafakkoor.easyorder.exceptions.DuplicatePermissionCodeException;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
+import uz.tafakkoor.easyorder.exceptions.OTPExpiredException;
 import uz.tafakkoor.easyorder.exceptions.UserNotFoundException;
 
 import java.util.*;
@@ -47,6 +48,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<AppErrorDTO> handleItemNotFoundException(ItemNotFoundException e, HttpServletRequest request) {
         return ResponseEntity.status(404)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 404));
+    }
+    @ExceptionHandler(OTPExpiredException.class)
+    public ResponseEntity<AppErrorDTO> handleOTPExpiredException(OTPExpiredException e, HttpServletRequest request) {
+        return ResponseEntity.status(400)
+                .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
     }
     @ExceptionHandler(DisabledException.class)
     public ResponseEntity<AppErrorDTO> handleDisabledException(DisabledException e, HttpServletRequest request) {
