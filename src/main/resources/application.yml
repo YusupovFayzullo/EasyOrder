@@ -19,11 +19,16 @@ spring:
     active: prod, test
 
 jwt:
-  secret:
-    key: 3F4428472B4B6150645367566B5970337336763979244226452948404D6351655468576D5A7134743777217A25432A462D4A614E645267556A586E3272357538
-  expiry:
-    in:
-      minutes: 10
+  access:
+    token:
+      expiry: 600000 # 10 minutes
+      secret:
+        key: 357638792F423F4528482B4D6250655368566D597133743677397A24432646294A404E635266546A576E5A7234753778214125442A472D4B6150645367566B58
+  refresh:
+    token:
+      expiry: 864000000 # 10 days
+      secret:
+        key: 7134743777217A25432A462D4A614E645267556B58703272357538782F413F44
 
 management:
   endpoint:
@@ -65,5 +70,31 @@ spring:
 server:
   port: 8080
 
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        web:
+          client:
+            RestTemplate: debug
+      zalando:
+        logbook: TRACE
+logbook:
+  exclude:
+    - '/api/upload'
+    - '/api/download'
 
+twilio:
+  account:
+    sid: AC2bb44224a936e48aba3f3523f31ca8de
+  auth:
+    token: 25244495cda28fb44d949f200b6264de
+  from:
+    number: +16204458192
+  activation:
+          code:
+            expiry: 10
+  recovery:
+        code: Ecn4lSfRQwlf-sm_JFOb1ARIPu5fp2XRk087d3uD
 
