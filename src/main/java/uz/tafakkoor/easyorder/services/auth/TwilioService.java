@@ -12,8 +12,8 @@ public class TwilioService {
     private String ACCOUNT_SID;
     @Value("${twilio.auth.token}")
     private String AUTH_TOKEN;
-//    @Value("${twilio.from.number}")
-    private String FROM_NUMBER = "+16204458192";
+    @Value("${twilio.from.number}")
+    private String FROM_NUMBER;
 
     public void sendOtp(String toNumber, String otp) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);

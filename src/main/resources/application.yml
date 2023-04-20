@@ -91,7 +91,7 @@ twilio:
   auth:
     token: 25244495cda28fb44d949f200b6264de
   from:
-    number: +16204458192
+    number: '+16204458192'
   activation:
           code:
             expiry: 10
