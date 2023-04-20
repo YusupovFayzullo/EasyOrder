@@ -23,7 +23,7 @@ public class TableUpdate {
     private boolean booked;
 
     private boolean isDeleted;
-    private ImageDto image;
+    private String image;
 
     private Long restaurantId;
 

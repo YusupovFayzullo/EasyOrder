@@ -14,8 +14,6 @@ import uz.tafakkoor.easyorder.services.ImageService;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import static uz.tafakkoor.easyorder.mappers.menu.CategoryMapper.CATEGORY_MAPPER;
 

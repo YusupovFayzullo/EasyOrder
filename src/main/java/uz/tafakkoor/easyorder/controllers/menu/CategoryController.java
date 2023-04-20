@@ -3,7 +3,6 @@ package uz.tafakkoor.easyorder.controllers.menu;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
@@ -27,7 +26,7 @@ public class CategoryController {
 
     @Operation(summary = "This API used for creating a category", responses = {@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Category created"), @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Category not created")})
     @PostMapping(value = "/create", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Category> createCategory(@Valid @ModelAttribute CategoryCreateDTO dto) {
+    public ResponseEntity<Category> createCategory(@ModelAttribute CategoryCreateDTO dto) {
         Category category = categoryService.createCategory(dto);
         return ResponseEntity.status(201).body(category);
     }

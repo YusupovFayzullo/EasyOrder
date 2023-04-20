@@ -10,14 +10,13 @@ import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
 import uz.tafakkoor.easyorder.exceptions.TimeParseException;
-import uz.tafakkoor.easyorder.mappers.menu.restaurant.ImageMapper;
-import uz.tafakkoor.easyorder.repositories.ImageRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.AddressRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.services.ImageService;
 
 import java.time.LocalTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,6 +32,8 @@ public class RestaurantService {
 
         RestaurantTime openTime = dto.getOpenTime();
         RestaurantTime closeTime = dto.getCloseTime();
+//        LocalTime openTime = dto.getOpenTime();
+//        LocalTime closeTime = dto.getCloseTime();
         LocalTime open = null;
         LocalTime close = null;
 
@@ -44,11 +45,7 @@ public class RestaurantService {
         } catch (TimeParseException e) {
             throw new TimeParseException("Time is invalid");
         }
-        Collection<ImageDto> images = dto.getImageDtos();
-        Collection<Image> imageCollection = new ArrayList<>();
 
-
-        ImageMapper mapper = Mappers.getMapper(ImageMapper.class);
         AddressDto addressDto = dto.getDto();
 
         Address address = Address.builder()
@@ -62,7 +59,7 @@ public class RestaurantService {
 
         Address savedAddress = addressRepository.save(address);
 
-        Collection<String> imageURLs = imageService.saveImagesToServer(dto.getImages());
+        List<String> imageURLs = imageService.saveImagesToServer(dto.getImages());
 
         Restaurant restaurant = Restaurant.restaurantBuilder()
                 .address(savedAddress)
@@ -72,7 +69,7 @@ public class RestaurantService {
                 .description(dto.getDescription())
                 .openTime(open)
                 .closeTime(close)
-                .image(imageCollection)
+                .imageURLs(imageURLs)
                 .build();
         return repository.save(restaurant);
     }

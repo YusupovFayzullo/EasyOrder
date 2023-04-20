@@ -22,7 +22,7 @@ public class CategoryCreateDTO {
     @Max(value = 50, message = "Restaurant name size must be less than 50")
     private String name;
 
-        @Max(value = 200, message = "Restaurant description must be less than 200 character")
+    @Max(value = 200, message = "Restaurant description must be less than 200 character")
     private String description;
 
     //    @Size(max = 2 * 1024 * 1024, message = "Image size must be less than 2MB")

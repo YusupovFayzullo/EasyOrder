@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +27,6 @@ import uz.tafakkoor.easyorder.services.restaurant.RestaurantService;
 import java.util.Optional;
 
 @RestController
-@ParameterObject
 @RequestMapping("/api/v1/restaurant")
 @RequiredArgsConstructor
 @Tag(name = "Restaurant", description = "Restaurant API")
@@ -70,7 +68,7 @@ public class RestaurantController {
     })
 
     @PostMapping(produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Restaurant> create(@RequestBody RestaurantCreateDto dto) {
+    public ResponseEntity<Restaurant> create(@ModelAttribute RestaurantCreateDto dto) {
         Restaurant restaurant = restaurantService.saveRestaurant(dto);
         if (restaurant == null) {
             throw new RuntimeException();

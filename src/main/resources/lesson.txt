@@ -7,5 +7,7 @@ Open feign kupincha mikroservislarda ishlatiladi.
 Spring bootdagi WEB flux netty serverda run buladi.
 U asinxron ishlash uchun muljallangan.
 Spring 5 da WEB CLIENT qushilgan  Rest Templatening urniga.
+------------------------------------------------------------
 
-
+Database Migration (Flyway || Liquibase)
+Fly

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springdoc.core.annotations.ParameterObject;
 
 
 @Getter
@@ -12,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
+@ParameterObject
 public class TableCreateDto {
 
 
@@ -24,7 +25,7 @@ public class TableCreateDto {
 
     private Integer capacity;
     private boolean isBooked;
-    private ImageDto image;
+    private String image;
 
     private Long restaurantId;
 }

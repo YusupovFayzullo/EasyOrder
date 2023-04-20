@@ -24,8 +24,10 @@ public interface TableRepository extends JpaRepository<Table, Long> {
 
 
     @Query("""
-            select new uz.tafakkoor.easyorder.dtos.restaurant.NotBookedTableDto(t.number,t.capacity, t.qrCode,r.name, r.address.city, r.address.street, r.address.house,  r.phoneNumber,r.openTime, r.closeTime) from Table  t inner join Restaurant  r
-            on r.id=t.restaurant.id where t.isBooked=false and t.isDeleted=false and r.id=?1 """)
+            select new uz.tafakkoor.easyorder.dtos.restaurant.NotBookedTableDto(t.number,t.capacity,t.qrCodeURL,r.name,r.address.city,r.address.street,r.address.house,r.phoneNumber,r.openTime,r.closeTime) from Table  t inner join Restaurant  r
+            on r.id=t.restaurant.id where t.isBooked=false and t.isDeleted=false and r.id=?1""")
     List<NotBookedTableDto> getInfoNotBooked(Long id);
+    //            select new uz.tafakkoor.easyorder.dtos.restaurant.NotBookedTableDto(t.number,t.capacity, t.qrCodeURL,r.name, r.address.city, r.address.street, r.address.house,  r.phoneNumber,r.openTime, r.closeTime) from Table  t inner join Restaurant  r
+
 
 }
