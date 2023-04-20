@@ -2,25 +2,21 @@ package uz.tafakkoor.easyorder.services.restaurant;
 
 
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
-import uz.tafakkoor.easyorder.domains.Image;
 import uz.tafakkoor.easyorder.domains.restaurant.Address;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
-import uz.tafakkoor.easyorder.dtos.restaurant.ImageDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
 import uz.tafakkoor.easyorder.exceptions.TimeParseException;
-import uz.tafakkoor.easyorder.mappers.menu.restaurant.ImageMapper;
-import uz.tafakkoor.easyorder.repositories.ImageRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.AddressRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
+import uz.tafakkoor.easyorder.services.ImageService;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,35 +25,28 @@ public class RestaurantService {
 
     private final RestaurantRepository repository;
     private final AddressRepository addressRepository;
-    private final ImageRepository imageRepository;
+    private final ImageService imageService;
 
 
     public Restaurant saveRestaurant(RestaurantCreateDto dto) {
 
-       RestaurantTime openTime = dto.getOpenTime();
+        RestaurantTime openTime = dto.getOpenTime();
         RestaurantTime closeTime = dto.getCloseTime();
-        LocalTime open=null;
-        LocalTime close=null;
+//        LocalTime openTime = dto.getOpenTime();
+//        LocalTime closeTime = dto.getCloseTime();
+        LocalTime open = null;
+        LocalTime close = null;
 
         try {
 
-            open=LocalTime.of(openTime.getHour(), openTime.getMinute());
-            close=LocalTime.of(closeTime.getHour(), closeTime.getMinute());
+            open = LocalTime.of(openTime.getHour(), openTime.getMinute());
+            close = LocalTime.of(closeTime.getHour(), closeTime.getMinute());
 
-        } catch (TimeParseException e){
-             throw new TimeParseException("Time is invalid");
+        } catch (TimeParseException e) {
+            throw new TimeParseException("Time is invalid");
         }
-        Collection<ImageDto> images = dto.getImageDtos();
-        Collection<Image> imageCollection =new ArrayList<>();
 
-
-        ImageMapper mapper = Mappers.getMapper(ImageMapper.class);
         AddressDto addressDto = dto.getDto();
-
-        for (ImageDto image : images) {
-            Image image1 = mapper.toImage(image);
-            imageCollection.add(imageRepository.save(image1));
-        }
 
         Address address = Address.builder()
                 .city(addressDto.getCity())
@@ -70,6 +59,8 @@ public class RestaurantService {
 
         Address savedAddress = addressRepository.save(address);
 
+        List<String> imageURLs = imageService.saveImagesToServer(dto.getImages());
+
         Restaurant restaurant = Restaurant.restaurantBuilder()
                 .address(savedAddress)
                 .email(dto.getEmail())
@@ -78,7 +69,7 @@ public class RestaurantService {
                 .description(dto.getDescription())
                 .openTime(open)
                 .closeTime(close)
-                .image(imageCollection)
+                .imageURLs(imageURLs)
                 .build();
         return repository.save(restaurant);
     }
@@ -86,15 +77,14 @@ public class RestaurantService {
     public Restaurant updateRestaurant(RestaurantUpdateDto dto, Long id) {
         RestaurantTime openTime = dto.getOpenTime();
         RestaurantTime closeTime = dto.getCloseTime();
-        LocalTime open=null;
-        LocalTime close=null;
+        LocalTime open = null;
+        LocalTime close = null;
 
 
+        open = LocalTime.of(openTime.getHour(), openTime.getMinute());
+        close = LocalTime.of(closeTime.getHour(), closeTime.getMinute());
 
-            open=LocalTime.of(openTime.getHour(), openTime.getMinute());
-            close=LocalTime.of(closeTime.getHour(), closeTime.getMinute());
-
-
+        Collection<String> imageURLs = imageService.saveImagesToServer(dto.getImages());
 
 
         Optional<Restaurant> byId = repository.findById(id);
@@ -108,19 +98,7 @@ public class RestaurantService {
             address.setLatitude(dto.getDto().getLatitude());
             address.setLongitude(dto.getDto().getLongitude());
             Address savedAddress = addressRepository.save(address);
-            Collection<Image> images = restaurant.getImage();
-            for (Image image : images) {
-                Optional<Image> byId1 = imageRepository.findById(image.getId());
-                if (byId1.isPresent()) {
-                    Image image1 = byId1.get();
-                    image1.setUrl(image.getUrl());
-                    image1.setType(image.getType());
-                    image1.setGeneratedName(image.getGeneratedName());
-                    image1.setSize(image.getSize());
-                    image1.setOriginalName(image.getOriginalName());
-                    imageRepository.save(image1);
-                }
-            }
+
             restaurant.setAddress(savedAddress);
             restaurant.setName(dto.getName());
             restaurant.setCloseTime(close);
@@ -129,6 +107,7 @@ public class RestaurantService {
             restaurant.setEmail(dto.getEmail());
             restaurant.setDescription(dto.getDescription());
             restaurant.setStatus(dto.getStatus());
+            restaurant.setImageURLs(imageURLs);
             return repository.save(restaurant);
         }
         return null;

@@ -24,5 +24,5 @@ public class ValidAppErrorDTO implements Serializable {
     }
 
     @Builder.Default
-    private LocalDateTime timestamp= LocalDateTime.now();
+    private LocalDateTime timestamp = LocalDateTime.now();
 }

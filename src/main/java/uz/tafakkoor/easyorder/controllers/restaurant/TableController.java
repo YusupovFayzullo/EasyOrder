@@ -42,9 +42,9 @@ public class TableController {
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Table> getById(@PathVariable Long id) {
         Optional<Table> byId = tableRepository.findById(id);
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             Table table = byId.get();
-            if(table.isDeleted()){
+            if (table.isDeleted()) {
                 throw new RuntimeException("This table not found");
             }
         }
@@ -60,6 +60,7 @@ public class TableController {
         Pageable pageable = PageRequest.of(page, size);
         return tableRepository.getAll(pageable);
     }
+
     @Operation(summary = "This API used for getting is not booked tables")
     @GetMapping("/notBooked/{restaurantId}")
     public ResponseEntity<List<NotBookedTableDto>> getAll(@PathVariable Long restaurantId) {
@@ -86,42 +87,41 @@ public class TableController {
     public ResponseEntity<Table> create(@NonNull @Valid @RequestBody TableCreateDto dto) {
         Long restaurantId = dto.getRestaurantId();
         Optional<Table> byId = tableRepository.getById(restaurantId, dto.getNumber());
-        if(byId.isPresent())  return ResponseEntity.status(404).body(null);
+        if (byId.isPresent()) return ResponseEntity.status(404).body(null);
         Table table = tableService.saveRestaurant(dto);
 
-        if(table==null){
-             throw new  RuntimeException();
-         }
+        if (table == null) {
+            throw new RuntimeException();
+        }
         return ResponseEntity.status(201).body(table);
     }
 
     @Operation(summary = "This API used to update table")
-    @PutMapping(value = "/{id}" )
+    @PutMapping(value = "/{id}")
     public ResponseEntity<String> update(@NonNull @Valid @RequestBody TableUpdate dto, @PathVariable Long id) {
-        Table table=tableRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Table not found with by " + id));
+        Table table = tableRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Table not found with by " + id));
         Long restaurantId = dto.getRestaurantId();
         Optional<Table> byId = tableRepository.getById(restaurantId, table.getNumber());
 
-        if(byId.isPresent())  return ResponseEntity.status(404).body(null);
-            if(table.isDeleted()){
-                throw new RuntimeException("This table not found");
-            }
-        Table table1 = tableService.updateRestaurant(dto, id);
-        if(table1==null){
-               throw new RuntimeException();
+        if (byId.isPresent()) return ResponseEntity.status(404).body(null);
+        if (table.isDeleted()) {
+            throw new RuntimeException("This table not found");
         }
-        return ResponseEntity.ok("Succesfully updated "+table.getId());
+        Table table1 = tableService.updateRestaurant(dto, id);
+        if (table1 == null) {
+            throw new RuntimeException();
+        }
+        return ResponseEntity.ok("Succesfully updated " + table.getId());
     }
 
     @Operation(summary = "This API used to delete table")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        Table table=tableRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Table not found with by " + id));
+        Table table = tableRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Table not found with by " + id));
         table.setDeleted(true);
-        Table save =tableRepository.save(table);
+        Table save = tableRepository.save(table);
         return ResponseEntity.ok("Successfully deleted by " + save.getId());
     }
-
 
 
 }

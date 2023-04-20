@@ -1,4 +1,4 @@
-package uz.tafakkoor.easyorder.dtos.menu;
+package uz.tafakkoor.easyorder.dtos.menu.product;
 
 import jakarta.validation.constraints.Min;
 import lombok.Builder;
@@ -11,6 +11,6 @@ import lombok.Setter;
 public class ProductOrderCreateDTO {
     private Long productId;
 
-    @Min(value = 1,message = "Quantity must be at least 1")
+    @Min(value = 1, message = "Quantity must be at least 1")
     private Integer quantity;
 }

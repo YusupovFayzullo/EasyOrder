@@ -24,10 +24,10 @@ public class UserPermissionService {
     }
 
     public UserPermission update(UserPermission permission) {
-        UserPermission userPermission=userPermissionRepository.findById(permission.getId())
+        UserPermission userPermission = userPermissionRepository.findById(permission.getId())
                 .orElseThrow(() -> new ItemNotFoundException("Permission with id %d not found".formatted(permission.getId())));
-        userPermission.setCode(Objects.requireNonNullElse(permission.getCode(),userPermission.getCode()));
-        userPermission.setName(Objects.requireNonNullElse(permission.getName(),userPermission.getName()));
+        userPermission.setCode(Objects.requireNonNullElse(permission.getCode(), userPermission.getCode()));
+        userPermission.setName(Objects.requireNonNullElse(permission.getName(), userPermission.getName()));
         return userPermissionRepository.save(userPermission);
     }
 }

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.domains.menu.Product;
 import uz.tafakkoor.easyorder.domains.menu.ProductOrder;
-import uz.tafakkoor.easyorder.dtos.menu.ProductOrderCreateDTO;
-import uz.tafakkoor.easyorder.dtos.menu.ProductOrderUpdateDTO;
+import uz.tafakkoor.easyorder.dtos.menu.product.ProductOrderCreateDTO;
+import uz.tafakkoor.easyorder.dtos.menu.product.ProductOrderUpdateDTO;
 import uz.tafakkoor.easyorder.repositories.menu.ProductOrderRepository;
 
 @Service

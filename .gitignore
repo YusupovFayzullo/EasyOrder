@@ -131,4 +131,9 @@ fabric.properties
 /.idea/artifacts/springboot_jar.xml
 /.idea/vcs.xml
 /.idea/.gitignore
+/.idea/git_toolbox_prj.xml
 /.idea/dataSources.xml
+/EasyOrder.iml
+/.idea/git_toolbox_prj.xml
+/.idea/modules.xml
+/.idea/sqldialects.xml

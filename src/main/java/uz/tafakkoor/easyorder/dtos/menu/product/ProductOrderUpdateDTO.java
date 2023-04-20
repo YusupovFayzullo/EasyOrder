@@ -1,4 +1,4 @@
-package uz.tafakkoor.easyorder.dtos.menu;
+package uz.tafakkoor.easyorder.dtos.menu.product;
 
 import jakarta.validation.constraints.Min;
 import lombok.Builder;

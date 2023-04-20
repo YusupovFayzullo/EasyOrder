@@ -6,8 +6,13 @@ import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableAsync;
 
+
+@EnableAsync
 @SpringBootApplication
+@EnableJpaAuditing
 @OpenAPIDefinition(
         info = @Info(title = "EasyOrder API", version = "v1", description = "API for ordering food at restaurants and cafes"),
         servers = {
@@ -28,7 +33,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                 @Tag(name = "Auth", description = "Authorization API "),}
 )
 public class EasyOrderApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(EasyOrderApplication.class, args);
     }

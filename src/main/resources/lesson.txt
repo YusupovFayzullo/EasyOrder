@@ -1,0 +1,13 @@
+web fluxda flux hamda mono degan tushuncha bor bu single body  degani reactive programmingda
+flux degani cheksiz item degani reactive programmingda
+default holatda web client asinxron ishlaydi
+biz uni bloklab quysak sinxron ishlaydi
+
+Open feign kupincha mikroservislarda ishlatiladi.
+Spring bootdagi WEB flux netty serverda run buladi.
+U asinxron ishlash uchun muljallangan.
+Spring 5 da WEB CLIENT qushilgan  Rest Templatening urniga.
+------------------------------------------------------------
+
+Database Migration (Flyway || Liquibase)
+Fly

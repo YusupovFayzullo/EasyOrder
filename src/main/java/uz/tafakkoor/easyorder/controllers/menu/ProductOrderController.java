@@ -12,8 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.tafakkoor.easyorder.domains.menu.ProductOrder;
-import uz.tafakkoor.easyorder.dtos.menu.ProductOrderCreateDTO;
-import uz.tafakkoor.easyorder.dtos.menu.ProductOrderUpdateDTO;
+import uz.tafakkoor.easyorder.dtos.menu.product.ProductOrderCreateDTO;
+import uz.tafakkoor.easyorder.dtos.menu.product.ProductOrderUpdateDTO;
 import uz.tafakkoor.easyorder.services.menu.ProductOrderService;
 
 
