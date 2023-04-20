@@ -35,9 +35,9 @@ public class HibernateConfig {
     public OpenAPI springOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("SHORT")
-                        .description("Short URL Documentation")
-                        .version("10")
+                        .title("EasyOrder")
+                        .description("API for making the process of ordering easy")
+                        .version("1")
                         .contact(new Contact()
                                 .name("Abdullo Khayrulloev")
                                 .email("khayrulloev.abdulloh@gmail.com")
