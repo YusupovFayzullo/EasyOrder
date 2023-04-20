@@ -23,5 +23,4 @@ public interface CategoryMapper {
     void toUpdateCategoryEntity(CategoryUpdateDTO dto, @MappingTarget @NonNull Category category);
 
 
-
 }

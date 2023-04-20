@@ -25,8 +25,8 @@ public class ProductService {
     private final ImageService imageService;
     private final CategoryRepository categoryRepository;
 
-    public Product createProduct(ProductCreateDTO dto) {
-        Collection<MultipartFile> imageFiles = dto.getImages();
+    public Product createProduct(ProductCreateDTO dto, List<MultipartFile> imageFiles) {
+
         Collection<String> savedImagesURLsToAWS = imageService.saveImagesToServer(imageFiles);
         Product product = PRODUCT_MAPPER.toProductEntity(dto);
         product.setImageURLs(savedImagesURLsToAWS);
@@ -61,18 +61,17 @@ public class ProductService {
         }
     }
 
-    public Product updateProduct(ProductUpdateDTO dto, Long productID) {
+    public Product updateProduct(ProductUpdateDTO dto, Collection<MultipartFile> imageFiles, Long productID) {
         Product productDB = productRepository
                 .findProduct(productID)
                 .orElseThrow(
                         () -> new ItemNotFoundException("Product not found with productID " + productID));
-
-        Collection<MultipartFile> imageFiles = dto.getImages();
         if (imageFiles != null) {
             Collection<String> savedImagesToAWS = imageService.saveImagesToServer(imageFiles);
             productDB.setImageURLs(Objects.requireNonNullElse(savedImagesToAWS, productDB.getImageURLs()));
         }
         PRODUCT_MAPPER.toUpdateProductEntity(dto, productDB);
+
         return productRepository.save(productDB);
     }
 }

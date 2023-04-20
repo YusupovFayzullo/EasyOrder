@@ -29,13 +29,14 @@ public class ImageService {
 
     private final AmazonS3 amazonS3;
     private final AmazonS3Client s3Client;
+    private final BaseUtils baseUtils;
 
 
     public List<String> saveImagesToServer(Collection<MultipartFile> files) {
 
         ArrayList<String> generateFileNames = new ArrayList<>();
         for (MultipartFile file : files) {
-            generateFileNames.add(BaseUtils.generateUniqueName(Objects.requireNonNull(file.getOriginalFilename())));
+            generateFileNames.add(baseUtils.generateUniqueName(Objects.requireNonNull(file.getOriginalFilename())));
         }
         CompletableFuture.runAsync(() -> {
             try {
@@ -56,7 +57,7 @@ public class ImageService {
     }
 
     public String saveImageToServer(MultipartFile file) {
-        String generateUniqueName = BaseUtils.generateUniqueName(Objects.requireNonNull(file.getOriginalFilename()));
+        String generateUniqueName = baseUtils.generateUniqueName(Objects.requireNonNull(file.getOriginalFilename()));
         CompletableFuture.runAsync(() -> {
             try {
                 saveFileToAWS(file, generateUniqueName);

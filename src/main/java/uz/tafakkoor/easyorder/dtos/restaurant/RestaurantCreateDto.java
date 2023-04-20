@@ -10,13 +10,14 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @ToString
+@AllArgsConstructor
 public class RestaurantCreateDto {
 
     //    @NotBlank(message = "name can not be blank")
     private String name;
+
 
     private AddressDto dto;
 

@@ -3,9 +3,11 @@ package uz.tafakkoor.easyorder.dtos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
+import java.io.Serializable;
+
 @Getter
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class AppErrorDTO {
+public class AppErrorDTO implements Serializable {
     private final String errorPath;
     private final String errorMessage;
     private final Integer errorCode;

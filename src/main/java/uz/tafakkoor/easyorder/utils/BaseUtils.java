@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Component
 public class BaseUtils {
-    public static String generateUniqueName(@NonNull String fileName) {
+    public  String generateUniqueName(@NonNull String fileName) {
         return UUID.randomUUID() + "." + StringUtils.getFilenameExtension(fileName);
     }
 }

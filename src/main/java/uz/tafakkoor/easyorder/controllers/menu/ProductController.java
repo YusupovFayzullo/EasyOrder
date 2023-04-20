@@ -8,11 +8,13 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.domains.menu.Product;
 import uz.tafakkoor.easyorder.dtos.menu.product.ProductCreateDTO;
 import uz.tafakkoor.easyorder.dtos.menu.product.ProductUpdateDTO;
 import uz.tafakkoor.easyorder.services.menu.ProductService;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -26,8 +28,8 @@ public class ProductController {
 
     @Operation(summary = "This API used for creating a product", responses = {@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Product created"), @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Product not created")})
     @PostMapping(value = "/create", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Product> createProduct(@ModelAttribute ProductCreateDTO dto) {
-        Product product = productService.createProduct(dto);
+    public ResponseEntity<Product> createProduct(@ModelAttribute ProductCreateDTO dto, @RequestParam("file") List<MultipartFile> files) {
+        Product product = productService.createProduct(dto, files);
         return ResponseEntity.status(201).body(product);
     }
 
@@ -47,9 +49,7 @@ public class ProductController {
     }
 
 
-    @Operation(summary = "This API used for deleting a product by id", responses =
-            {@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Product deleted")
-                    , @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Product not found")})
+    @Operation(summary = "This API used for deleting a product by id", responses = {@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Product deleted"), @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Product not found")})
     @DeleteMapping(produces = "application/json")
     public ResponseEntity<Boolean> deleteProduct(Long id) {
         boolean productID = productService.deleteProduct(id);
@@ -57,12 +57,10 @@ public class ProductController {
     }
 
 
-    @Operation(summary = "This API used for updating a product", responses =
-            {@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Product updated")
-                    , @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Product not found")})
+    @Operation(summary = "This API used for updating a product", responses = {@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Product updated"), @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Product not found")})
     @PutMapping(value = "/update", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Product> updateProduct(@ModelAttribute ProductUpdateDTO dto, Long productID) {
-        Product product = productService.updateProduct(dto, productID);
+    public ResponseEntity<Product> updateProduct(@ModelAttribute ProductUpdateDTO dto, @RequestParam Collection<MultipartFile> imageFiles, Long productID) {
+        Product product = productService.updateProduct(dto, imageFiles, productID);
         return ResponseEntity.status(200).body(product);
     }
 

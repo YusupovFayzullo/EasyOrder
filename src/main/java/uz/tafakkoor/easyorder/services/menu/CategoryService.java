@@ -2,6 +2,7 @@ package uz.tafakkoor.easyorder.services.menu;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.domains.menu.Category;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
@@ -25,17 +26,18 @@ public class CategoryService {
     private final RestaurantRepository restaurantRepository;
 
     public Category createCategory(CategoryCreateDTO dto) {
-        try {
-            MultipartFile imageFile = dto.getImage();
-            String imageURL = imageService.saveImageToServer(imageFile);
-            Category category = CATEGORY_MAPPER.toCategoryEntity(dto);
-            category.setImageURL(imageURL);
-            Restaurant restaurant = restaurantRepository.findById(dto.getRestaurantID()).orElseThrow(() -> new ItemNotFoundException("Restaurant not found by id " + dto.getRestaurantID()));
-            category.setRestaurantID(restaurant.getId());
-            return categoryRepository.save(category);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+
+        MultipartFile file = dto.getImage();
+        String imageURL = null;
+        if (file != null) {
+            imageURL = imageService.saveImageToServer(file);
         }
+        Category category = CATEGORY_MAPPER.toCategoryEntity(dto);
+        category.setImageURL(imageURL);
+        Restaurant restaurant = restaurantRepository.findById(dto.getRestaurantID()).orElseThrow(() -> new ItemNotFoundException("Restaurant not found by id " + dto.getRestaurantID()));
+        category.setRestaurantID(restaurant.getId());
+        return categoryRepository.save(category);
+
     }
 
     public Category getCategoryById(Long id, Long restaurantId) {
@@ -61,12 +63,14 @@ public class CategoryService {
     public Category updateCategory(CategoryUpdateDTO dto, Long categoryID, Long restaurantID) {
         Category categoryDB = categoryRepository.findCategory(categoryID, restaurantID).orElseThrow(() -> new ItemNotFoundException("Category not found with categoryID " + categoryID + " and restaurantID " + restaurantID));
 
-        MultipartFile imageFile = dto.getImage();
-        if (imageFile != null) {
-            String imageURL = imageService.saveImageToServer(imageFile);
+        MultipartFile image = dto.getImage();
+        if (image != null) {
+            String imageURL = imageService.saveImageToServer(image);
             categoryDB.setImageURL(Objects.requireNonNullElse(imageURL, categoryDB.getImageURL()));
         }
         CATEGORY_MAPPER.toUpdateCategoryEntity(dto, categoryDB);
+
+
         return categoryRepository.save(categoryDB);
     }
 }
