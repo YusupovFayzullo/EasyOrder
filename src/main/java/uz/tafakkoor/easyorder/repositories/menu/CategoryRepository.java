@@ -13,10 +13,10 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 
-    @Query(value = "select new uz.tafakkoor.easyorder.domains.menu.Category(c.id,c.name,c.description,c.imageURL,c.restaurantID) from Category c where  c.id = ?1 and c.restaurantID = ?2")
+    @Query(value = " from Category c where  c.id = ?1 and c.restaurantID = ?2")
     Optional<Category> findCategory(Long id, Long restaurantId);
 
-    @Query("select new uz.tafakkoor.easyorder.domains.menu.Category(c.id,c.name,c.description,c.imageURL,c.restaurantID) from Category c where  c.restaurantID = ?1 ")
+    @Query(value = " from Category c where  c.restaurantID = ?1 ")
     Optional<List<Category>> findCategoryByRestaurantId(Long restaurantID);
 
     @Modifying

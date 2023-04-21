@@ -2,19 +2,17 @@ package uz.tafakkoor.easyorder.services.menu;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.domains.menu.Category;
 import uz.tafakkoor.easyorder.domains.menu.Product;
 import uz.tafakkoor.easyorder.dtos.menu.product.ProductCreateDTO;
 import uz.tafakkoor.easyorder.dtos.menu.product.ProductUpdateDTO;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
+import uz.tafakkoor.easyorder.repositories.ImageRepository;
 import uz.tafakkoor.easyorder.repositories.menu.CategoryRepository;
 import uz.tafakkoor.easyorder.repositories.menu.ProductRepository;
 import uz.tafakkoor.easyorder.services.ImageService;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 import static uz.tafakkoor.easyorder.mappers.menu.ProductMapper.PRODUCT_MAPPER;
 
@@ -24,13 +22,17 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ImageService imageService;
     private final CategoryRepository categoryRepository;
+    private final ImageRepository imageRepository;
 
-    public Product createProduct(ProductCreateDTO dto, List<MultipartFile> imageFiles) {
+    public Product createProduct(ProductCreateDTO dto) {
 
-        Collection<String> savedImagesURLsToAWS = imageService.saveImagesToServer(imageFiles);
         Product product = PRODUCT_MAPPER.toProductEntity(dto);
-        product.setImageURLs(savedImagesURLsToAWS);
-        Category category = categoryRepository.findById(dto.getCategoryID()).orElseThrow(() -> new ItemNotFoundException("Category not found by id " + dto.getCategoryID()));
+        Category category = categoryRepository
+                .findById(dto.getCategoryID())
+                .orElseThrow(() -> new ItemNotFoundException("Category not found by id %d".formatted(dto.getCategoryID())));
+
+        imageRepository.findById(dto.getImageID()).ifPresent(product::setImage);
+
         product.setCategory(category);
         return productRepository.save(product);
     }
@@ -61,17 +63,15 @@ public class ProductService {
         }
     }
 
-    public Product updateProduct(ProductUpdateDTO dto, Collection<MultipartFile> imageFiles, Long productID) {
+    public Product updateProduct(ProductUpdateDTO dto) {
+        Long dtoProductID = dto.getProductID();
         Product productDB = productRepository
-                .findProduct(productID)
-                .orElseThrow(
-                        () -> new ItemNotFoundException("Product not found with productID " + productID));
-        if (imageFiles != null) {
-            Collection<String> savedImagesToAWS = imageService.saveImagesToServer(imageFiles);
-            productDB.setImageURLs(Objects.requireNonNullElse(savedImagesToAWS, productDB.getImageURLs()));
-        }
-        PRODUCT_MAPPER.toUpdateProductEntity(dto, productDB);
+                .findProduct(dtoProductID)
+                .orElseThrow(() -> new ItemNotFoundException("Product not found with productID =%d".formatted(dtoProductID)));
 
+        imageRepository.findById(dto.getImageId()).ifPresent(productDB::setImage);
+
+        PRODUCT_MAPPER.toUpdateProductEntity(dto, productDB);
         return productRepository.save(productDB);
     }
 }

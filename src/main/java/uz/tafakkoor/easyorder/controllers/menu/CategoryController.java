@@ -3,29 +3,24 @@ package uz.tafakkoor.easyorder.controllers.menu;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.domains.menu.Category;
 import uz.tafakkoor.easyorder.dtos.menu.category.CategoryCreateDTO;
 import uz.tafakkoor.easyorder.dtos.menu.category.CategoryUpdateDTO;
 import uz.tafakkoor.easyorder.services.menu.CategoryService;
 
 import java.util.List;
-
+@Validated
 @RestController
-@ParameterObject
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/categories")
 @Tag(name = "Category", description = "Category API")
-@Validated
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -33,8 +28,8 @@ public class CategoryController {
     @Operation(summary = "This API used for creating a category", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Category created"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Category not created")})
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Category> createCategory(@Valid @ModelAttribute CategoryCreateDTO dto) {
+    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Category> createCategory(@Valid CategoryCreateDTO dto) {
         Category category = categoryService.createCategory(dto);
         return ResponseEntity.status(201).body(category);
     }
@@ -65,10 +60,9 @@ public class CategoryController {
     @Operation(summary = "This API used for updating a category", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Category updated"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Category not found")})
-    @PutMapping(value = "/update", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Category> updateCategory(@Valid @ModelAttribute CategoryUpdateDTO dto, Long categoryID, Long restaurantID
-    ) {
-        Category category = categoryService.updateCategory(dto, categoryID, restaurantID);
+    @PutMapping(value = "/update",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Category> updateCategory(@Valid CategoryUpdateDTO dto) {
+        Category category = categoryService.updateCategory(dto);
         return ResponseEntity.status(200).body(category);
     }
 

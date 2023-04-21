@@ -2,6 +2,7 @@ package uz.tafakkoor.easyorder.dtos.restaurant;
 
 
 import lombok.*;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
 
@@ -13,6 +14,7 @@ import java.util.Collection;
 @Builder
 @ToString
 @AllArgsConstructor
+@ParameterObject
 public class RestaurantCreateDto {
 
     //    @NotBlank(message = "name can not be blank")
@@ -24,7 +26,7 @@ public class RestaurantCreateDto {
 
     private String description;
 
-    private Collection<MultipartFile> images;
+    private Long imageID;
 
     //    @NotBlank(message = "phoneNumber can not be blank")
     private String phoneNumber;

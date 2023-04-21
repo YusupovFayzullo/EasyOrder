@@ -1,19 +1,19 @@
 package uz.tafakkoor.easyorder.dtos.menu.category;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.Parameter;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Component
+@NoArgsConstructor
+@AllArgsConstructor
+@ParameterObject
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CategoryCreateDTO {
     @NotNull(message = "Restaurant name must not be blank")
@@ -27,7 +27,8 @@ public class CategoryCreateDTO {
     @NotNull(message = "Restaurant ID must not be blank")
     private Long restaurantID;
 
-    private MultipartFile image;
+
+    private Long imageID;
 
 
 }

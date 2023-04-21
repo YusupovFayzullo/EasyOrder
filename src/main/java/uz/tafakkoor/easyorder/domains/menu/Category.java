@@ -1,12 +1,10 @@
 package uz.tafakkoor.easyorder.domains.menu;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import uz.tafakkoor.easyorder.domains.Auditable;
+import uz.tafakkoor.easyorder.domains.Document;
 
 import java.time.LocalDateTime;
 
@@ -25,17 +23,18 @@ public class Category extends Auditable {
     private Long id;
     private String name;
     private String description;
-    private String imageURL;
     private Long restaurantID;
+    @OneToOne
+    private Document image;
 
     @Builder(builderMethodName = "categoryBuilder")
     public Category(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt,
-                    boolean isDeleted, Long id, String name, String description, String imageURL, Long restaurantID) {
+                    boolean isDeleted, Long id, String name, String description, Document image, Long restaurantID) {
         super(createdBy, updateBy, createdAt, updatedAt, isDeleted);
         this.id = id;
         this.name = name;
         this.description = description;
-        this.imageURL = imageURL;
+        this.image = image;
         this.restaurantID = restaurantID;
     }
 }
