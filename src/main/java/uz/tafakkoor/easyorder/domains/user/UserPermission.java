@@ -2,6 +2,7 @@ package uz.tafakkoor.easyorder.domains.user;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springdoc.core.annotations.ParameterObject;
 
 @Getter
 @Setter

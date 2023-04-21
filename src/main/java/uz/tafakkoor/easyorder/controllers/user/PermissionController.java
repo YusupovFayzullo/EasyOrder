@@ -57,6 +57,24 @@ public class PermissionController {
         return ResponseEntity.ok(permission);
     }
 
+
+    @Operation(summary = "This API used for updating a permission",
+            description = "This endpoint was designed for updating a permission"
+            /*,deprecated = true*/)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Permission updated successfully",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = UserPermission.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    }),
+    })
     @PutMapping("/{id}")
     public ResponseEntity<UserPermission> update(@PathVariable Integer id, @RequestBody UserPermissionCreateDTO createDTO) {
         UserPermission permission = UserPermission.builder()
@@ -66,5 +84,57 @@ public class PermissionController {
                 .build();
         permission = permissionService.update(permission);
         return ResponseEntity.ok(permission);
+    }
+
+    @Operation(summary = "This API used for getting a permission",
+            description = "This endpoint was designed for getting a permission"
+            /*,deprecated = true*/)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Permission found",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = UserPermission.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "400", description = "Unique permission code violation",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    })
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<UserPermission> get(@PathVariable Integer id) {
+        return ResponseEntity.ok(permissionService.getPermissionById(id));
+    }
+
+    @Operation(summary = "This API used for deleting a permission",
+            description = "This endpoint was designed for deleting a permission"
+            /*,deprecated = true*/)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Permission deleted successfully",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = UserPermission.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    }),
+    })
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        permissionService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.lang.NonNull;
 import uz.tafakkoor.easyorder.domains.user.UserRole;
 
 
-public interface UserRolesRepository extends JpaRepository<UserRole, Short> {
+public interface UserRolesRepository extends JpaRepository<UserRole, Integer> {
     @Query("select u from UserRole u where u.code = ?1")
     UserRole findByCode(@NonNull String code);
 }

@@ -1,5 +1,6 @@
 package uz.tafakkoor.easyorder.domains.user;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +12,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Builder
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

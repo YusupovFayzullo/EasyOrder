@@ -68,7 +68,7 @@ public class RestaurantController {
     })
 
     @PostMapping(produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Restaurant> create(@ModelAttribute RestaurantCreateDto dto) {
+    public ResponseEntity<Restaurant> create(@RequestBody RestaurantCreateDto dto) {
         Restaurant restaurant = restaurantService.saveRestaurant(dto);
         if (restaurant == null) {
             throw new RuntimeException();

@@ -30,4 +30,12 @@ public class UserPermissionService {
         userPermission.setName(Objects.requireNonNullElse(permission.getName(), userPermission.getName()));
         return userPermissionRepository.save(userPermission);
     }
+
+    public UserPermission getPermissionById(Integer id) {
+        return userPermissionRepository.findById(id).orElseThrow(()->new ItemNotFoundException("No permission found with id %s".formatted(id)));
+    }
+
+    public void delete(Integer id) {
+        userPermissionRepository.deleteById(id);
+    }
 }
