@@ -49,16 +49,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 404));
     }
+
     @ExceptionHandler(OTPExpiredException.class)
     public ResponseEntity<AppErrorDTO> handleOTPExpiredException(OTPExpiredException e, HttpServletRequest request) {
         return ResponseEntity.status(400)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
     }
+
     @ExceptionHandler(DisabledException.class)
     public ResponseEntity<AppErrorDTO> handleDisabledException(DisabledException e, HttpServletRequest request) {
         return ResponseEntity.status(400)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
     }
+
     @ExceptionHandler(InsufficientAuthenticationException.class)
     public ResponseEntity<AppErrorDTO> handleInsufficientAuthenticationException(InsufficientAuthenticationException e, HttpServletRequest request) {
         return ResponseEntity.status(400)

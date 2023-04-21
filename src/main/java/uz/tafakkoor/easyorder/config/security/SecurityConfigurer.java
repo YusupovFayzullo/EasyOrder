@@ -75,7 +75,6 @@ public class SecurityConfigurer {
     }
 
 
-
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder,
                                      LoggingInterceptor loggingInterceptor) {
@@ -85,8 +84,6 @@ public class SecurityConfigurer {
                 .setReadTimeout(Duration.ofSeconds(3))
                 .build();
     }
-
-
 
 
     @Bean

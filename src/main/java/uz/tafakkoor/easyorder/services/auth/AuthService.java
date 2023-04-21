@@ -59,7 +59,7 @@ public class AuthService {
         User user = UserMapper.INSTANCE.toEntity(dto);
         user.setPassword(this.passwordEncoder.encode(dto.password()));
         user.setRoles(Collections.singletonList(this.userRolesRepository.findByCode("USER")));
-        User  saved_user = this.userRepository.save(user);
+        User saved_user = this.userRepository.save(user);
         String code = this.utils.generateOTP();
         CompletableFuture.runAsync(() -> {
             OTP Otp = OTP.childBuilder().userID(saved_user.getId()).code(code).expiresAt(LocalDateTime.now().plusMinutes(this.activationCodeExpiry)).otpType(OtpType.ACCOUNT_ACTIVATE).build();

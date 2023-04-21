@@ -14,7 +14,7 @@ public class BaseUtils {
     }
 
     public String generateOTP() {
-        return String.format("%06d", (int)(Math.random() * 1000000.0));
+        return String.format("%06d", (int) (Math.random() * 1000000.0));
     }
 
 }
