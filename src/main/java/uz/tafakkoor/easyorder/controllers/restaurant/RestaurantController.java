@@ -81,28 +81,28 @@ public class RestaurantController {
         public ResponseEntity<String> update (@NonNull @Valid  RestaurantUpdateDto dto, @PathVariable Long id){
             Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
 
-            try {
-                RestaurantTime closeTime = dto.getCloseTime();
-                RestaurantTime openTime = dto.getOpenTime();
+        try {
+            RestaurantTime closeTime = dto.getCloseTime();
+            RestaurantTime openTime = dto.getOpenTime();
 
-            } catch (Exception e) {
-                throw new RuntimeException();
-            }
-
-            if (restaurant.isDeleted()) return ResponseEntity.ok("Not found");
-            Restaurant restaurant1 = restaurantService.updateRestaurant(dto, id);
-
-            return ResponseEntity.ok("Successfully updated by " + restaurant1.getId());
+        } catch (Exception e) {
+            throw new RuntimeException();
         }
 
-        @Operation(summary = "This API used to delete restaurant")
-        @DeleteMapping(value = "/{id}")
-        public ResponseEntity<String> delete(@PathVariable Long id){
-            Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
-            restaurant.setDeleted(true);
-            Restaurant save = restaurantRepository.save(restaurant);
-            return ResponseEntity.ok("Successfully deleted by " + save.getId());
-        }
+        if (restaurant.isDeleted()) return ResponseEntity.ok("Not found");
+        Restaurant restaurant1 = restaurantService.updateRestaurant(dto, id);
 
-
+        return ResponseEntity.ok("Successfully updated by " + restaurant1.getId());
     }
+
+    @Operation(summary = "This API used to delete restaurant")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
+        restaurant.setDeleted(true);
+        Restaurant save = restaurantRepository.save(restaurant);
+        return ResponseEntity.ok("Successfully deleted by " + save.getId());
+    }
+
+
+}

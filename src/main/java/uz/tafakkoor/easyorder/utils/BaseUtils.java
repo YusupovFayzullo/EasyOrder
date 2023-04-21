@@ -12,4 +12,9 @@ public class BaseUtils {
     public  String generateUniqueName(@NonNull String fileName) {
         return UUID.randomUUID() + "." + StringUtils.getFilenameExtension(fileName);
     }
+
+    public String generateOTP() {
+        return String.format("%06d", (int) (Math.random() * 1000000.0));
+    }
+
 }
