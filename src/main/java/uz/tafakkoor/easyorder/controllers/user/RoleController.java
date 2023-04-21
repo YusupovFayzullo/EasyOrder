@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.converters.models.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import uz.tafakkoor.easyorder.mappers.roles.UserRoleMapper;
 import uz.tafakkoor.easyorder.services.roles.UserRoleService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -48,7 +50,11 @@ public class RoleController {
         return ResponseEntity.noContent().build();
     }
 
-
+    @GetMapping("/roles")
+    public ResponseEntity<List<UserRole>> roles() {
+        List<UserRole> roleList = userRoleService.getRoles();
+        return ResponseEntity.ok(roleList);
+    }
 
 
 }

@@ -1,6 +1,9 @@
 package uz.tafakkoor.easyorder.services.roles;
 
+import com.twilio.base.Page;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.converters.models.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.domains.user.UserRole;
 import uz.tafakkoor.easyorder.dtos.roles.UserRoleCreateDTO;
@@ -11,6 +14,7 @@ import uz.tafakkoor.easyorder.mappers.roles.UserRoleMapper;
 import uz.tafakkoor.easyorder.repositories.user.UserRolesRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -51,5 +55,9 @@ public class UserRoleService {
 
     public void delete(Integer id) {
         userRolesRepository.deleteById(id);
+    }
+
+    public List<UserRole> getRoles() {
+        return userRolesRepository.findAll();
     }
 }

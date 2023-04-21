@@ -15,6 +15,9 @@ import uz.tafakkoor.easyorder.domains.user.UserPermission;
 import uz.tafakkoor.easyorder.dtos.roles.UserPermissionCreateDTO;
 import uz.tafakkoor.easyorder.services.roles.UserPermissionService;
 
+import java.awt.print.Pageable;
+import java.util.List;
+
 @ParameterObject
 @RequiredArgsConstructor
 @RestController
@@ -136,5 +139,11 @@ public class PermissionController {
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         permissionService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<UserPermission>> getAll() {
+        List<UserPermission> permissionList = permissionService.getAll();
+        return ResponseEntity.ok(permissionList);
     }
 }

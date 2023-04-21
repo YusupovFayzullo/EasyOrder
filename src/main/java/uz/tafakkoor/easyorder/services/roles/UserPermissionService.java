@@ -7,6 +7,7 @@ import uz.tafakkoor.easyorder.exceptions.DuplicatePermissionCodeException;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.repositories.user.UserPermissionRepository;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -37,5 +38,9 @@ public class UserPermissionService {
 
     public void delete(Integer id) {
         userPermissionRepository.deleteById(id);
+    }
+
+    public List<UserPermission> getAll() {
+        return userPermissionRepository.findAll();
     }
 }
