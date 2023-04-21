@@ -10,13 +10,12 @@ import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
 import uz.tafakkoor.easyorder.exceptions.TimeParseException;
+import uz.tafakkoor.easyorder.repositories.ImageRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.AddressRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.services.ImageService;
 
 import java.time.LocalTime;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +25,7 @@ public class RestaurantService {
     private final RestaurantRepository repository;
     private final AddressRepository addressRepository;
     private final ImageService imageService;
+    private final ImageRepository imageRepository;
 
 
     public Restaurant saveRestaurant(RestaurantCreateDto dto) {
@@ -59,7 +59,6 @@ public class RestaurantService {
 
         Address savedAddress = addressRepository.save(address);
 
-        List<String> imageURLs = imageService.saveImagesToServer(dto.getImages());
 
         Restaurant restaurant = Restaurant.restaurantBuilder()
                 .address(savedAddress)
@@ -69,8 +68,10 @@ public class RestaurantService {
                 .description(dto.getDescription())
                 .openTime(open)
                 .closeTime(close)
-                .imageURLs(imageURLs)
                 .build();
+
+        imageRepository.findById(dto.getImageID()).ifPresent(restaurant::setImage);
+
         return repository.save(restaurant);
     }
 
@@ -83,8 +84,6 @@ public class RestaurantService {
 
         open = LocalTime.of(openTime.getHour(), openTime.getMinute());
         close = LocalTime.of(closeTime.getHour(), closeTime.getMinute());
-
-        Collection<String> imageURLs = imageService.saveImagesToServer(dto.getImages());
 
 
         Optional<Restaurant> byId = repository.findById(id);
@@ -107,7 +106,9 @@ public class RestaurantService {
             restaurant.setEmail(dto.getEmail());
             restaurant.setDescription(dto.getDescription());
             restaurant.setStatus(dto.getStatus());
-            restaurant.setImageURLs(imageURLs);
+
+            imageRepository.findById(dto.getImageID()).ifPresent(restaurant::setImage);
+
             return repository.save(restaurant);
         }
         return null;

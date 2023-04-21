@@ -11,3 +11,10 @@ Spring 5 da WEB CLIENT qushilgan  Rest Templatening urniga.
 
 Database Migration (Flyway || Liquibase)
 Fly
+------------------------------------------------------
+
+Publisher and Subscriber bu texnologiyalar    buu texnologiyalar  doimo birga  ishlatiladi
+PubSub  qisqa  qilib aytsa ham buladi .
+Subscriberni Consumer deb ham atasak buladi.
+
+

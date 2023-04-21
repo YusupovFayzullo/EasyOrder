@@ -67,8 +67,8 @@ public class RestaurantController {
                             schema = @Schema(implementation = RuntimeException.class))})
     })
 
-    @PostMapping(produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Restaurant> create(@ModelAttribute RestaurantCreateDto dto) {
+    @PostMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Restaurant> create(@Valid RestaurantCreateDto dto) {
         Restaurant restaurant = restaurantService.saveRestaurant(dto);
         if (restaurant == null) {
             throw new RuntimeException();
@@ -77,32 +77,32 @@ public class RestaurantController {
     }
 
     @Operation(summary = "This API used to update restaurant")
-    @PutMapping(value = "{id}", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-        public ResponseEntity<String> update (@NonNull @Valid @RequestBody RestaurantUpdateDto dto, @PathVariable Long id){
+    @PutMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<String> update (@NonNull @Valid  RestaurantUpdateDto dto, @PathVariable Long id){
             Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
 
-            try {
-                RestaurantTime closeTime = dto.getCloseTime();
-                RestaurantTime openTime = dto.getOpenTime();
+        try {
+            RestaurantTime closeTime = dto.getCloseTime();
+            RestaurantTime openTime = dto.getOpenTime();
 
-            } catch (Exception e) {
-                throw new RuntimeException();
-            }
-
-            if (restaurant.isDeleted()) return ResponseEntity.ok("Not found");
-            Restaurant restaurant1 = restaurantService.updateRestaurant(dto, id);
-
-            return ResponseEntity.ok("Successfully updated by " + restaurant1.getId());
+        } catch (Exception e) {
+            throw new RuntimeException();
         }
 
-        @Operation(summary = "This API used to delete restaurant")
-        @DeleteMapping(value = "/{id}")
-        public ResponseEntity<String> delete(@PathVariable Long id){
-            Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
-            restaurant.setDeleted(true);
-            Restaurant save = restaurantRepository.save(restaurant);
-            return ResponseEntity.ok("Successfully deleted by " + save.getId());
-        }
+        if (restaurant.isDeleted()) return ResponseEntity.ok("Not found");
+        Restaurant restaurant1 = restaurantService.updateRestaurant(dto, id);
 
-
+        return ResponseEntity.ok("Successfully updated by " + restaurant1.getId());
     }
+
+    @Operation(summary = "This API used to delete restaurant")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
+        restaurant.setDeleted(true);
+        Restaurant save = restaurantRepository.save(restaurant);
+        return ResponseEntity.ok("Successfully deleted by " + save.getId());
+    }
+
+
+}

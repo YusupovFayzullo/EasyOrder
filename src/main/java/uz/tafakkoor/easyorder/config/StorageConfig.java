@@ -6,15 +6,19 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
 public class StorageConfig {
-    private String accessKey = "AKIAV2VDW3ICSX4DGHSP";
-    private String secretKey = "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";
-    private String BUCKET_NAME = "easyorder";
+    @Value("${cloud.aws.credentials.access-key}")
+    private String accessKey;
+    @Value("${cloud.aws.credentials.secret-key}")
+    private String secretKey;
+    @Value("${cloud.aws.bucket.name}")
+    private String BUCKET_NAME;
 
 
     @Bean
