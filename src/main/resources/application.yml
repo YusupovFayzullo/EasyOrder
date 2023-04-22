@@ -49,6 +49,8 @@ management:
         include: '*'
 cloud:
   aws:
+    stack:
+      auto: false
     bucket:
       name: 'easyorder'
     credentials:
@@ -56,6 +58,12 @@ cloud:
       secret-key: 'RnvlLSy+lDRyFT9DlFfQuC9d1c5PRulCw9+F7woU'
     region:
       static: ap-south-1
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
 
 ---
 spring:

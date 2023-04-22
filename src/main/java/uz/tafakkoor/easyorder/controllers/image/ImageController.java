@@ -3,7 +3,6 @@ package uz.tafakkoor.easyorder.controllers.image;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +15,6 @@ import uz.tafakkoor.easyorder.domains.Document;
 import uz.tafakkoor.easyorder.services.ImageService;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +27,7 @@ public class ImageController {
 
     @Operation(summary = "Upload image to server")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Document> uploadFile(@RequestParam("file") MultipartFile file) throws IOException, ExecutionException, InterruptedException {
+    public ResponseEntity<Document> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         return ResponseEntity.status(201).body(imageService.saveImageToServer(file));
     }
 
@@ -41,6 +39,12 @@ public class ImageController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         return new ResponseEntity<>(imageFromAWS, headers, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{fileName}")
+    public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
+        String deleted = imageService.deleteImageFromAWS(fileName);
+        return ResponseEntity.status(200).body(deleted);
     }
 
 
