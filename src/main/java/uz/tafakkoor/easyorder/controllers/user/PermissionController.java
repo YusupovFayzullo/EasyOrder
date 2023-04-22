@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
@@ -51,7 +52,7 @@ public class PermissionController {
                     })
     })
     @PostMapping("/")
-    public ResponseEntity<UserPermission> createPermission(@RequestBody UserPermissionCreateDTO createDTO) {
+    public ResponseEntity<UserPermission> createPermission(@RequestBody @Valid UserPermissionCreateDTO createDTO) {
         UserPermission permission = UserPermission.builder()
                 .name(createDTO.getName())
                 .code(createDTO.getCode())
@@ -141,6 +142,23 @@ public class PermissionController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "This API used for getting all permissions",
+            description = "This endpoint was designed for getting all permissions"
+            /*,deprecated = true*/)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Permissions found",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = UserPermission.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    })
+    })
     @GetMapping("/all")
     public ResponseEntity<List<UserPermission>> getAll() {
         List<UserPermission> permissionList = permissionService.getAll();

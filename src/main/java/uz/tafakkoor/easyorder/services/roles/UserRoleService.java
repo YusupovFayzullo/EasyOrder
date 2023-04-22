@@ -10,6 +10,7 @@ import uz.tafakkoor.easyorder.domains.user.UserRole;
 import uz.tafakkoor.easyorder.dtos.roles.UserRoleCreateDTO;
 import uz.tafakkoor.easyorder.dtos.roles.UserRolePermissionDTO;
 import uz.tafakkoor.easyorder.exceptions.DuplicatePermissionCodeException;
+import uz.tafakkoor.easyorder.exceptions.DuplicatePermissionForSingleRoleException;
 import uz.tafakkoor.easyorder.exceptions.DuplicateUserRoleCodeException;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.mappers.roles.UserRoleMapper;
@@ -75,7 +76,11 @@ public class UserRoleService {
             authPermissions.add(permission);
         }
         role.setAuthPermissions(authPermissions);
-        return userRolesRepository.save(role);
+        try {
+            return userRolesRepository.save(role);
+        }catch (Exception e){
+            throw new DuplicatePermissionForSingleRoleException("Permission already exists for the role %s ".formatted(role.getName()));
+        }
     }
 
     public UserRole removePermission(UserRolePermissionDTO dto) {
