@@ -59,7 +59,7 @@ public class AuthService {
         User user = UserMapper.INSTANCE.toEntity(dto);
         user.setPassword(this.passwordEncoder.encode(dto.password()));
         user.setRoles(Collections.singletonList(this.userRolesRepository.findByCode("USER")));
-        User  saved_user = this.userRepository.save(user);
+        User saved_user = this.userRepository.save(user);
         String code = this.utils.generateOTP();
         CompletableFuture.runAsync(() -> {
             OTP Otp = OTP.childBuilder().userID(saved_user.getId()).code(code).expiresAt(LocalDateTime.now().plusMinutes(this.activationCodeExpiry)).otpType(OtpType.ACCOUNT_ACTIVATE).build();
@@ -72,14 +72,13 @@ public class AuthService {
     public TokenResponse refreshToken(@NotNull RefreshTokenRequest refreshTokenRequest) {
 
         String refreshToken = refreshTokenRequest.refreshToken();
-        if (!this.jwtUtils.isTokenValid(refreshToken, TokenType.REFRESH)) {
+        if (!this.jwtUtils.isTokenValid(refreshToken, TokenType.REFRESH))
             throw new CredentialsExpiredException("Token is invalid");
-        } else {
-            String email = this.jwtUtils.getUsername(refreshToken, TokenType.REFRESH);
-            this.userRepository.findByPhoneNumber(email);
-            TokenResponse tokenResponse = TokenResponse.builder().refreshToken(refreshToken).refreshTokenExpiry(this.jwtUtils.getExpiry(refreshToken, TokenType.REFRESH)).build();
-            return this.jwtUtils.generateAccessToken(email, tokenResponse);
-        }
+
+        String email = this.jwtUtils.getUsername(refreshToken, TokenType.REFRESH);
+        this.userRepository.findByPhoneNumber(email);
+        TokenResponse tokenResponse = TokenResponse.builder().refreshToken(refreshToken).refreshTokenExpiry(this.jwtUtils.getExpiry(refreshToken, TokenType.REFRESH)).build();
+        return this.jwtUtils.generateAccessToken(email, tokenResponse);
     }
 
     public String activate(String code, String phoneNumber) {

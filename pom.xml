@@ -137,13 +137,11 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.1.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.7.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-aws</artifactId>
@@ -154,6 +152,13 @@
             <artifactId>twilio</artifactId>
             <version>9.2.5</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>8.0.0.Final</version>
+        </dependency>
+
 
     </dependencies>
 

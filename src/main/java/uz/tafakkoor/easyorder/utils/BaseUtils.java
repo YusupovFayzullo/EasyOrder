@@ -9,12 +9,12 @@ import java.util.UUID;
 
 @Component
 public class BaseUtils {
-    public static String generateUniqueName(@NonNull String fileName) {
+    public  String generateUniqueName(@NonNull String fileName) {
         return UUID.randomUUID() + "." + StringUtils.getFilenameExtension(fileName);
     }
 
     public String generateOTP() {
-        return String.format("%06d", (int)(Math.random() * 1000000.0));
+        return String.format("%06d", (int) (Math.random() * 1000000.0));
     }
 
 }

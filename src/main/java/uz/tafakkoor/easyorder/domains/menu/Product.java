@@ -3,6 +3,7 @@ package uz.tafakkoor.easyorder.domains.menu;
 import jakarta.persistence.*;
 import lombok.*;
 import uz.tafakkoor.easyorder.domains.Auditable;
+import uz.tafakkoor.easyorder.domains.Document;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -19,8 +20,8 @@ public class Product extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ElementCollection
-    private Collection<String> imageURLs;
+    @OneToOne
+    private Document image;
     private String name;
     private String description;
     private Double price;
@@ -32,11 +33,10 @@ public class Product extends Auditable {
     private Category category;
 
     @Builder(builderMethodName = "productBuilder")
-    public Product(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt,
-                   boolean isDeleted, Long id, Collection<String> imageURLs, String name, String description, Double price, Double discount, Double rating, boolean isAvailable, Category category) {
+    public Product(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted, Long id, Document image, String name, String description, Double price, Double discount, Double rating, boolean isAvailable, Category category) {
         super(createdBy, updateBy, createdAt, updatedAt, isDeleted);
         this.id = id;
-        this.imageURLs = imageURLs;
+        this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;

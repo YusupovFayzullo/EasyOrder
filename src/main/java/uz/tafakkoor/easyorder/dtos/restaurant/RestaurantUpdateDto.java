@@ -3,6 +3,7 @@ package uz.tafakkoor.easyorder.dtos.restaurant;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
 import uz.tafakkoor.easyorder.enums.RestaurantStatus;
@@ -14,6 +15,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ParameterObject
 public class RestaurantUpdateDto {
 
 
@@ -22,8 +24,7 @@ public class RestaurantUpdateDto {
 
     private AddressDto dto;
     private String description;
-    private Collection<MultipartFile> images;
-    private Collection<String> imageDtos;
+    private Long imageID;
 
     @NotBlank(message = "phoneNumber can not be blank")
     private String phoneNumber;
