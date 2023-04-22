@@ -11,7 +11,6 @@ import org.springdoc.core.annotations.ParameterObject;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ParameterObject
 public class RestaurantTime {
 
     private int hour;

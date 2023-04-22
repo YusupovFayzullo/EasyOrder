@@ -1,6 +1,8 @@
 package uz.tafakkoor.easyorder.dtos.restaurant;
 
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +19,7 @@ import java.util.Collection;
 @ParameterObject
 public class RestaurantCreateDto {
 
-    //    @NotBlank(message = "name can not be blank")
+    @NotBlank(message = "name can not be blank")
     private String name;
 
 
@@ -28,10 +30,10 @@ public class RestaurantCreateDto {
 
     private Long imageID;
 
-    //    @NotBlank(message = "phoneNumber can not be blank")
+    @NotBlank(message = "phoneNumber can not be blank")
     private String phoneNumber;
 
-    //    @Email(regexp = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-]+)(\\.[a-zA-Z]{2,5}){1,2}$")
+    @Email(regexp = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-]+)(\\.[a-zA-Z]{2,5}){1,2}$",message = "Email is invalid")
     private String email;
 
     private RestaurantTime openTime;

@@ -2,6 +2,7 @@ package uz.tafakkoor.easyorder.domains.restaurant;
 
 import jakarta.persistence.*;
 import lombok.*;
+import uz.tafakkoor.easyorder.domains.Document;
 
 @Getter
 @Setter
@@ -23,7 +24,9 @@ public class Table {
 
     private boolean isDeleted;
 
-    private String qrCodeURL;
+    @OneToOne
+    private Document image;
+
     @ManyToOne
     private Restaurant restaurant;
 }

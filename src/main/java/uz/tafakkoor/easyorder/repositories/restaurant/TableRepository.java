@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.domains.restaurant.Table;
 import uz.tafakkoor.easyorder.dtos.restaurant.NotBookedTableDto;
 
@@ -24,10 +25,10 @@ public interface TableRepository extends JpaRepository<Table, Long> {
 
 
     @Query("""
-            select new uz.tafakkoor.easyorder.dtos.restaurant.NotBookedTableDto(t.number,t.capacity,t.qrCodeURL,r.name,r.address.city,r.address.street,r.address.house,r.phoneNumber,r.openTime,r.closeTime) from Table  t inner join Restaurant  r
+            select new uz.tafakkoor.easyorder.dtos.restaurant.NotBookedTableDto(t.number,t.capacity,t.image,r.name,r.address.city,r.address.street,r.address.house,r.phoneNumber,r.openTime,r.closeTime) from Table  t inner join Restaurant  r
             on r.id=t.restaurant.id where t.isBooked=false and t.isDeleted=false and r.id=?1""")
     List<NotBookedTableDto> getInfoNotBooked(Long id);
-    //            select new uz.tafakkoor.easyorder.dtos.restaurant.NotBookedTableDto(t.number,t.capacity, t.qrCodeURL,r.name, r.address.city, r.address.street, r.address.house,  r.phoneNumber,r.openTime, r.closeTime) from Table  t inner join Restaurant  r
 
+    Optional<Table> findByRestaurantId(Long id);
 
 }

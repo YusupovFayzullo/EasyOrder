@@ -3,6 +3,7 @@ package uz.tafakkoor.easyorder.services.restaurant;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.tafakkoor.easyorder.domains.Document;
 import uz.tafakkoor.easyorder.domains.restaurant.Address;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
@@ -24,7 +25,6 @@ public class RestaurantService {
 
     private final RestaurantRepository repository;
     private final AddressRepository addressRepository;
-    private final ImageService imageService;
     private final ImageRepository imageRepository;
 
 
@@ -32,8 +32,7 @@ public class RestaurantService {
 
         RestaurantTime openTime = dto.getOpenTime();
         RestaurantTime closeTime = dto.getCloseTime();
-//        LocalTime openTime = dto.getOpenTime();
-//        LocalTime closeTime = dto.getCloseTime();
+
         LocalTime open = null;
         LocalTime close = null;
 
@@ -59,6 +58,12 @@ public class RestaurantService {
 
         Address savedAddress = addressRepository.save(address);
 
+        Optional<Document> byId1 = imageRepository.findById(dto.getImageID());
+        if(!byId1.isPresent()){
+            throw new RuntimeException("Image id not found");
+        }
+
+        Document document = byId1.get();
 
         Restaurant restaurant = Restaurant.restaurantBuilder()
                 .address(savedAddress)
@@ -66,12 +71,10 @@ public class RestaurantService {
                 .name(dto.getName())
                 .phoneNumber(dto.getPhoneNumber())
                 .description(dto.getDescription())
+                .image(document)
                 .openTime(open)
                 .closeTime(close)
                 .build();
-
-        imageRepository.findById(dto.getImageID()).ifPresent(restaurant::setImage);
-
         return repository.save(restaurant);
     }
 
@@ -84,7 +87,11 @@ public class RestaurantService {
 
         open = LocalTime.of(openTime.getHour(), openTime.getMinute());
         close = LocalTime.of(closeTime.getHour(), closeTime.getMinute());
-
+        Optional<Document> byId1 = imageRepository.findById(dto.getImageID());
+        if(!byId1.isPresent()){
+            throw new RuntimeException("Image id not found");
+        }
+        Document document = byId1.get();
 
         Optional<Restaurant> byId = repository.findById(id);
         if (byId.isPresent()) {
@@ -106,13 +113,12 @@ public class RestaurantService {
             restaurant.setEmail(dto.getEmail());
             restaurant.setDescription(dto.getDescription());
             restaurant.setStatus(dto.getStatus());
-
-            imageRepository.findById(dto.getImageID()).ifPresent(restaurant::setImage);
+            restaurant.setImage(document);
 
             return repository.save(restaurant);
+        }else {
+            throw new RuntimeException("Restaurant not found");
         }
-        return null;
-
     }
 
 }
