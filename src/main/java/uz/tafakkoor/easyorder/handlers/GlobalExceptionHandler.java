@@ -1,8 +1,10 @@
 package uz.tafakkoor.easyorder.handlers;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.validation.FieldError;
@@ -61,12 +63,24 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(400)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
     }
-
-    @ExceptionHandler(InsufficientAuthenticationException.class)
-    public ResponseEntity<AppErrorDTO> handleInsufficientAuthenticationException(InsufficientAuthenticationException e, HttpServletRequest request) {
+    @ExceptionHandler(CredentialsExpiredException.class)
+    public ResponseEntity<AppErrorDTO> handleCredentialsExpiredException(CredentialsExpiredException e, HttpServletRequest request) {
         return ResponseEntity.status(400)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
     }
+
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    public ResponseEntity<AppErrorDTO> handleInsufficientAuthenticationException(InsufficientAuthenticationException e, HttpServletRequest request) {
+        return ResponseEntity.status(403)
+                .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
+    }
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<AppErrorDTO> handleExpiredJwtException(ExpiredJwtException e, HttpServletRequest request) {
+        return ResponseEntity.status(403)
+                .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
+    }
+
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<AppErrorDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {

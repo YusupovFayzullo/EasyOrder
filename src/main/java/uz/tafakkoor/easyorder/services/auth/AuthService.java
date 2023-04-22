@@ -72,14 +72,13 @@ public class AuthService {
     public TokenResponse refreshToken(@NotNull RefreshTokenRequest refreshTokenRequest) {
 
         String refreshToken = refreshTokenRequest.refreshToken();
-        if (!this.jwtUtils.isTokenValid(refreshToken, TokenType.REFRESH)) {
+        if (!this.jwtUtils.isTokenValid(refreshToken, TokenType.REFRESH))
             throw new CredentialsExpiredException("Token is invalid");
-        } else {
-            String email = this.jwtUtils.getUsername(refreshToken, TokenType.REFRESH);
-            this.userRepository.findByPhoneNumber(email);
-            TokenResponse tokenResponse = TokenResponse.builder().refreshToken(refreshToken).refreshTokenExpiry(this.jwtUtils.getExpiry(refreshToken, TokenType.REFRESH)).build();
-            return this.jwtUtils.generateAccessToken(email, tokenResponse);
-        }
+
+        String email = this.jwtUtils.getUsername(refreshToken, TokenType.REFRESH);
+        this.userRepository.findByPhoneNumber(email);
+        TokenResponse tokenResponse = TokenResponse.builder().refreshToken(refreshToken).refreshTokenExpiry(this.jwtUtils.getExpiry(refreshToken, TokenType.REFRESH)).build();
+        return this.jwtUtils.generateAccessToken(email, tokenResponse);
     }
 
     public String activate(String code, String phoneNumber) {
