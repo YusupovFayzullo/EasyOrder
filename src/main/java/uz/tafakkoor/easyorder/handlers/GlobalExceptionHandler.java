@@ -1,8 +1,10 @@
 package uz.tafakkoor.easyorder.handlers;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.validation.FieldError;
@@ -10,10 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uz.tafakkoor.easyorder.dtos.AppErrorDTO;
-import uz.tafakkoor.easyorder.exceptions.DuplicatePermissionCodeException;
-import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
-import uz.tafakkoor.easyorder.exceptions.OTPExpiredException;
-import uz.tafakkoor.easyorder.exceptions.UserNotFoundException;
+import uz.tafakkoor.easyorder.exceptions.*;
 
 import java.util.*;
 
@@ -61,12 +60,24 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(400)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
     }
-
-    @ExceptionHandler(InsufficientAuthenticationException.class)
-    public ResponseEntity<AppErrorDTO> handleInsufficientAuthenticationException(InsufficientAuthenticationException e, HttpServletRequest request) {
+    @ExceptionHandler(CredentialsExpiredException.class)
+    public ResponseEntity<AppErrorDTO> handleCredentialsExpiredException(CredentialsExpiredException e, HttpServletRequest request) {
         return ResponseEntity.status(400)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
     }
+
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    public ResponseEntity<AppErrorDTO> handleInsufficientAuthenticationException(InsufficientAuthenticationException e, HttpServletRequest request) {
+        return ResponseEntity.status(403)
+                .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
+    }
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<AppErrorDTO> handleExpiredJwtException(ExpiredJwtException e, HttpServletRequest request) {
+        return ResponseEntity.status(403)
+                .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
+    }
+
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<AppErrorDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
@@ -87,6 +98,20 @@ public class GlobalExceptionHandler {
         AppErrorDTO errorDTO = new AppErrorDTO(errorPath, errorMessage, errorBody, 400);
         return ResponseEntity.status(400).body(errorDTO);
     }
+
+
+    @ExceptionHandler(DuplicateUserRoleCodeException.class)
+    public ResponseEntity<AppErrorDTO> handleDuplicateUserRoleCodeException(DuplicateUserRoleCodeException e, HttpServletRequest request) {
+        return ResponseEntity.status(400)
+                .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), null, 400));
+    }
+    @ExceptionHandler(DuplicatePermissionForSingleRoleException.class)
+    public ResponseEntity<AppErrorDTO> handleDuplicatePermissionForSingleRoleException(DuplicatePermissionForSingleRoleException e, HttpServletRequest request) {
+        return ResponseEntity.status(400)
+                .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), null, 400));
+    }
+
+
 
 
 }

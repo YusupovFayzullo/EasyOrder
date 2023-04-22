@@ -3,6 +3,7 @@ package uz.tafakkoor.easyorder.domains.user;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
-
+@ParameterObject
 @Getter
 @Setter
 @NoArgsConstructor

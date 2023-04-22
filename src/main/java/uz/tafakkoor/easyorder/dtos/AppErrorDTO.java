@@ -1,6 +1,7 @@
 package uz.tafakkoor.easyorder.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ public class AppErrorDTO implements Serializable {
     private final Integer errorCode;
     private final Object errorBody;
     private final Long timestamp;
+
 
     public AppErrorDTO(String errorPath, String errorMessage, Integer errorCode) {
         this(errorPath, errorMessage, null, errorCode);

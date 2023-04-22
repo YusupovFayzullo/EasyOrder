@@ -7,6 +7,7 @@ import uz.tafakkoor.easyorder.exceptions.DuplicatePermissionCodeException;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.repositories.user.UserPermissionRepository;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -29,5 +30,17 @@ public class UserPermissionService {
         userPermission.setCode(Objects.requireNonNullElse(permission.getCode(), userPermission.getCode()));
         userPermission.setName(Objects.requireNonNullElse(permission.getName(), userPermission.getName()));
         return userPermissionRepository.save(userPermission);
+    }
+
+    public UserPermission getPermissionById(Integer id) {
+        return userPermissionRepository.findById(id).orElseThrow(()->new ItemNotFoundException("No permission found with id %s".formatted(id)));
+    }
+
+    public void delete(Integer id) {
+        userPermissionRepository.deleteById(id);
+    }
+
+    public List<UserPermission> getAll() {
+        return userPermissionRepository.findAll();
     }
 }
