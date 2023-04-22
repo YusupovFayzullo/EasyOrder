@@ -77,4 +77,18 @@ public class UserRoleService {
         role.setAuthPermissions(authPermissions);
         return userRolesRepository.save(role);
     }
+
+    public UserRole removePermission(UserRolePermissionDTO dto) {
+
+        UserRole role = get(dto.getUserRoleId());
+        Collection<UserPermission> authPermissions = Objects
+                .requireNonNullElse(role.getAuthPermissions(),
+                        new ArrayList<>());
+        for (Integer integer : dto.getUserPermissionId()) {
+            UserPermission permission = userPermissionService.getPermissionById(integer);
+            authPermissions.remove(permission);
+        }
+        role.setAuthPermissions(authPermissions);
+        return userRolesRepository.save(role);
+    }
 }

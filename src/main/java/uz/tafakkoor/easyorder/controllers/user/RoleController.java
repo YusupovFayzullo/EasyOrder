@@ -63,6 +63,11 @@ public class RoleController {
         UserRole role = userRoleService.addPermission(dto);
         return ResponseEntity.ok(role);
     }
+    @PostMapping("/removePermission")
+    public ResponseEntity<UserRole> removePermission(@RequestBody UserRolePermissionDTO dto) {
+        UserRole role = userRoleService.removePermission(dto);
+        return ResponseEntity.ok(role);
+    }
 
 
 }

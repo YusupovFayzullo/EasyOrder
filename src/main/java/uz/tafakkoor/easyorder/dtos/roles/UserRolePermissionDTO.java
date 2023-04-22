@@ -10,6 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class UserRolePermissionDTO {
+    @NonNull
     private Integer userRoleId;
+    @NonNull
     private List<Integer> userPermissionId;
 }
