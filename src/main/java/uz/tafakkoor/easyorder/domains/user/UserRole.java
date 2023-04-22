@@ -24,6 +24,7 @@ public class UserRole {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_role_id", "user_permission_id"}),
             name = "role_permissions",
             joinColumns = @JoinColumn(name = "user_role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_permission_id", referencedColumnName = "id")

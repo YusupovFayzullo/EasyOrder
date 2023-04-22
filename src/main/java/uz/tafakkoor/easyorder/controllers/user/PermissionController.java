@@ -141,7 +141,7 @@ public class PermissionController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<List<UserPermission>> getAll() {
         List<UserPermission> permissionList = permissionService.getAll();
         return ResponseEntity.ok(permissionList);

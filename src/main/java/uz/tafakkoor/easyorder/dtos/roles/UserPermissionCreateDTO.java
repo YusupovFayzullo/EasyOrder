@@ -8,7 +8,6 @@ import org.springdoc.core.annotations.ParameterObject;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ParameterObject
 public class UserPermissionCreateDTO {
     private String name;
     private String code;

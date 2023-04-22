@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.tafakkoor.easyorder.domains.user.UserPermission;
 import uz.tafakkoor.easyorder.domains.user.UserRole;
 import uz.tafakkoor.easyorder.dtos.roles.UserRoleCreateDTO;
+import uz.tafakkoor.easyorder.dtos.roles.UserRolePermissionDTO;
 import uz.tafakkoor.easyorder.mappers.roles.UserRoleMapper;
 import uz.tafakkoor.easyorder.services.roles.UserRoleService;
 
@@ -54,6 +55,13 @@ public class RoleController {
     public ResponseEntity<List<UserRole>> roles() {
         List<UserRole> roleList = userRoleService.getRoles();
         return ResponseEntity.ok(roleList);
+    }
+
+
+    @PostMapping("/addPermission")
+    public ResponseEntity<UserRole> addPermission(@RequestBody UserRolePermissionDTO dto) {
+        UserRole role = userRoleService.addPermission(dto);
+        return ResponseEntity.ok(role);
     }
 
 
