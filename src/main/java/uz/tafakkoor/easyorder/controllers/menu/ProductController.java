@@ -45,6 +45,15 @@ public class ProductController {
         return ResponseEntity.ok().body(product);
     }
 
+    @Operation(summary = "This API used for getting a product by name", responses = {
+            @ApiResponse(responseCode = "200", description = "Product found"),
+            @ApiResponse(responseCode = "404", description = "Product not found")})
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<Product> getProductByName(String name, Long categoryID) {
+        Product product = productService.getProductByName(name, categoryID);
+        return ResponseEntity.ok().body(product);
+    }
+
     @Operation(summary = "This api get all products by category id", responses = {
             @ApiResponse(responseCode = "200", description = "Categories found"),
             @ApiResponse(responseCode = "404", description = "Products not found")})
