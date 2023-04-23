@@ -18,7 +18,7 @@ public class StorageConfig {
     @Value("${cloud.aws.credentials.secret-key}")
     private String secretKey;
     @Value("${cloud.aws.bucket.name}")
-    private String BUCKET_NAME;
+    private String bucketName;
 
 
     @Bean
@@ -33,7 +33,7 @@ public class StorageConfig {
     @Bean
     public S3Object s3Object() {
         S3Object s3Object = new S3Object();
-        s3Object.setBucketName(BUCKET_NAME);
+        s3Object.setBucketName(bucketName);
         return s3Object;
     }
 }

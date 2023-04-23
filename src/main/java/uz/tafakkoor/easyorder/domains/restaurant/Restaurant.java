@@ -8,7 +8,6 @@ import uz.tafakkoor.easyorder.enums.RestaurantStatus;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Collection;
 
 @Getter
 @Setter

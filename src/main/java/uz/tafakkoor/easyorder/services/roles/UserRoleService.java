@@ -1,15 +1,11 @@
 package uz.tafakkoor.easyorder.services.roles;
 
-import com.twilio.base.Page;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.converters.models.Pageable;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.domains.user.UserPermission;
 import uz.tafakkoor.easyorder.domains.user.UserRole;
 import uz.tafakkoor.easyorder.dtos.roles.UserRoleCreateDTO;
 import uz.tafakkoor.easyorder.dtos.roles.UserRolePermissionDTO;
-import uz.tafakkoor.easyorder.exceptions.DuplicatePermissionCodeException;
 import uz.tafakkoor.easyorder.exceptions.DuplicatePermissionForSingleRoleException;
 import uz.tafakkoor.easyorder.exceptions.DuplicateUserRoleCodeException;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;

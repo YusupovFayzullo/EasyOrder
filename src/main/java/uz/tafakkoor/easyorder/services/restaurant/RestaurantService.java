@@ -11,10 +11,9 @@ import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
 import uz.tafakkoor.easyorder.exceptions.TimeParseException;
-import uz.tafakkoor.easyorder.repositories.ImageRepository;
+import uz.tafakkoor.easyorder.repositories.DocumentRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.AddressRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
-import uz.tafakkoor.easyorder.services.ImageService;
 
 import java.time.LocalTime;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class RestaurantService {
 
     private final RestaurantRepository repository;
     private final AddressRepository addressRepository;
-    private final ImageRepository imageRepository;
+    private final DocumentRepository documentRepository;
 
 
     public Restaurant saveRestaurant(RestaurantCreateDto dto) {
@@ -58,9 +57,9 @@ public class RestaurantService {
 
         Address savedAddress = addressRepository.save(address);
 
-        Optional<Document> byId1 = imageRepository.findById(dto.getImageID());
+        Optional<Document> byId1 = documentRepository.findById(dto.getImageID());
         if(!byId1.isPresent()){
-            throw new RuntimeException("Image id not found");
+            throw new RuntimeException("Document id not found");
         }
 
         Document document = byId1.get();
@@ -87,9 +86,9 @@ public class RestaurantService {
 
         open = LocalTime.of(openTime.getHour(), openTime.getMinute());
         close = LocalTime.of(closeTime.getHour(), closeTime.getMinute());
-        Optional<Document> byId1 = imageRepository.findById(dto.getImageID());
+        Optional<Document> byId1 = documentRepository.findById(dto.getImageID());
         if(!byId1.isPresent()){
-            throw new RuntimeException("Image id not found");
+            throw new RuntimeException("Document id not found");
         }
         Document document = byId1.get();
 

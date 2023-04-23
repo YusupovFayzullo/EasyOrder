@@ -16,11 +16,15 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(value = " from Category c where  c.id = ?1 and c.restaurantID = ?2")
     Optional<Category> findCategory(Long id, Long restaurantId);
 
-    @Query(value = " from Category c where  c.restaurantID = ?1 ")
+    @Query(value = " from Category c where  c.restaurantID = ?1")
     Optional<List<Category>> findCategoryByRestaurantId(Long restaurantID);
 
     @Modifying
     @Transactional
     @Query(value = "update Category c set is_deleted=true where c.id = ?1 and c.restaurantID = ?2", nativeQuery = true)
     Optional<Integer> deleteCategory(Long id, Long restaurantID);
+
+    @Query(value = " from Category c where  c.name = ?1 and c.restaurantID = ?2")
+    Optional<Category> findCategoryByName(String name, Long restaurantID);
+
 }

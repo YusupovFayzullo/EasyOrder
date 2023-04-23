@@ -3,7 +3,6 @@ package uz.tafakkoor.easyorder.dtos.roles;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
-import org.springdoc.core.annotations.ParameterObject;
 
 @Getter
 @Setter

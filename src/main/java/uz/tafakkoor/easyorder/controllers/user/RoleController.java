@@ -1,29 +1,21 @@
 package uz.tafakkoor.easyorder.controllers.user;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.ServletContext;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.converters.models.Pageable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import uz.tafakkoor.easyorder.domains.user.UserPermission;
 import uz.tafakkoor.easyorder.domains.user.UserRole;
 import uz.tafakkoor.easyorder.dtos.roles.UserRoleCreateDTO;
 import uz.tafakkoor.easyorder.dtos.roles.UserRolePermissionDTO;
-import uz.tafakkoor.easyorder.mappers.roles.UserRoleMapper;
 import uz.tafakkoor.easyorder.services.roles.UserRoleService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor

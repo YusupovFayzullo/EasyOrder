@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 @EntityListeners(AuditingEntityListener.class)
 public class Auditable {
 
