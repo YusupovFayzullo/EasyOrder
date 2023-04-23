@@ -10,10 +10,9 @@ import org.springdoc.core.annotations.ParameterObject;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserPermissionCreateDTO {
+public class UserRoleCreateDTO {
     @NotBlank(message = "Name must not be blank")
     private String name;
-
     @NotBlank(message = "Code must not be blank")
     @Pattern(regexp = "^[A-Z_]+$", message = "Code must be in uppercase and underscore")
     private String code;

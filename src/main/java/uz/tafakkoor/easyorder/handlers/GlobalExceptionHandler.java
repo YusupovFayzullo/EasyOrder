@@ -12,10 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uz.tafakkoor.easyorder.dtos.AppErrorDTO;
-import uz.tafakkoor.easyorder.exceptions.DuplicatePermissionCodeException;
-import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
-import uz.tafakkoor.easyorder.exceptions.OTPExpiredException;
-import uz.tafakkoor.easyorder.exceptions.UserNotFoundException;
+import uz.tafakkoor.easyorder.exceptions.*;
 
 import java.util.*;
 
@@ -101,6 +98,20 @@ public class GlobalExceptionHandler {
         AppErrorDTO errorDTO = new AppErrorDTO(errorPath, errorMessage, errorBody, 400);
         return ResponseEntity.status(400).body(errorDTO);
     }
+
+
+    @ExceptionHandler(DuplicateUserRoleCodeException.class)
+    public ResponseEntity<AppErrorDTO> handleDuplicateUserRoleCodeException(DuplicateUserRoleCodeException e, HttpServletRequest request) {
+        return ResponseEntity.status(400)
+                .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), null, 400));
+    }
+    @ExceptionHandler(DuplicatePermissionForSingleRoleException.class)
+    public ResponseEntity<AppErrorDTO> handleDuplicatePermissionForSingleRoleException(DuplicatePermissionForSingleRoleException e, HttpServletRequest request) {
+        return ResponseEntity.status(400)
+                .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), null, 400));
+    }
+
+
 
 
 }

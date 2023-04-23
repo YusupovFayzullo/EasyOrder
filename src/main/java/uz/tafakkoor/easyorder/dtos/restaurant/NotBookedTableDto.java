@@ -2,6 +2,7 @@ package uz.tafakkoor.easyorder.dtos.restaurant;
 
 import lombok.*;
 import lombok.experimental.Accessors;
+import uz.tafakkoor.easyorder.domains.Document;
 
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -16,7 +17,7 @@ import java.time.LocalTime;
 public class NotBookedTableDto implements Serializable {
     private String number;
     private Integer capacity;
-    private String imageURLs;
+    private Document document;
     private String name;
 
     private String city;

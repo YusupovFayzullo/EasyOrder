@@ -24,6 +24,7 @@ import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.services.restaurant.RestaurantService;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -54,7 +55,7 @@ public class RestaurantController {
     public Page<Restaurant> getAll(@RequestParam(required = false, defaultValue = "5") Integer size,
                                    @RequestParam(required = false, defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, size);
-        return restaurantRepository.getAll(pageable);
+        return  restaurantRepository.findAll(pageable);
     }
 
     @Operation(summary = "This API used to create restaurant")

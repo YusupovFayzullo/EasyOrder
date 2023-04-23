@@ -50,7 +50,6 @@ public class TableController {
         }
         return ResponseEntity.ok(byId.orElseThrow(() -> new ItemNotFoundException("Table not found with id " + id)));
 
-
     }
 
     @Operation(summary = "This API used for getting all tables")
@@ -58,12 +57,16 @@ public class TableController {
     public Page<Table> getAll(@RequestParam(required = false, defaultValue = "5") Integer size,
                               @RequestParam(required = false, defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, size);
-        return tableRepository.getAll(pageable);
+        return tableRepository.findAll(pageable);
     }
 
     @Operation(summary = "This API used for getting is not booked tables")
     @GetMapping("/notBooked/{restaurantId}")
     public ResponseEntity<List<NotBookedTableDto>> getAll(@PathVariable Long restaurantId) {
+        Table table = tableRepository.findByRestaurantId(restaurantId).orElseThrow(() -> new ItemNotFoundException("Table not found  by restaurant with " +restaurantId));
+        if (table.getRestaurant().isDeleted()) {
+            throw new RuntimeException("Restaurant is deleted");
+        }
         List<NotBookedTableDto> infoNotBooked = tableRepository.getInfoNotBooked(restaurantId);
         return ResponseEntity.ok(infoNotBooked);
     }
@@ -84,34 +87,29 @@ public class TableController {
                     })
     })
     @PostMapping
-    public ResponseEntity<Table> create(@NonNull @Valid @RequestBody TableCreateDto dto) {
+    public ResponseEntity<Table> create(@NonNull @Valid  TableCreateDto dto) {
         Long restaurantId = dto.getRestaurantId();
         Optional<Table> byId = tableRepository.getById(restaurantId, dto.getNumber());
-        if (byId.isPresent()) return ResponseEntity.status(404).body(null);
-        Table table = tableService.saveRestaurant(dto);
-
-        if (table == null) {
-            throw new RuntimeException();
+        if (byId.isPresent()) {
+            throw new RuntimeException("This number already existed in this restaurant");
         }
+        Table table = tableService.saveRestaurant(dto);
         return ResponseEntity.status(201).body(table);
     }
 
     @Operation(summary = "This API used to update table")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> update(@NonNull @Valid @RequestBody TableUpdate dto, @PathVariable Long id) {
+    public ResponseEntity<String> update( @Valid  TableUpdate dto, @PathVariable Long id) {
         Table table = tableRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Table not found with by " + id));
         Long restaurantId = dto.getRestaurantId();
-        Optional<Table> byId = tableRepository.getById(restaurantId, table.getNumber());
+        Optional<Table> byId = tableRepository.getById(restaurantId, dto.getNumber());
 
-        if (byId.isPresent()) return ResponseEntity.status(404).body(null);
-        if (table.isDeleted()) {
-            throw new RuntimeException("This table not found");
+        if (byId.isPresent()) {
+            throw new RuntimeException(dto.getNumber()+" number already existed in restaurant by "+restaurantId);
         }
         Table table1 = tableService.updateRestaurant(dto, id);
-        if (table1 == null) {
-            throw new RuntimeException();
-        }
-        return ResponseEntity.ok("Succesfully updated " + table.getId());
+
+        return ResponseEntity.ok("Succesfully updated " + table1.getId());
     }
 
     @Operation(summary = "This API used to delete table")

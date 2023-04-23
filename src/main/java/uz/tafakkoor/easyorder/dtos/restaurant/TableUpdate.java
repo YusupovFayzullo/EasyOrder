@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springdoc.core.annotations.ParameterObject;
 
 
 @Getter
@@ -11,8 +12,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
+@ParameterObject
 public class TableUpdate {
+
     @NotBlank(message = "number can not blank")
     private String number;
 
@@ -23,7 +25,7 @@ public class TableUpdate {
     private boolean booked;
 
     private boolean isDeleted;
-    private String image;
+    private Long imageId;
 
     private Long restaurantId;
 
