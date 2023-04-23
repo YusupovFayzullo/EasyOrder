@@ -29,7 +29,7 @@ public class ImageController {
 
     @Operation(summary = "Upload image to server")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Document> uploadFile(@RequestParam("file") MultipartFile file) throws IOException, ExecutionException, InterruptedException {
+    public ResponseEntity<Document> uploadFile(@RequestParam("file") MultipartFile file) throws IOException,     ExecutionException, InterruptedException {
         return ResponseEntity.status(201).body(imageService.saveImageToServer(file));
     }
 

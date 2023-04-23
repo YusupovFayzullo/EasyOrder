@@ -31,7 +31,6 @@ import java.util.Optional;
 @RequestMapping("/api/v1/restaurant")
 @RequiredArgsConstructor
 @Tag(name = "Restaurant", description = "Restaurant API")
-
 public class RestaurantController {
 
     private final RestaurantRepository restaurantRepository;

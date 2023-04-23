@@ -50,8 +50,8 @@ public class HibernateConfig {
                         .description("SpringShop Wiki Documentation")
                         .url("https://springshop.wiki.github.org/docs"))
                 .servers(List.of(
-                        new Server().url("http://localhost:8080").description("Production Server"),
-                        new Server().url("http://192.168.68.101:8080").description("Daxshatli Server"),
+                        new Server().url("http://localhost:8080").description("Development Server"),
+                        new Server().url("http://192.168.68.101:8080").description("Production Server"),
                         new Server().url("http://localhost:9090").description("Test Server")
                 )).addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components((new Components()
@@ -67,7 +67,7 @@ public class HibernateConfig {
     public GroupedOpenApi authOpenApi() {
         return GroupedOpenApi.builder()
                 .group("auth")
-                .pathsToMatch("/api/auth/**")
+                .pathsToMatch("/api/v1/auth/**")
                 .build();
     }
 
@@ -76,6 +76,21 @@ public class HibernateConfig {
         return GroupedOpenApi.builder()
                 .group("all")
                 .pathsToMatch("/**")
+                .build();
+    }
+    @Bean
+    public GroupedOpenApi restaurantOpenApi() {
+        return GroupedOpenApi.builder()
+                .group("restaurant")
+                .pathsToMatch("/api/v1/restaurant/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi qrOpenApi() {
+        return GroupedOpenApi.builder()
+                .group("qr")
+                .pathsToMatch("/api/v1/qr/**")
                 .build();
     }
 }

@@ -47,13 +47,12 @@ public class SecurityConfigurer {
                 .and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/token",
-                        "/swagger-ui.html",
+                .requestMatchers("/swagger-ui.html",
                         "/swagger-ui*/**",
                         "/swagger-ui*/*swagger-initializer.js",
                         "/v3/api-docs*/**",
                         "/actuator/health*/**",
-                        "/api/auth/**",
+                        "/api/v1/auth/**",
                         "/actuator",
                         "/error",
                         "/webjars/**"/*,
