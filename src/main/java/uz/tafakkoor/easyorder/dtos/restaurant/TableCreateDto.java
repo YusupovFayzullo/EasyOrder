@@ -25,7 +25,6 @@ public class TableCreateDto {
 
     private Integer capacity;
     private boolean isBooked;
-    private Long imageID;
     private Long restaurantId;
 
 }

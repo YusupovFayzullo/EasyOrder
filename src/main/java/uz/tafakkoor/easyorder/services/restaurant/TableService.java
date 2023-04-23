@@ -28,62 +28,36 @@ public class TableService {
     private final DocumentRepository documentRepository;
 
     public Table saveRestaurant(TableCreateDto dto) {
-        Optional<Restaurant> byId = restaurantRepository.findById(dto.getRestaurantId());
-        if (!byId.isPresent()) {
-            throw new RuntimeException("Restaurant not found");
-        }
+        Restaurant restaurant= restaurantRepository.findById(dto.getRestaurantId()).orElseThrow(() -> new ItemNotFoundException("Restaurant not found"));
 
-
-        Restaurant restaurant = restaurantRepository.findById(dto.getRestaurantId()).get();
         if (restaurant.isDeleted()) {
             throw new RuntimeException("Restaurant deleted");
         }
-        Optional<Document> byId1 = documentRepository.findById(dto.getImageID());
-        if (!byId1.isPresent()) {
-            throw new RuntimeException("Image id not found");
-        }
-        Document document = byId1.get();
-        if (document.isDeleted()) {
-            throw new RuntimeException("Image deleted");
-        }
+
         Table table = Table.builder().
                 number(dto.getNumber())
                 .capacity(dto.getCapacity())
                 .isBooked(dto.isBooked())
-                .image(document)
                 .restaurant(restaurant)
                 .build();
 
         return tableRepository.save(table);
     }
 
-    public Table updateRestaurant(TableUpdate dto, Long id) {
+    public Table updateTable(TableUpdate dto, Long id) {
         Table table = tableRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Table not found"));
         if (table.isDeleted()) {
-            throw new RuntimeException("Restaurant is deleted");
+            throw new RuntimeException("Table is deleted");
         }
-        Optional<Restaurant> byId = restaurantRepository.findById(dto.getRestaurantId());
-        if (!byId.isPresent()) {
-            throw new RuntimeException("Restaurant not found");
-        }
-        Restaurant restaurant = byId.get();
-        if (restaurant.isDeleted()) {
-            throw new RuntimeException("Restaurant deleted");
-        }
-        Optional<Document> byId1 = documentRepository.findById(dto.getImageId());
-        if (!byId1.isPresent()) {
-            throw new RuntimeException("Image id not found");
-        }
-        Document document = byId1.get();
-        if (document.isDeleted()) {
-            throw new RuntimeException("Image deleted");
-        }
+        Restaurant restaurant = restaurantRepository.findById(dto.getRestaurantId()).orElseThrow(() -> new ItemNotFoundException("Restaurant not found by id" + dto.getRestaurantId()));
+
+        if (restaurant.isDeleted()) throw new RuntimeException("Restaurant deleted");
+
         table.setRestaurant(restaurant);
         table.setDeleted(dto.isDeleted());
         table.setNumber(dto.getNumber());
         table.setBooked(dto.isBooked());
         table.setCapacity(dto.getCapacity());
-        documentRepository.findById(dto.getImageId()).ifPresent(table::setImage);
         return tableRepository.save(table);
 
     }

@@ -58,7 +58,7 @@ public class RestaurantService {
         Address savedAddress = addressRepository.save(address);
 
         Optional<Document> byId1 = documentRepository.findById(dto.getImageID());
-        if(!byId1.isPresent()){
+        if (!byId1.isPresent()) {
             throw new RuntimeException("Document id not found");
         }
 
@@ -87,7 +87,7 @@ public class RestaurantService {
         open = LocalTime.of(openTime.getHour(), openTime.getMinute());
         close = LocalTime.of(closeTime.getHour(), closeTime.getMinute());
         Optional<Document> byId1 = documentRepository.findById(dto.getImageID());
-        if(!byId1.isPresent()){
+        if (!byId1.isPresent()) {
             throw new RuntimeException("Document id not found");
         }
         Document document = byId1.get();
@@ -115,7 +115,7 @@ public class RestaurantService {
             restaurant.setImage(document);
 
             return repository.save(restaurant);
-        }else {
+        } else {
             throw new RuntimeException("Restaurant not found");
         }
     }

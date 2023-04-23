@@ -72,6 +72,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(400)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
     }
+
     @ExceptionHandler(CredentialsExpiredException.class)
     public ResponseEntity<AppErrorDTO> handleCredentialsExpiredException(CredentialsExpiredException e, HttpServletRequest request) {
         return ResponseEntity.status(400)
@@ -83,12 +84,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(403)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
     }
+
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<AppErrorDTO> handleExpiredJwtException(ExpiredJwtException e, HttpServletRequest request) {
         return ResponseEntity.status(403)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), 400));
     }
-
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -117,13 +118,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(400)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), null, 400));
     }
+
     @ExceptionHandler(DuplicatePermissionForSingleRoleException.class)
     public ResponseEntity<AppErrorDTO> handleDuplicatePermissionForSingleRoleException(DuplicatePermissionForSingleRoleException e, HttpServletRequest request) {
         return ResponseEntity.status(400)
                 .body(new AppErrorDTO(request.getRequestURI(), e.getMessage(), null, 400));
     }
-
-
 
 
 }

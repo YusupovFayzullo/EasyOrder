@@ -25,6 +25,7 @@ import uz.tafakkoor.easyorder.services.qr.QRCodeService;
 @Tag(name = "QR Code", description = "QR Code API")
 public class QRCodeController {
     private final QRCodeService qrCodeService;
+
     @Operation(summary = "This API is used for QR code generation",
             responses = {
                     @ApiResponse(responseCode = "200", description = "QR code generated", content = @Content(schema = @Schema(implementation = MultipartFile.class))),

@@ -78,6 +78,7 @@ public class HibernateConfig {
                 .pathsToMatch("/**")
                 .build();
     }
+
     @Bean
     public GroupedOpenApi restaurantOpenApi() {
         return GroupedOpenApi.builder()

@@ -29,7 +29,7 @@ public class ProductUpdateDTO {
     private String description;
 
     private Double price;
-//    @Size(max = 100, message = "Product discount must be less than 100%")
+    //    @Size(max = 100, message = "Product discount must be less than 100%")
     private Double discount;
 
     private Long imageId;

@@ -109,7 +109,7 @@ public class TableController {
         if (byId.isPresent()) {
             throw new RuntimeException(dto.getNumber() + " number already existed in restaurant by " + restaurantId);
         }
-        Table table1 = tableService.updateRestaurant(dto, id);
+        Table table1 = tableService.updateTable(dto, id);
 
         return ResponseEntity.ok("Succesfully updated " + table1.getId());
     }

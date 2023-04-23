@@ -74,7 +74,7 @@ public class UserRoleService {
         role.setAuthPermissions(authPermissions);
         try {
             return userRolesRepository.save(role);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new DuplicatePermissionForSingleRoleException("Permission already exists for the role %s ".formatted(role.getName()));
         }
     }
