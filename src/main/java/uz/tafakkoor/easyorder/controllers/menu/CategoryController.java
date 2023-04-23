@@ -40,7 +40,7 @@ public class CategoryController {
 
     @Operation(summary = "This API used for getting a category by id", responses =
             {@ApiResponse(responseCode = "200", description = "Category found"), @ApiResponse(responseCode = "404", description = "Category not found")})
-    @GetMapping(value = "/byId",produces = "application/json")
+    @GetMapping(value = "/byId", produces = "application/json")
     public ResponseEntity<Category> getCategoryById(Long id, Long restaurantID) {
         Category category = categoryService.getCategoryById(id, restaurantID);
         return ResponseEntity.ok().body(category);
@@ -49,7 +49,7 @@ public class CategoryController {
     @Operation(summary = "This API used for getting a category by name", responses = {
             @ApiResponse(responseCode = "200", description = "Category found"),
             @ApiResponse(responseCode = "404", description = "Category not found")})
-    @GetMapping(value = "/byName",produces = "application/json")
+    @GetMapping(value = "/byName", produces = "application/json")
     public ResponseEntity<Category> getCategoryByName(String name, Long restaurantID) {
         Category category = categoryService.getCategoryByName(name, restaurantID);
         return ResponseEntity.ok().body(category);

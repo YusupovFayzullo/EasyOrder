@@ -45,11 +45,12 @@ public class AuthService {
     private final TwilioService twilioService;
     @Value("${twilio.activation.code.expiry}")
     private int activationCodeExpiry;
-    private static final String basePATH = "http://localhost:8080/api/auth/activate/";
+    private static final String basePATH = "http://localhost:8080/api/v1/auth/activate/";
 
     public TokenResponse generateToken(@NonNull TokenRequest tokenRequest) {
         String phoneNumber = tokenRequest.phoneNumber();
         String password = tokenRequest.password();
+        this.userRepository.findByPhoneNumberLike(phoneNumber).orElseThrow(() -> new ItemNotFoundException("User not found"));
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(phoneNumber, password);
         this.authenticationManager.authenticate(authentication);
         return this.jwtUtils.generateToken(phoneNumber);

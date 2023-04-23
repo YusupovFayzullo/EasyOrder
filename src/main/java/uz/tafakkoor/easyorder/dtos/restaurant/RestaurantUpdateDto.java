@@ -26,7 +26,7 @@ public class RestaurantUpdateDto {
     @NotBlank(message = "phoneNumber can not be blank")
     private String phoneNumber;
 
-    @Email(regexp = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-]+)(\\.[a-zA-Z]{2,5}){1,2}$",message = "Email is invalid")
+    @Email(regexp = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-]+)(\\.[a-zA-Z]{2,5}){1,2}$", message = "Email is invalid")
     private String email;
     private RestaurantTime openTime;
 

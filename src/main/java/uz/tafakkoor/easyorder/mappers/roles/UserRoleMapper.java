@@ -7,7 +7,7 @@ import uz.tafakkoor.easyorder.dtos.roles.UserRoleCreateDTO;
 
 @Mapper
 public interface UserRoleMapper {
-    UserRoleMapper ROLE_MAPPER= Mappers.getMapper(UserRoleMapper.class);
+    UserRoleMapper ROLE_MAPPER = Mappers.getMapper(UserRoleMapper.class);
 
     UserRole fromUserCreateDTOtoUserRole(UserRoleCreateDTO dto);
 }
