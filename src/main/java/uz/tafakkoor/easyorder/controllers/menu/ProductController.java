@@ -39,7 +39,7 @@ public class ProductController {
     @Operation(summary = "This API used for getting a product by id", responses = {
             @ApiResponse(responseCode = "200", description = "Product found"),
             @ApiResponse(responseCode = "404", description = "Product not found")})
-    @GetMapping(produces = "application/json")
+    @GetMapping(value = "/byId", produces = "application/json")
     public ResponseEntity<Product> getProductById(Long id, Long categoryID) {
         Product product = productService.getProductById(id, categoryID);
         return ResponseEntity.ok().body(product);
@@ -48,7 +48,7 @@ public class ProductController {
     @Operation(summary = "This API used for getting a product by name", responses = {
             @ApiResponse(responseCode = "200", description = "Product found"),
             @ApiResponse(responseCode = "404", description = "Product not found")})
-    @GetMapping(produces = "application/json")
+    @GetMapping(value = "/byName", produces = "application/json")
     public ResponseEntity<Product> getProductByName(String name, Long categoryID) {
         Product product = productService.getProductByName(name, categoryID);
         return ResponseEntity.ok().body(product);
