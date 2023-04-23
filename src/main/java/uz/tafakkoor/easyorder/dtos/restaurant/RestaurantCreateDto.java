@@ -3,6 +3,7 @@ package uz.tafakkoor.easyorder.dtos.restaurant;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +31,7 @@ public class RestaurantCreateDto {
 
     private Long imageID;
 
+    @Pattern( regexp = "^(\\+998|8)[ -]?\\d{2}[ -]?\\d{3}[ -]?\\d{2}[ -]?\\d{2}$")
     @NotBlank(message = "phoneNumber can not be blank")
     private String phoneNumber;
 

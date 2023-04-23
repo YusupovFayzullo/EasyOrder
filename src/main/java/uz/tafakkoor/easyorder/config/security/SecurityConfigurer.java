@@ -54,6 +54,8 @@ public class SecurityConfigurer {
                         "/v3/api-docs*/**",
                         "/actuator/health*/**",
                         "/api/auth/**",
+                        "/api/v1/restaurant/**",
+                        "/api/v1/table/**",
                         "/actuator",
                         "/error",
                         "/webjars/**"/*,
