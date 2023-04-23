@@ -24,9 +24,6 @@ public class Table {
 
     private boolean isDeleted;
 
-    @OneToOne
-    private Document image;
-
     @ManyToOne
     private Restaurant restaurant;
 }

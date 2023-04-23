@@ -25,7 +25,7 @@ public class DocumentController {
     private final DocumentService documentService;
 
     @Operation(summary = "Upload document to server", responses = {
-            @ApiResponse(responseCode = "201", description = "Document uploaded successfully"),
+            @ApiResponse(responseCode = "200", description = "Document uploaded successfully"),
             @ApiResponse(responseCode = "400", description = "Document not uploaded")})
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Document> uploadFile(@RequestParam("file") MultipartFile file) {
