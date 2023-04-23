@@ -10,10 +10,10 @@ import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
 import uz.tafakkoor.easyorder.exceptions.TimeParseException;
-import uz.tafakkoor.easyorder.repositories.ImageRepository;
+import uz.tafakkoor.easyorder.repositories.DocumentRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.AddressRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
-import uz.tafakkoor.easyorder.services.ImageService;
+import uz.tafakkoor.easyorder.services.DocumentService;
 
 import java.time.LocalTime;
 import java.util.Optional;
@@ -24,8 +24,8 @@ public class RestaurantService {
 
     private final RestaurantRepository repository;
     private final AddressRepository addressRepository;
-    private final ImageService imageService;
-    private final ImageRepository imageRepository;
+    private final DocumentService documentService;
+    private final DocumentRepository documentRepository;
 
 
     public Restaurant saveRestaurant(RestaurantCreateDto dto) {
@@ -70,7 +70,7 @@ public class RestaurantService {
                 .closeTime(close)
                 .build();
 
-        imageRepository.findById(dto.getImageID()).ifPresent(restaurant::setImage);
+        documentRepository.findById(dto.getImageID()).ifPresent(restaurant::setImage);
 
         return repository.save(restaurant);
     }
@@ -107,7 +107,7 @@ public class RestaurantService {
             restaurant.setDescription(dto.getDescription());
             restaurant.setStatus(dto.getStatus());
 
-            imageRepository.findById(dto.getImageID()).ifPresent(restaurant::setImage);
+            documentRepository.findById(dto.getImageID()).ifPresent(restaurant::setImage);
 
             return repository.save(restaurant);
         }

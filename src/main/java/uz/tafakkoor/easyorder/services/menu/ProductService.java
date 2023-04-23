@@ -7,10 +7,10 @@ import uz.tafakkoor.easyorder.domains.menu.Product;
 import uz.tafakkoor.easyorder.dtos.menu.product.ProductCreateDTO;
 import uz.tafakkoor.easyorder.dtos.menu.product.ProductUpdateDTO;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
-import uz.tafakkoor.easyorder.repositories.ImageRepository;
+import uz.tafakkoor.easyorder.repositories.DocumentRepository;
 import uz.tafakkoor.easyorder.repositories.menu.CategoryRepository;
 import uz.tafakkoor.easyorder.repositories.menu.ProductRepository;
-import uz.tafakkoor.easyorder.services.ImageService;
+import uz.tafakkoor.easyorder.services.DocumentService;
 
 import java.util.List;
 
@@ -20,31 +20,33 @@ import static uz.tafakkoor.easyorder.mappers.menu.ProductMapper.PRODUCT_MAPPER;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
-    private final ImageService imageService;
     private final CategoryRepository categoryRepository;
-    private final ImageRepository imageRepository;
+    private final DocumentRepository documentRepository;
 
     public Product createProduct(ProductCreateDTO dto) {
-
         Product product = PRODUCT_MAPPER.toProductEntity(dto);
+        long categoryID = dto.getCategoryID();
         Category category = categoryRepository
-                .findById(dto.getCategoryID())
-                .orElseThrow(() -> new ItemNotFoundException("Category not found by id %d".formatted(dto.getCategoryID())));
-
-        imageRepository.findById(dto.getImageID()).ifPresent(product::setImage);
-
+                .findById(categoryID)
+                .orElseThrow(() -> new ItemNotFoundException("Category not found by id %d".formatted(categoryID)));
+        documentRepository.findById(dto.getImageID()).ifPresent(product::setImage);
         product.setCategory(category);
         return productRepository.save(product);
     }
 
-    public Product getProductById(Long id) {
-        return productRepository
-                .findById(id)
+    public Product getProductById(Long id, Long categoryID) {
+        return productRepository.findByProductId(id, categoryID)
                 .orElseThrow(() -> new ItemNotFoundException("Product not found with id " + id));
     }
 
+    public Product getProductByName(String name, Long categoryID) {
+        return productRepository.findByProductName(name, categoryID)
+                .orElseThrow(() -> new ItemNotFoundException("Product not found with id %S".formatted(name)));
+    }
 
-    public List<Product> getAllProducts(Long categoryID) {
+
+    public List<Product>
+    getAllProducts(Long categoryID) {
         Category category = categoryRepository
                 .findById(categoryID)
                 .orElseThrow(() -> new ItemNotFoundException("Category not found"));
@@ -69,7 +71,7 @@ public class ProductService {
                 .findProduct(dtoProductID)
                 .orElseThrow(() -> new ItemNotFoundException("Product not found with productID =%d".formatted(dtoProductID)));
 
-        imageRepository.findById(dto.getImageId()).ifPresent(productDB::setImage);
+        documentRepository.findById(dto.getImageId()).ifPresent(productDB::setImage);
 
         PRODUCT_MAPPER.toUpdateProductEntity(dto, productDB);
         return productRepository.save(productDB);

@@ -20,8 +20,8 @@ public class SessionUser {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         Object principal = authentication.getPrincipal();
-        if (principal instanceof UserDetails ud)
-            return userRepository.findByPhoneNumber(ud.getUsername());
+        if (!Objects.isNull(principal))
+            return userRepository.findByPhoneNumber(principal.toString());
         return null;
     }
 
