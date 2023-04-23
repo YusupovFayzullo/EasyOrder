@@ -6,7 +6,6 @@ import uz.tafakkoor.easyorder.domains.Auditable;
 import uz.tafakkoor.easyorder.domains.Document;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 
 @Getter
 @Setter

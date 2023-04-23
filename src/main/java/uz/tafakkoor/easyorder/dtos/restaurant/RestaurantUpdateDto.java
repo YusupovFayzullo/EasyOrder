@@ -4,11 +4,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
 import uz.tafakkoor.easyorder.enums.RestaurantStatus;
-
-import java.util.Collection;
 
 @Getter
 @Setter

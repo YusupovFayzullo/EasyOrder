@@ -1,9 +1,5 @@
 package uz.tafakkoor.easyorder.services.auth;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
-
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
@@ -15,8 +11,8 @@ import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.config.security.JwtUtils;
 import uz.tafakkoor.easyorder.config.security.SessionUser;
 import uz.tafakkoor.easyorder.domains.user.OTP;
-import uz.tafakkoor.easyorder.domains.user.User;
 import uz.tafakkoor.easyorder.domains.user.OTP.OtpType;
+import uz.tafakkoor.easyorder.domains.user.User;
 import uz.tafakkoor.easyorder.dtos.auth.RefreshTokenRequest;
 import uz.tafakkoor.easyorder.dtos.auth.TokenRequest;
 import uz.tafakkoor.easyorder.dtos.auth.TokenResponse;
@@ -30,6 +26,10 @@ import uz.tafakkoor.easyorder.repositories.OTPRepository;
 import uz.tafakkoor.easyorder.repositories.user.UserRepository;
 import uz.tafakkoor.easyorder.repositories.user.UserRolesRepository;
 import uz.tafakkoor.easyorder.utils.BaseUtils;
+
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class AuthService {
