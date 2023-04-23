@@ -25,7 +25,7 @@ public class TableUpdate {
     private boolean booked;
 
     private boolean isDeleted;
-    private Long imageId;
+
 
     private Long restaurantId;
 

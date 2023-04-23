@@ -53,7 +53,7 @@ public class RestaurantController {
     public Page<Restaurant> getAll(@RequestParam(required = false, defaultValue = "5") Integer size,
                                    @RequestParam(required = false, defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, size);
-        return  restaurantRepository.findAll(pageable);
+        return restaurantRepository.findAll(pageable);
     }
 
     @Operation(summary = "This API used to create restaurant")
@@ -66,7 +66,7 @@ public class RestaurantController {
                             schema = @Schema(implementation = RuntimeException.class))})
     })
 
-    @PostMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@Valid RestaurantCreateDto dto) {
         Restaurant restaurant = restaurantService.saveRestaurant(dto);
         if (restaurant == null) {
@@ -77,8 +77,8 @@ public class RestaurantController {
 
     @Operation(summary = "This API used to update restaurant")
     @PutMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-        public ResponseEntity<String> update (@NonNull @Valid  RestaurantUpdateDto dto, @PathVariable Long id){
-            Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
+    public ResponseEntity<String> update(@NonNull @Valid RestaurantUpdateDto dto, @PathVariable Long id) {
+        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
 
         try {
             RestaurantTime closeTime = dto.getCloseTime();

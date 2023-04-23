@@ -33,7 +33,7 @@ public class UserPermissionService {
     }
 
     public UserPermission getPermissionById(Integer id) {
-        return userPermissionRepository.findById(id).orElseThrow(()->new ItemNotFoundException("No permission found with id %s".formatted(id)));
+        return userPermissionRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("No permission found with id %s".formatted(id)));
     }
 
     public void delete(Integer id) {

@@ -2,7 +2,6 @@ package uz.tafakkoor.easyorder.domains.restaurant;
 
 import jakarta.persistence.*;
 import lombok.*;
-import uz.tafakkoor.easyorder.domains.Document;
 
 @Getter
 @Setter

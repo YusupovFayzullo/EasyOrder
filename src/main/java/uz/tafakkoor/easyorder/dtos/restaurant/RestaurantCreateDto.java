@@ -28,11 +28,11 @@ public class RestaurantCreateDto {
 
     private Long imageID;
 
-    @Pattern( regexp = "^(\\+998|8)[ -]?\\d{2}[ -]?\\d{3}[ -]?\\d{2}[ -]?\\d{2}$")
+    @Pattern(regexp = "^(\\+998|8)[ -]?\\d{2}[ -]?\\d{3}[ -]?\\d{2}[ -]?\\d{2}$")
     @NotBlank(message = "phoneNumber can not be blank")
     private String phoneNumber;
 
-    @Email(regexp = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-]+)(\\.[a-zA-Z]{2,5}){1,2}$",message = "Email is invalid")
+    @Email(regexp = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-]+)(\\.[a-zA-Z]{2,5}){1,2}$", message = "Email is invalid")
     private String email;
 
     private RestaurantTime openTime;

@@ -35,10 +35,10 @@ public class AuthController {
     }
 
     @Operation(summary = "This API is used for generating a new access token using the refresh token",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "Access token generated", content = @Content(schema = @Schema(implementation = TokenResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = AppErrorDTO.class)))
-    }
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Access token generated", content = @Content(schema = @Schema(implementation = TokenResponse.class))),
+                    @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = AppErrorDTO.class)))
+            }
     )
     @PostMapping({"/refresh/token"})
     public ResponseEntity<TokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {

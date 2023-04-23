@@ -63,7 +63,7 @@ public class TableController {
     @Operation(summary = "This API used for getting is not booked tables")
     @GetMapping("/notBooked/{restaurantId}")
     public ResponseEntity<List<NotBookedTableDto>> getAll(@PathVariable Long restaurantId) {
-        Table table = tableRepository.findByRestaurantId(restaurantId).orElseThrow(() -> new ItemNotFoundException("Table not found  by restaurant with " +restaurantId));
+        Table table = tableRepository.findByRestaurantId(restaurantId).orElseThrow(() -> new ItemNotFoundException("Table not found  by restaurant with " + restaurantId));
         if (table.getRestaurant().isDeleted()) {
             throw new RuntimeException("Restaurant is deleted");
         }
@@ -87,7 +87,7 @@ public class TableController {
                     })
     })
     @PostMapping
-    public ResponseEntity<Table> create(@NonNull @Valid  TableCreateDto dto) {
+    public ResponseEntity<Table> create(@NonNull @Valid TableCreateDto dto) {
         Long restaurantId = dto.getRestaurantId();
         Optional<Table> byId = tableRepository.getById(restaurantId, dto.getNumber());
         if (byId.isPresent()) {
@@ -99,15 +99,15 @@ public class TableController {
 
     @Operation(summary = "This API used to update table")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> update( @Valid  TableUpdate dto, @PathVariable Long id) {
+    public ResponseEntity<String> update(@Valid TableUpdate dto, @PathVariable Long id) {
         Table table = tableRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Table not found with by " + id));
         Long restaurantId = dto.getRestaurantId();
         Optional<Table> byId = tableRepository.getById(restaurantId, dto.getNumber());
 
         if (byId.isPresent()) {
-            throw new RuntimeException(dto.getNumber()+" number already existed in restaurant by "+restaurantId);
+            throw new RuntimeException(dto.getNumber() + " number already existed in restaurant by " + restaurantId);
         }
-        Table table1 = tableService.updateRestaurant(dto, id);
+        Table table1 = tableService.updateTable(dto, id);
 
         return ResponseEntity.ok("Succesfully updated " + table1.getId());
     }

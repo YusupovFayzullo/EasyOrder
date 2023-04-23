@@ -10,7 +10,8 @@ import java.util.UUID;
 @Component
 public class BaseUtils {
     public static final String BASE_URL = "http://localhost:8080/api/v1/";
-    public  String generateUniqueName(@NonNull String fileName) {
+
+    public String generateUniqueName(@NonNull String fileName) {
         return UUID.randomUUID() + "." + StringUtils.getFilenameExtension(fileName);
     }
 

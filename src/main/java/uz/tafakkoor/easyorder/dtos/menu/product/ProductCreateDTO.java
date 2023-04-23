@@ -23,7 +23,7 @@ public class ProductCreateDTO {
     private String description;
 
     private Double price;
-//    @Pattern(regexp = "^(100|[1-9]?[0-9])$", message = "Product discount must be less than 100%")
+    //    @Pattern(regexp = "^(100|[1-9]?[0-9])$", message = "Product discount must be less than 100%")
     private Double discount;
     @NotNull(message = "Category id cannot be null")
     private Long categoryID;
