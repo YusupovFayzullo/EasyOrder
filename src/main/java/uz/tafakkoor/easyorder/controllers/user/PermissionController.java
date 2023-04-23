@@ -16,7 +16,6 @@ import uz.tafakkoor.easyorder.domains.user.UserPermission;
 import uz.tafakkoor.easyorder.dtos.roles.UserPermissionCreateDTO;
 import uz.tafakkoor.easyorder.services.roles.UserPermissionService;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @ParameterObject
