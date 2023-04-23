@@ -28,7 +28,7 @@ public class DocumentController {
             @ApiResponse(responseCode = "201", description = "Document uploaded successfully"),
             @ApiResponse(responseCode = "400", description = "Document not uploaded")})
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Document> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<Document> uploadFile(@RequestParam("file") MultipartFile file) {
         return ResponseEntity.status(201).body(documentService.saveDocumentToServer(file));
     }
 
