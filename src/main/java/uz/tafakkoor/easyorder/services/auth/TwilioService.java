@@ -18,7 +18,7 @@ public class TwilioService {
     public void sendOtp(String toNumber, String otp) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
-        String messageBody = "Your EasyOrder verification code is " + otp;
+        String messageBody = "Your EasyOrder verification code is: " + otp;
 
         Message message = Message.creator(
                         new PhoneNumber(toNumber),

@@ -26,7 +26,19 @@ public class GlobalExceptionHandler {
                         request.getRequestURI(),
                         e.getMessage(),
                         null,
-                        500
+                        400
+                )
+        );
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<AppErrorDTO> handleRuntimeExceptions(RuntimeException e, HttpServletRequest request) {
+        return ResponseEntity.badRequest().body(
+                new AppErrorDTO(
+                        request.getRequestURI(),
+                        e.getMessage(),
+                        null,
+                        400
                 )
         );
     }

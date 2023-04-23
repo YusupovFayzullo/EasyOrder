@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.domains.Document;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.domains.restaurant.Table;
+import uz.tafakkoor.easyorder.dtos.restaurant.ManyTableCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.TableCreateDto;
 import uz.tafakkoor.easyorder.dtos.restaurant.TableUpdate;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
@@ -13,7 +14,10 @@ import uz.tafakkoor.easyorder.repositories.DocumentRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.TableRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -83,4 +87,37 @@ public class TableService {
         return tableRepository.save(table);
 
     }
+
+    public String saveMultiple(ManyTableCreateDto dto) {
+        int tableCapacity = dto.tableCapacity();
+        int tableCount = dto.tableCount();
+        int tableNumberStart = dto.tableNumberStart();
+        long createdById = dto.createdById();
+        long restaurantId = dto.restaurantId();
+
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new ItemNotFoundException("Restaurant not found"));
+        validateRestaurant(restaurant, createdById);
+
+        List<Table> tables = IntStream.rangeClosed(tableNumberStart, tableCount)
+                .mapToObj(i -> Table.builder()
+                        .number(String.valueOf(i))
+                        .capacity(tableCapacity)
+                        .restaurant(restaurant)
+                        .build())
+                .collect(Collectors.toList());
+        tableRepository.saveAll(tables);
+
+        return "Successfully created!";
+    }
+
+    private void validateRestaurant(Restaurant restaurant, long createdById) {
+        if (restaurant.isDeleted()) {
+            throw new RuntimeException("Restaurant deleted");
+        }
+        if (restaurant.getCreatedBy() != createdById) {
+            throw new RuntimeException("You do not have permission to create tables for this restaurant");
+        }
+    }
+
 }
