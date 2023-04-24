@@ -4,10 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import uz.tafakkoor.easyorder.domains.Auditable;
 import uz.tafakkoor.easyorder.domains.Document;
+import uz.tafakkoor.easyorder.domains.user.User;
 import uz.tafakkoor.easyorder.enums.RestaurantStatus;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,11 +32,18 @@ public class Restaurant extends Auditable {
     private String phoneNumber;
     private String email;
 
-
     private LocalTime openTime;
     private LocalTime closeTime;
     @Enumerated(EnumType.STRING)
     private RestaurantStatus status = RestaurantStatus.INACTIVE;
+
+    @ManyToMany
+    @JoinTable(
+            name = "restaurant_employees",
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> managers = new HashSet<>();
 
     @Builder(builderMethodName = "restaurantBuilder")
     public Restaurant(Long createdBy, Long updateBy, LocalDateTime createdAt, LocalDateTime updatedAt,

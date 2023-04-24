@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import uz.tafakkoor.easyorder.domains.menu.Category;
@@ -30,6 +31,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "201", description = "Category created"),
             @ApiResponse(responseCode = "400", description = "Category not created")})
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER') and hasPermission('CREATE_CATEGORY')")
     public ResponseEntity<Category> createCategory(@Valid CategoryCreateDTO dto) {
         Category category = categoryService.createCategory(dto);
         return ResponseEntity.status(201).body(category);
