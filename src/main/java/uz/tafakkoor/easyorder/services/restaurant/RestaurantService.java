@@ -3,6 +3,7 @@ package uz.tafakkoor.easyorder.services.restaurant;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.tafakkoor.easyorder.config.security.SessionUser;
 import uz.tafakkoor.easyorder.domains.Document;
 import uz.tafakkoor.easyorder.domains.restaurant.Address;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
@@ -25,6 +26,7 @@ public class RestaurantService {
     private final RestaurantRepository repository;
     private final AddressRepository addressRepository;
     private final DocumentRepository documentRepository;
+    private final SessionUser sessionUser;
 
 
     public Restaurant saveRestaurant(RestaurantCreateDto dto) {
@@ -73,6 +75,7 @@ public class RestaurantService {
                 .image(document)
                 .openTime(open)
                 .closeTime(close)
+                .createdBy(sessionUser.id())
                 .build();
         return repository.save(restaurant);
     }
