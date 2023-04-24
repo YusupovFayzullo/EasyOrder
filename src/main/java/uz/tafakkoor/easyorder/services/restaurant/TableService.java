@@ -2,10 +2,8 @@ package uz.tafakkoor.easyorder.services.restaurant;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.config.security.SessionUser;
-import uz.tafakkoor.easyorder.domains.Document;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.domains.restaurant.Table;
 import uz.tafakkoor.easyorder.dtos.restaurant.ManyTableCreateDto;
@@ -18,9 +16,6 @@ import uz.tafakkoor.easyorder.repositories.restaurant.TableRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
