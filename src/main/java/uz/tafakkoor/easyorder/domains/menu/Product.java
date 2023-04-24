@@ -1,5 +1,6 @@
 package uz.tafakkoor.easyorder.domains.menu;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import uz.tafakkoor.easyorder.domains.Auditable;
@@ -13,7 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Builder
-
 public class Product extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,7 @@ public class Product extends Auditable {
     private Double rating = 0.0;
     private boolean isAvailable;
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     private Category category;
 
     @Builder(builderMethodName = "productBuilder")

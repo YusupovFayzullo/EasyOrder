@@ -44,7 +44,7 @@ public class ProductOrderController {
                     })
     })
     @PostMapping("/create")
-    public ResponseEntity<ProductOrder> create(@RequestBody ProductOrderCreateDTO dto) {
+    public ResponseEntity<ProductOrder> create(ProductOrderCreateDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productOrderService.create(dto));
     }
 

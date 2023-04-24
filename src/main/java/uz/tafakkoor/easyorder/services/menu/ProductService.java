@@ -38,6 +38,11 @@ public class ProductService {
                 .orElseThrow(() -> new ItemNotFoundException("Product not found with id " + id));
     }
 
+    public Product getProductById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ItemNotFoundException("Product not found with id " + id));
+    }
+
     public Product getProductByName(String name, Long categoryID) {
         return productRepository.findByProductName(name, categoryID)
                 .orElseThrow(() -> new ItemNotFoundException("Product not found with id %S".formatted(name)));

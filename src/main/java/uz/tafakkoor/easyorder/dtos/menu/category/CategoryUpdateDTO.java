@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Builder
 @Component
-@ToString
+
 @ParameterObject
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CategoryUpdateDTO {

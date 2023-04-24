@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@ToString(callSuper = true)
 public class OTP extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

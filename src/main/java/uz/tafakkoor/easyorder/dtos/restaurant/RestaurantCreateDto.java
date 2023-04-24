@@ -4,6 +4,7 @@ package uz.tafakkoor.easyorder.dtos.restaurant;
 import com.beust.jcommander.Parameter;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springdoc.core.annotations.ParameterObject;
@@ -13,7 +14,7 @@ import uz.tafakkoor.easyorder.dtos.AddressDto;
 @Setter
 @NoArgsConstructor
 @Builder
-@ToString
+
 @AllArgsConstructor
 @ParameterObject
 public class RestaurantCreateDto {
@@ -26,7 +27,7 @@ public class RestaurantCreateDto {
 
 
     private String description;
-    @NotBlank(message = "Image id can not be blank")
+    @NotNull(message = "imageID can not be null")
     private Long imageID;
 
     @Pattern(regexp = "^(\\+998|8)[ -]?\\d{2}[ -]?\\d{3}[ -]?\\d{2}[ -]?\\d{2}$")

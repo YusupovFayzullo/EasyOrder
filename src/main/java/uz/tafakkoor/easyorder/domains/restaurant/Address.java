@@ -12,7 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Builder
-@ToString
+
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

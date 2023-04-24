@@ -4,10 +4,12 @@ import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springdoc.core.annotations.ParameterObject;
 
 @Getter
 @Setter
 @Builder
+@ParameterObject
 public class ProductOrderCreateDTO {
     private Long productId;
 

@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.tafakkoor.easyorder.config.security.JwtUtils;
 import uz.tafakkoor.easyorder.config.security.SessionUser;
+import uz.tafakkoor.easyorder.domains.menu.Basket;
 import uz.tafakkoor.easyorder.domains.user.OTP;
 import uz.tafakkoor.easyorder.domains.user.OTP.OtpType;
 import uz.tafakkoor.easyorder.domains.user.User;
@@ -22,6 +23,7 @@ import uz.tafakkoor.easyorder.enums.UserStatus;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.exceptions.OTPExpiredException;
 import uz.tafakkoor.easyorder.mappers.user.UserMapper;
+import uz.tafakkoor.easyorder.repositories.BasketRepository;
 import uz.tafakkoor.easyorder.repositories.OTPRepository;
 import uz.tafakkoor.easyorder.repositories.user.UserRepository;
 import uz.tafakkoor.easyorder.repositories.user.UserRolesRepository;
@@ -46,6 +48,7 @@ public class AuthService {
     @Value("${twilio.activation.code.expiry}")
     private int activationCodeExpiry;
     private static final String basePATH = "http://localhost:8080/api/v1/auth/activate/";
+    private final BasketRepository basketRepository;
 
     public TokenResponse generateToken(@NonNull TokenRequest tokenRequest) {
         String phoneNumber = tokenRequest.phoneNumber();
@@ -87,11 +90,17 @@ public class AuthService {
         OTP code1 = this.otpRepository.findByUserIDAndCode(user.getId(), code).orElseThrow(() -> new ItemNotFoundException("Invalid code"));
         if (code1.getExpiresAt().isBefore(LocalDateTime.now())) throw new OTPExpiredException("Code expired");
         user.setStatus(UserStatus.ACTIVE);
+        Basket basket = Basket.basketBuilder()
+                .owner(user)
+                .createdBy(user.getId())
+                .build();
+        basketRepository.save(basket);
         this.userRepository.save(user);
         return "Account activated";
     }
 
-    public AuthService(final AuthenticationManager authenticationManager, final UserMapper userMapper, final UserRepository userRepository, final PasswordEncoder passwordEncoder, final SessionUser sessionUser, final BaseUtils utils, final JwtUtils jwtUtils, final UserRolesRepository userRolesRepository, final OTPRepository otpRepository, final TwilioService twilioService) {
+    public AuthService(final AuthenticationManager authenticationManager, final UserMapper userMapper, final UserRepository userRepository, final PasswordEncoder passwordEncoder, final SessionUser sessionUser, final BaseUtils utils, final JwtUtils jwtUtils, final UserRolesRepository userRolesRepository, final OTPRepository otpRepository, final TwilioService twilioService,
+                       BasketRepository basketRepository) {
         this.authenticationManager = authenticationManager;
         this.userMapper = userMapper;
         this.userRepository = userRepository;
@@ -102,5 +111,6 @@ public class AuthService {
         this.userRolesRepository = userRolesRepository;
         this.otpRepository = otpRepository;
         this.twilioService = twilioService;
+        this.basketRepository = basketRepository;
     }
 }

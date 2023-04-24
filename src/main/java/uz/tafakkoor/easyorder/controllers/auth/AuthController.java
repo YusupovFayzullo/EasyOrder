@@ -16,6 +16,7 @@ import uz.tafakkoor.easyorder.dtos.auth.RefreshTokenRequest;
 import uz.tafakkoor.easyorder.dtos.auth.TokenRequest;
 import uz.tafakkoor.easyorder.dtos.auth.TokenResponse;
 import uz.tafakkoor.easyorder.dtos.auth.UserCreateDTO;
+import uz.tafakkoor.easyorder.repositories.BasketRepository;
 import uz.tafakkoor.easyorder.services.auth.AuthService;
 
 @RestController
@@ -24,6 +25,7 @@ import uz.tafakkoor.easyorder.services.auth.AuthService;
 @Tag(name = "Authorization", description = "Authorization API")
 public class AuthController {
     private final AuthService authService;
+    private final BasketRepository basketRepository;
 
     @Operation(summary = "This API is used for access token generation", responses = {
             @ApiResponse(responseCode = "200", description = "Access token generated", content = @Content(schema = @Schema(implementation = TokenResponse.class))),
