@@ -6,10 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.web.multipart.MultipartFile;
 import uz.tafakkoor.easyorder.dtos.AddressDto;
-
-import java.util.Collection;
 
 @Getter
 @Setter
@@ -28,7 +25,7 @@ public class RestaurantCreateDto {
 
 
     private String description;
-
+    @NotBlank(message = "Image id can not be blank")
     private Long imageID;
 
     @Pattern( regexp = "^(\\+998|8)[ -]?\\d{2}[ -]?\\d{3}[ -]?\\d{2}[ -]?\\d{2}$")

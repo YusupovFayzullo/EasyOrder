@@ -3,7 +3,6 @@ package uz.tafakkoor.easyorder.services.restaurant;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uz.tafakkoor.easyorder.domains.Document;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.domains.restaurant.Table;
 import uz.tafakkoor.easyorder.dtos.restaurant.TableCreateDto;
@@ -12,8 +11,6 @@ import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.repositories.DocumentRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.TableRepository;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
