@@ -41,20 +41,45 @@ public class TableController {
     private final TableService tableService;
 
     @Operation(summary = "This API used for getting a table by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = " Successfully",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Restaurant.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Not Found",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    })
+    })
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Table> getById(@PathVariable Long id) {
-        Optional<Table> byId = tableRepository.findById(id);
-        if (byId.isPresent()) {
-            Table table = byId.get();
-            if (table.isDeleted()) {
-                throw new RuntimeException("This table not found");
-            }
-        }
-        return ResponseEntity.ok(byId.orElseThrow(() -> new ItemNotFoundException("Table not found with id " + id)));
+        Table table= tableRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Table not found with id " + id));
+
+        if (table.isDeleted()) throw new RuntimeException("This table is deleted");
+
+        return ResponseEntity.status(200).body(table);
 
     }
 
     @Operation(summary = "This API used for getting all tables")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully ",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Restaurant.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Not Found",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    })
+    })
     @GetMapping("/")
     public Page<Table> getAll(@RequestParam(required = false, defaultValue = "5") Integer size,
                               @RequestParam(required = false, defaultValue = "0") Integer page) {
@@ -63,6 +88,20 @@ public class TableController {
     }
 
     @Operation(summary = "This API used for getting is not booked tables")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = " Successfully",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Restaurant.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Not Found",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    })
+    })
     @GetMapping("/notBooked/{restaurantId}")
     public ResponseEntity<List<NotBookedTableDto>> getAll(@PathVariable Long restaurantId) {
         Table table = tableRepository.findByRestaurantId(restaurantId).orElseThrow(() -> new ItemNotFoundException("Table not found  by restaurant with " + restaurantId));
@@ -92,14 +131,26 @@ public class TableController {
     public ResponseEntity<Table> create(@NonNull @Valid TableCreateDto dto) {
         Long restaurantId = dto.getRestaurantId();
         Optional<Table> byId = tableRepository.getById(restaurantId, dto.getNumber());
-        if (byId.isPresent()) {
-            throw new RuntimeException("This number already existed in this restaurant");
-        }
+        if (byId.isPresent()) throw new RuntimeException("This number already existed in this restaurant");
         Table table = tableService.saveRestaurant(dto);
         return ResponseEntity.status(201).body(table);
     }
 
     @Operation(summary = "This API used to update table")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Table Successfully updated",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Restaurant.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Not Found",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    })
+    })
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> update(@Valid TableUpdate dto, @PathVariable Long id) {
         Table table = tableRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Table not found with by " + id));
@@ -115,6 +166,20 @@ public class TableController {
     }
 
     @Operation(summary = "This API used to delete table")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Table Successfully deleted",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Restaurant.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Not Found",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    })
+    })
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         Table table = tableRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Table not found with by " + id));

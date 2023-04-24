@@ -18,13 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantCreateDto;
-import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantTime;
 import uz.tafakkoor.easyorder.dtos.restaurant.RestaurantUpdateDto;
 import uz.tafakkoor.easyorder.exceptions.ItemNotFoundException;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.services.restaurant.RestaurantService;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/restaurant")
@@ -36,19 +33,43 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @Operation(summary = "This API used for getting a restaurant by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Restaurant.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Not Found",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    })
+    })
     @GetMapping(value = "/{id}")
     public ResponseEntity<Restaurant> getById(@PathVariable Long id) {
-        Optional<Restaurant> byId = restaurantRepository.findById(id);
-        if (byId.isPresent()) {
-            Restaurant restaurant = byId.get();
-            if (restaurant.isDeleted()) {
-                throw new RuntimeException("This restaurant not found");
-            }
-        }
-        return ResponseEntity.ok(byId.orElseThrow(() -> new ItemNotFoundException("Restaurant not found with id " + id)));
+        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
+        if (restaurant.isDeleted()) throw new RuntimeException("This restaurant deleted");
+
+        return ResponseEntity.status(200).body(restaurant);
     }
 
     @Operation(summary = "This API used for getting all restaurants")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Restaurant.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Not Found",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    })
+    })
     @GetMapping("/")
     public Page<Restaurant> getAll(@RequestParam(required = false, defaultValue = "5") Integer size,
                                    @RequestParam(required = false, defaultValue = "0") Integer page) {
@@ -69,32 +90,47 @@ public class RestaurantController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@Valid RestaurantCreateDto dto) {
         Restaurant restaurant = restaurantService.saveRestaurant(dto);
-        if (restaurant == null) {
-            throw new RuntimeException();
-        }
         return ResponseEntity.status(201).body(restaurant);
     }
 
     @Operation(summary = "This API used to update restaurant")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Restaurant Successfully updated",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Restaurant.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Not Found",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    })
+    })
     @PutMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> update(@NonNull @Valid RestaurantUpdateDto dto, @PathVariable Long id) {
         Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
-
-        try {
-            RestaurantTime closeTime = dto.getCloseTime();
-            RestaurantTime openTime = dto.getOpenTime();
-
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
-
-        if (restaurant.isDeleted()) return ResponseEntity.ok("Not found");
+        if (restaurant.isDeleted()) return ResponseEntity.ok("This restaurant is deleted");
         Restaurant restaurant1 = restaurantService.updateRestaurant(dto, id);
-
         return ResponseEntity.ok("Successfully updated by " + restaurant1.getId());
     }
 
     @Operation(summary = "This API used to delete restaurant")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Restaurant Successfully deleted",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Restaurant.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "500", description = "Not Found",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    })
+    })
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Restaurant not found with by " + id));
