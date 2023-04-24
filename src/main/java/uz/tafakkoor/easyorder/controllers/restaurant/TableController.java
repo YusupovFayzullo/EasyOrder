@@ -111,7 +111,7 @@ public class TableController {
         }
         Table table1 = tableService.updateTable(dto, id);
 
-        return ResponseEntity.ok("Succesfully updated " + table1.getId());
+        return ResponseEntity.ok("Successfully updated " + table1.getId());
     }
 
     @Operation(summary = "This API used to delete table")
@@ -125,17 +125,19 @@ public class TableController {
 
     @PostMapping("/createMultiple")
     @Operation(summary = "This API used to create multiple tables",
-    responses = {
-            @ApiResponse(responseCode = "201", description = "Table Successfully Created"),
-            @ApiResponse(responseCode = "400", description = "Not Found",
-                    content = {
-                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = AppErrorDTO.class)
-                            )
-                    })
-    }
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Table Successfully Created"),
+                    @ApiResponse(responseCode = "400", description = "Not Found",
+                            content = {
+                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                            schema = @Schema(implementation = AppErrorDTO.class)
+                                    )
+                            })
+            }
     )
-    public ResponseEntity<String> createMultiple(@RequestBody ManyTableCreateDto dto) {
+    public ResponseEntity<String> createMultiple(ManyTableCreateDto dto) {
         return ResponseEntity.status(201).body(tableService.saveMultiple(dto));
     }
+
+
 }

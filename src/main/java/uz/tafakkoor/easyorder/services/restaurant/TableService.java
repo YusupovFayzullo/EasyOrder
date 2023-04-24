@@ -2,7 +2,9 @@ package uz.tafakkoor.easyorder.services.restaurant;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import uz.tafakkoor.easyorder.config.security.SessionUser;
 import uz.tafakkoor.easyorder.domains.Document;
 import uz.tafakkoor.easyorder.domains.restaurant.Restaurant;
 import uz.tafakkoor.easyorder.domains.restaurant.Table;
@@ -14,6 +16,7 @@ import uz.tafakkoor.easyorder.repositories.DocumentRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.RestaurantRepository;
 import uz.tafakkoor.easyorder.repositories.restaurant.TableRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +28,7 @@ public class TableService {
 
     private final RestaurantRepository restaurantRepository;
     private final TableRepository tableRepository;
+    private final SessionUser sessionUser;
     private final DocumentRepository documentRepository;
 
     public Table saveRestaurant(TableCreateDto dto) {
@@ -66,23 +70,31 @@ public class TableService {
         int tableCapacity = dto.tableCapacity();
         int tableCount = dto.tableCount();
         int tableNumberStart = dto.tableNumberStart();
-        long createdById = dto.createdById();
+        long createdById = sessionUser.id();
         long restaurantId = dto.restaurantId();
 
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new ItemNotFoundException("Restaurant not found"));
         validateRestaurant(restaurant, createdById);
 
-        List<Table> tables = IntStream.rangeClosed(tableNumberStart, tableCount)
+        List<Table> tables = new ArrayList<>(); /*IntStream.rangeClosed(tableNumberStart, tableCount)
                 .mapToObj(i -> Table.builder()
                         .number(String.valueOf(i))
                         .capacity(tableCapacity)
                         .restaurant(restaurant)
                         .build())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
+        for (int i = tableNumberStart; i < tableNumberStart+tableCount; i++) {
+            tables.add(Table.builder()
+                            .number(String.valueOf(i))
+                            .capacity(tableCapacity)
+                            .restaurant(restaurant)
+                            .build()
+            );
+        }
         tableRepository.saveAll(tables);
 
-        return "Successfully created!";
+        return "Successfully created! by " + sessionUser.user().getPhoneNumber();
     }
 
     private void validateRestaurant(Restaurant restaurant, long createdById) {

@@ -1,5 +1,6 @@
 package uz.tafakkoor.easyorder.domains;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Auditable {
 
     @CreatedBy

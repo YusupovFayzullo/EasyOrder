@@ -21,10 +21,6 @@ public record ManyTableCreateDto(
         @Parameter(description = "Table number start")
                 @NotBlank(message = "Table number start is required")
                 @Min(value = 1, message = "Table number start must be greater than 0")
-        int tableNumberStart,
-        @Parameter(description = "Created by id")
-                @NotBlank(message = "Created by id is required")
-                @Min(value = 1, message = "Created by id must be greater than 0")
-        long createdById
+        int tableNumberStart
 ) {
 }
